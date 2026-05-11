@@ -11,13 +11,12 @@
     
     <style>
         :root {
-            /* 건양대학교 메인 그린 컬러 톤 적용 */
-            --primary-color: #f7bff7; 
-            --primary-light: #f5bef2;
-            --primary-dark: #fab7dc;
-            --text-color: #333333;
-            --text-light: #666666;
-            --bg-color: #f4f7f6;
+            /* 이전 로즈 컬러(#C06C84)에 투명도 70% 적용 */
+            --primary-color: rgba(192, 108, 132, 0.7); 
+            --primary-light: rgba(192, 108, 132, 0.15);
+            --text-color: #2B2B2B;
+            --text-light: #6D6875;
+            --bg-color: #FFFAFA;
             --white: #ffffff;
             --transition: all 0.3s ease;
         }
@@ -33,7 +32,9 @@
             line-height: 1.6;
             color: var(--text-color);
             background-color: var(--bg-color);
-            padding-top: 70px; /* 네비게이션 바 높이만큼 여백 */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Top Navigation Bar */
@@ -54,7 +55,7 @@
         .nav-logo {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #007bff;
+            color: var(--primary-color);
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -88,10 +89,12 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            background-color: var(--primary-color);
             color: var(--white);
-            padding: 5rem 2rem;
+            padding: 8rem 2rem;
             text-align: center;
+            border-radius: 20px;
+            margin-bottom: 2rem;
         }
 
         .hero h1 {
@@ -107,9 +110,25 @@
 
         .container {
             max-width: 1100px;
-            margin: -3rem auto 3rem;
+            margin: 100px auto 3rem;
             padding: 0 20px;
             position: relative;
+            flex: 1;
+        }
+
+        /* Page System (PPT Like) */
+        .content-page {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .content-page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* About Section */
@@ -120,6 +139,32 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             margin-bottom: 3rem;
             text-align: center;
+        }
+
+        /* About Grid */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            text-align: left;
+        }
+
+        .about-item {
+            background: var(--bg-color);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-top: 4px solid var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .about-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .about-card h2 {
@@ -223,7 +268,7 @@
         }
 
         .btn-fill:hover {
-            background: var(--primary-dark);
+            filter: brightness(0.9);
         }
 
         footer {
@@ -241,86 +286,124 @@
 <nav class="navbar">
     <a href="/" class="nav-logo">Soeun Lee</a>
     <ul class="nav-links">
-        <li><a href="/" class="active">Home</a></li>
-        <li><a href="/about">About</a></li>
-        <li><a href="/projects">Projects</a></li>
-        <li><a href="/contact">Contact</a></li>
+        <li><a href="javascript:void(0)" class="nav-item active" onclick="showPage('home')">Home</a></li>
+        <li><a href="javascript:void(0)" class="nav-item" onclick="showPage('about')">About</a></li>
+        <li><a href="javascript:void(0)" class="nav-item" onclick="showPage('projects')">Projects</a></li>
+        <li><a href="javascript:void(0)" class="nav-item" onclick="showPage('contact')">Contact</a></li>
     </ul>
 </nav>
 
-<!-- Hero Section -->
-<header class="hero">
-    <h1>Soeun Lee</h1>
-    <p class="role">Professor & Director of DXP Lab</p>
-</header>
-
 <main class="container">
-    <!-- About Section -->
-    <section class="about-card">
-        <h2><i class="fa-solid fa-user-tie"></i> About Me</h2>
-        <p>
-            인간과 컴퓨터의 상호작용(HCI)을 연구하며, 가상현실(VR) 및 증강현실(AR) 환경에서의 
-            사용자 경험 개선과 <strong>사이버멀미(Cybersickness) 저감 기술</strong>에 집중하고 있습니다. 
-            데이터 전처리 및 분석 역량을 바탕으로 국방(National Defense) 및 의료 등 다양한 도메인을 위한 초실감형 몰입 기술을 탐구합니다.
-        </p>
-    </section>
-
-    <h2 class="section-title">Research Interests</h2>
-    
-    <!-- Cards Section -->
-    <section class="card-grid">
-        <!-- Card 1 -->
-        <article class="card">
-            <img src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&w=600&q=80" alt="VR Headset" class="card-img">
-            <div class="card-content">
-                <i class="fa-solid fa-shield-halved"></i>
-                <h3>XR for National Defense</h3>
-                <p>국방 훈련을 위한 초실감형 메타버스 인터페이스 연구 및 인공지능 기반 인간 검증 데이터셋 구축.</p>
-            </div>
-        </article>
-
-        <!-- Card 2 -->
-        <article class="card">
-            <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Data Analysis" class="card-content-img card-img">
-            <div class="card-content">
-                <i class="fa-solid fa-eye"></i>
-                <h3>Cybersickness Mitigation</h3>
-                <p>시선 추적(Eye-tracking) 및 시각/햅틱 피드백을 활용한 자율주행 및 VR 환경 내 사이버멀미 분석 및 저감 솔루션.</p>
-            </div>
-        </article>
-
-        <!-- Card 3 -->
-        <article class="card">
-            <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80" alt="Medical Technology" class="card-img">
-            <div class="card-content">
-                <i class="fa-solid fa-bed-pulse"></i>
-                <h3>Digital Therapeutics</h3>
-                <p>병상 환자(Bedridden Patients) 및 교통약자를 위한 VR 기반 치료/편의 기술 및 상호작용 인터페이스 설계.</p>
-            </div>
-        </article>
-    </section>
-
-    <!-- Contact Section -->
-    <section class="contact-section">
-        <h2>Let's Connect</h2>
-        <p style="margin-top: 10px; color: var(--text-light);">연구 협력이나 DXP 연구실에 관심이 있으시다면 언제든 연락주세요.</p>
-        <div class="contact-links">
-            <a href="mailto:example@korea.ac.kr" class="btn btn-fill">
-                <i class="fa-solid fa-envelope"></i> Email Me
-            </a>
-            <a href="https://github.com" class="btn btn-outline" target="_blank">
-                <i class="fa-brands fa-github"></i> GitHub
-            </a>
-            <a href="#" class="btn btn-outline">
-                <i class="fa-solid fa-globe"></i> Lab Website
-            </a>
+    <!-- Home Page (Slide 1) -->
+    <div id="home" class="content-page active">
+        <header class="hero">
+            <h1>Soeun Lee</h1>
+            <p class="role">National defense XR - student</p>
+        </header>
+        <div class="about-card">
+            <h2><i class="fa-solid fa-rocket"></i> Welcome</h2>
+            <p>안녕하세요! 기술과 콘텐츠의 융합을 연구하는 이소은입니다.</p>
         </div>
-    </section>
+    </div>
+
+    <!-- About Page (Slide 2) -->
+    <div id="about" class="content-page">
+        <section class="about-card">
+            <h2><i class="fa-solid fa-user-tie"></i> About Me</h2>
+            <p>
+                건양대학교 국방XR학부 전공 학생으로,<br>
+                <strong>XR · 디지털 콘텐츠 · 사용자 경험</strong>에 관심을 가지고 있습니다.
+            </p>
+
+            <div class="about-grid">
+                <div class="about-item">
+                    <h3><i class="fa-solid fa-bullseye"></i> Vision</h3>
+                    <p>진로 목표와 되고 싶은 전문가상을 입력하세요.</p>
+                </div>
+                <div class="about-item">
+                    <h3><i class="fa-solid fa-book"></i> Courses</h3>
+                    <p>현재 수강 중인 강의 목록을 입력하세요.</p>
+                </div>
+                <div class="about-item">
+                    <h3><i class="fa-solid fa-screwdriver-wrench"></i> Skills</h3>
+                    <p>사용 가능한 도구와 기술을 입력하세요.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Projects Page (Slide 3) -->
+    <div id="projects" class="content-page">
+        <h2 class="section-title">Research Interests</h2>
+        <section class="card-grid">
+            <article class="card">
+                <img src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&w=600&q=80" alt="VR Headset" class="card-img">
+                <div class="card-content">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h3>XR for National Defense</h3>
+                    <p>국방 훈련을 위한 초실감형 인터페이스 연구.</p>
+                </div>
+            </article>
+            <article class="card">
+                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Data Analysis" class="card-img">
+                <div class="card-content">
+                    <i class="fa-solid fa-eye"></i>
+                    <h3>Cybersickness Mitigation</h3>
+                    <p>VR 환경 내 사이버멀미 분석 및 저감 솔루션.</p>
+                </div>
+            </article>
+            <article class="card">
+                <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80" alt="Medical Technology" class="card-img">
+                <div class="card-content">
+                    <i class="fa-solid fa-bed-pulse"></i>
+                    <h3>Digital Therapeutics</h3>
+                    <p>교통약자를 위한 VR 기반 치료 인터페이스 설계.</p>
+                </div>
+            </article>
+        </section>
+    </div>
+
+    <!-- Contact Page (Slide 4) -->
+    <div id="contact" class="content-page">
+        <section class="contact-section">
+            <h2>Let's Connect</h2>
+            <p style="margin-top: 10px; color: var(--text-light);">연구 협력이나 DXP 연구실에 관심이 있으시다면 언제든 연락주세요.</p>
+            <div class="contact-links">
+                <a href="mailto:example@example.com" class="btn btn-fill">
+                    <i class="fa-solid fa-envelope"></i> Email Me
+                </a>
+                <a href="https://github.com" class="btn btn-outline" target="_blank">
+                    <i class="fa-brands fa-github"></i> GitHub
+                </a>
+            </div>
+        </section>
+    </div>
 </main>
 
 <footer>
     <p>&copy; 2026 Soeun Lee & DXP Lab. All rights reserved.</p>
 </footer>
+
+<script>
+    function showPage(pageId) {
+        // 모든 페이지 숨기기
+        const pages = document.querySelectorAll('.content-page');
+        pages.forEach(page => page.classList.remove('active'));
+
+        // 모든 메뉴 비활성화
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => item.classList.remove('active'));
+
+        // 선택한 페이지 보여주기
+        document.getElementById(pageId).classList.add('active');
+
+        // 클릭한 메뉴 활성화
+        event.target.classList.add('active');
+
+        // 페이지 이동 시 맨 위로 스크롤
+        window.scrollTo(0, 0);
+    }
+</script>
 
 </body>
 </html>
