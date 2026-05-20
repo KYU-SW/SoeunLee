@@ -168,8 +168,9 @@
         }
 
         .about-card h2 {
-            color: var(--primary-color);
+            color: #C06C84; /* 투명도가 없는 더 진한 색상 */
             margin-bottom: 1rem;
+            font-weight: 700; /* 글씨 두께를 가장 두껍게 설정 */
         }
 
         /* Cards Layout (CSS Grid) */
@@ -278,6 +279,46 @@
             font-size: 0.9rem;
             border-top: 1px solid #e2e8f0;
         }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+                gap: 10px;
+            }
+
+            .nav-links a {
+                padding: 5px 10px;
+                font-size: 0.9rem;
+            }
+
+            .hero {
+                padding: 5rem 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .about-card {
+                padding: 1.5rem;
+            }
+
+            .contact-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -322,11 +363,11 @@
                 </div>
                 <div class="about-item">
                     <h3><i class="fa-solid fa-book"></i> Courses</h3>
-                    <p>현재 수강 중인 강의 목록을 입력하세요.</p>
+                    <p><strong>전공</strong></p><p>메타버스프로그래밍<br>실감미디어컴퓨팅개론<br>XR콘텐츠문화지형도</p>
                 </div>
                 <div class="about-item">
                     <h3><i class="fa-solid fa-screwdriver-wrench"></i> Skills</h3>
-                    <p>사용 가능한 도구와 기술을 입력하세요.</p>
+                    <p><strong>Programming</strong><br>-python(공부중)</p><br><p><strong>Certifications</strong><br>-한국사능력검정시험 3급<br>-토익(공부중)<br>-컴퓨터활용능력(공부중)</p>
                 </div>
             </div>
         </section>
@@ -367,13 +408,16 @@
     <div id="contact" class="content-page">
         <section class="contact-section">
             <h2>Let's Connect</h2>
-            <p style="margin-top: 10px; color: var(--text-light);">연구 협력이나 DXP 연구실에 관심이 있으시다면 언제든 연락주세요.</p>
+            <p style="margin-top: 10px; color: var(--text-light);">제 프로젝트와 활동에 관심이 있으시거나 함께 이야기 나누고 싶으시다면 언제든 연락주세요 :></p>
             <div class="contact-links">
-                <a href="mailto:example@example.com" class="btn btn-fill">
+                <a href="mailto:isoeun0220@gmail.com" class="btn btn-outline">
                     <i class="fa-solid fa-envelope"></i> Email Me
                 </a>
                 <a href="https://github.com" class="btn btn-outline" target="_blank">
                     <i class="fa-brands fa-github"></i> GitHub
+                </a>
+                <a href="https://www.instagram.com/eunth0i" class="btn btn-outline" target="_blank">
+                    <i class="fa-brands fa-instagram"></i> Instagram
                 </a>
             </div>
         </section>
