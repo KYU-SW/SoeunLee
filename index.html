@@ -109,7 +109,7 @@
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1400px; /* 더 넓은 화면을 위해 컨테이너 너비 대폭 확장 */
             margin: 100px auto 3rem;
             padding: 0 20px;
             position: relative;
@@ -135,7 +135,7 @@
         .about-card {
             background: var(--white);
             border-radius: 12px;
-            padding: 2.5rem;
+            padding: 2rem 2rem; /* 세로 여백을 줄여 전체적인 크기를 조정 */
             box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             margin-bottom: 3rem;
             text-align: center;
@@ -144,17 +144,23 @@
         /* About Grid */
         .about-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: 1fr 1fr; /* 기본적으로 2열 배치 (양 옆) */
+            gap: 2rem; /* 간격을 줄여서 각 카드의 가로 폭 확보 */
             margin-top: 2.5rem;
             text-align: left;
         }
 
+        /* 항목이 하나만 있을 경우(예: Vision) 전체 너비 사용 */
+        .about-item:only-child {
+            grid-column: span 2;
+        }
+
         .about-item {
-            background: var(--bg-color);
-            padding: 1.5rem;
+            background: var(--white);
+            padding: 2rem;
             border-radius: 12px;
             border-top: 4px solid var(--primary-color);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
             transition: var(--transition);
         }
 
@@ -168,7 +174,7 @@
         }
 
         .about-card h2 {
-            color: #C06C84; /* 투명도가 없는 더 진한 색상 */
+            color: var(--primary-color);
             margin-bottom: 1rem;
             font-weight: 700; /* 글씨 두께를 가장 두껍게 설정 */
         }
@@ -182,8 +188,8 @@
 
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: 1fr 1fr; /* 2열 배치로 고정 */
+            gap: 2.5rem; /* 프로젝트 카드는 약간의 간격을 두어 여유있게 배치 */
             margin-bottom: 3rem;
         }
 
@@ -283,18 +289,27 @@
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .navbar {
+                padding: 0.8rem 1rem;
                 flex-direction: column;
-                padding: 1rem;
+                gap: 5px;
+            }
+
+            .nav-logo {
+                font-size: 1.2rem;
             }
 
             .nav-links {
-                margin-top: 1rem;
-                gap: 10px;
+                margin-top: 2px;
+                gap: 5px;
             }
 
             .nav-links a {
-                padding: 5px 10px;
-                font-size: 0.9rem;
+                padding: 6px 10px;
+                font-size: 0.85rem;
+            }
+
+            .container {
+                margin-top: 120px; /* 네비게이션 바 높이에 맞춰 여백 확보 */
             }
 
             .hero {
@@ -317,6 +332,18 @@
             .btn {
                 width: 100%;
                 justify-content: center;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr; /* 모바일에서는 1열 배치 (위 아래) */
+            }
+
+            .about-item:only-child {
+                grid-column: span 1;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr; /* 모바일에서는 다시 1열로 */
             }
         }
     </style>
@@ -352,25 +379,28 @@
         <section class="about-card">
             <h2><i class="fa-solid fa-user-tie"></i> About Me</h2>
             <p>
-                건양대학교 국방XR학부 전공 학생으로,<br>
+                저는 건양대학교 AI·SW융합대학 국방XR학부 학생으로,<br>
                 <strong>XR · 디지털 콘텐츠 · 사용자 경험</strong>에 관심을 가지고 있습니다.
             </p>
 
-            <div class="about-grid">
-                <div class="about-item">
-                    <h3><i class="fa-solid fa-bullseye"></i> Vision</h3>
-                    <p>진로 목표와 되고 싶은 전문가상을 입력하세요.</p>
-                </div>
-                <div class="about-item">
-                    <h3><i class="fa-solid fa-book"></i> Courses</h3>
-                    <p><strong>전공</strong></p><p>메타버스프로그래밍<br>실감미디어컴퓨팅개론<br>XR콘텐츠문화지형도</p>
-                </div>
-                <div class="about-item">
-                    <h3><i class="fa-solid fa-screwdriver-wrench"></i> Skills</h3>
-                    <p><strong>Programming</strong><br>-python(공부중)</p><br><p><strong>Certifications</strong><br>-한국사능력검정시험 3급<br>-토익(공부중)<br>-컴퓨터활용능력(공부중)</p>
-                </div>
+            <div style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid #eee;">
+                <h3 style="color: var(--primary-color); margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <i class="fa-solid fa-bullseye"></i> Vision
+                </h3>
+                <p>진로 목표와 되고 싶은 전문가상을 입력하세요.</p>
             </div>
         </section>
+
+    <div class="about-grid">
+        <div class="about-item">
+            <h3><i class="fa-solid fa-book"></i> Courses</h3>
+            <p><strong>전공</strong></p><p>메타버스프로그래밍<br>실감미디어컴퓨팅개론<br>XR콘텐츠문화지형도</p>
+        </div>
+        <div class="about-item">
+            <h3><i class="fa-solid fa-screwdriver-wrench"></i> Skills</h3>
+            <p><strong>Programming</strong><br>-python(공부중)</p><br><p><strong>Certifications</strong><br>-한국사능력검정시험 3급<br>-토익(공부중)<br>-컴퓨터활용능력(공부중)</p>
+        </div>
+    </div>
     </div>
 
     <!-- Projects Page (Slide 3) -->
