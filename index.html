@@ -6,17 +6,17 @@
     <title>Soeun Lee | DXP Lab</title>
     <!-- 폰트어썸 (아이콘) 무료 CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 구글 폰트 (Pretendard 대체용 널리 쓰이는 Noto Sans KR) -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- 나눔스퀘어라운드: 동글동글하고 세련된 느낌의 폰트 -->
+    <link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css">
     
     <style>
         :root {
-            /* 이전 로즈 컬러(#C06C84)에 투명도 70% 적용 */
-            --primary-color: rgba(192, 108, 132, 0.7); 
-            --primary-light: rgba(192, 108, 132, 0.15);
-            --text-color: #2B2B2B;
-            --text-light: #6D6875;
-            --bg-color: #FFFAFA;
+            --primary-rose: #e6a4b4; /* 더 연하고 맑은 로즈 */
+            --primary-color: #e3a6b9; /* 채도를 낮춘 연한 로즈 */
+            --accent-light: #fff0f3;
+            --text-color: #b08d96; /* 연하고 부드러운 핑크빛 브라운 */
+            --text-light: #d1b8bd; /* 아주 연한 핑크 그레이 */
+            --bg-color: #ffffff;
             --white: #ffffff;
             --transition: all 0.3s ease;
         }
@@ -28,13 +28,62 @@
         }
 
         body {
-            font-family: 'Noto Sans KR', sans-serif;
+            font-family: 'NanumSquareRound', sans-serif;
             line-height: 1.6;
+            font-weight: 500; /* 전체적으로 가독성을 위해 두께를 높임 */
+            letter-spacing: -0.02em; /* 동글동글한 폰트에 어울리는 깔끔한 자간 */
             color: var(--text-color);
             background-color: var(--bg-color);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Watercolor Background Effect */
+        .watercolor-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        .watercolor-blob {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.45;
+            mix-blend-mode: multiply; /* 색상이 겹칠 때 더 수채화처럼 맑게 섞임 */
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); /* 쫀득한 액체 느낌 */
+            pointer-events: none;
+        }
+
+        /* 기본 숨쉬는 듯한 애니메이션 추가 */
+        @keyframes pulse {
+            0% { border-radius: 50% 50% 50% 50%; }
+            50% { border-radius: 45% 55% 48% 52%; }
+            100% { border-radius: 50% 50% 50% 50%; }
+        }
+
+        /* 왼쪽 상단 번짐 */
+        .blob-top-left {
+            top: 5%;
+            left: 5%;
+            background: radial-gradient(circle, #ffb7c5 0%, rgba(255,183,197,0) 70%); /* 더 진한 핑크 */
+            animation: pulse 10s infinite alternate ease-in-out;
+        }
+
+        /* 오른쪽 하단 번짐 */
+        .blob-bottom-right {
+            bottom: 5%;
+            right: 5%;
+            background: radial-gradient(circle, #c3a6ff 0%, rgba(195,166,255,0) 70%); /* 더 진한 보라 */
+            animation: pulse 12s infinite alternate-reverse ease-in-out;
         }
 
         /* Top Navigation Bar */
@@ -43,17 +92,20 @@
             top: 0;
             left: 0;
             width: 100%;
-            background-color: var(--white);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(30px) saturate(150%);
+            -webkit-backdrop-filter: blur(30px) saturate(150%);
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 5%;
+            padding: 1.5rem 5%;
             z-index: 1000;
         }
 
         .nav-logo {
-            font-size: 1.5rem;
+            font-size: 2.25rem;
             font-weight: 700;
             color: var(--primary-color);
             text-decoration: none;
@@ -65,15 +117,16 @@
         .nav-links {
             list-style: none;
             display: flex;
-            gap: 20px;
+            gap: 30px;
         }
 
         .nav-links a {
             text-decoration: none;
             color: var(--text-color);
-            font-weight: 500;
-            padding: 8px 16px;
-            border-radius: 20px;
+            font-weight: 700; /* 메뉴 가독성을 위해 굵게 설정 */
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 1.2rem;
             transition: var(--transition);
         }
 
@@ -89,28 +142,56 @@
 
         /* Hero Section */
         .hero {
-            background-color: var(--primary-color);
-            color: var(--white);
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
             padding: 8rem 2rem;
             text-align: center;
             border-radius: 20px;
             margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 20px 50px rgba(192, 108, 132, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle Paper/Grain Texture */
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.05;
+            pointer-events: none;
+            background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+            z-index: 0;
         }
 
         .hero h1 {
-            font-size: 2.8rem;
-            margin-bottom: 1rem;
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #e3a6b9, #f2cbd5, #f7d7db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800; /* 메인 타이틀은 확실하게 동글동글하고 굵게 */
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.1s ease-out; /* 부드러운 움직임을 위한 트랜지션 */
         }
 
         .hero .role {
-            font-size: 1.2rem;
-            opacity: 0.9;
+            font-size: 1.1rem;
+            color: var(--text-light);
             margin-bottom: 2rem;
+            font-weight: 500; /* 보조 텍스트도 얇지 않게 조절 */
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
         }
 
         .container {
             max-width: 1400px; /* 더 넓은 화면을 위해 컨테이너 너비 대폭 확장 */
-            margin: 100px auto 3rem;
+            margin: 150px auto 3rem;
             padding: 0 20px;
             position: relative;
             flex: 1;
@@ -133,10 +214,13 @@
 
         /* About Section */
         .about-card {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(30px) saturate(150%);
+            -webkit-backdrop-filter: blur(30px) saturate(150%);
             border-radius: 12px;
-            padding: 2rem 2rem; /* 세로 여백을 줄여 전체적인 크기를 조정 */
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            padding: 4.5rem 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.02);
             margin-bottom: 3rem;
             text-align: center;
         }
@@ -156,11 +240,12 @@
         }
 
         .about-item {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
             padding: 2rem;
             border-radius: 12px;
-            border-top: 4px solid var(--primary-color);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.02);
             transition: var(--transition);
         }
 
@@ -176,7 +261,7 @@
         .about-card h2 {
             color: var(--primary-color);
             margin-bottom: 1rem;
-            font-weight: 700; /* 글씨 두께를 가장 두껍게 설정 */
+            font-weight: 700; /* 섹션 제목 강조 */
         }
 
         /* Cards Layout (CSS Grid) */
@@ -184,20 +269,33 @@
             text-align: center;
             margin-bottom: 2rem;
             color: var(--text-color);
+            font-size: 2.25rem;
+        }
+
+        .semester-title {
+            color: var(--primary-color);
+            margin: 3rem 0 1.5rem;
+            padding-left: 15px;
+            border-left: 5px solid var(--primary-color);
+            font-size: 2.1rem;
+            text-align: left;
+            font-weight: 700;
         }
 
         .card-grid {
             display: grid;
             grid-template-columns: 1fr 1fr; /* 2열 배치로 고정 */
-            gap: 2.5rem; /* 프로젝트 카드는 약간의 간격을 두어 여유있게 배치 */
+            gap: 3.75rem; /* 프로젝트 카드는 약간의 간격을 두어 여유있게 배치 */
             margin-bottom: 3rem;
         }
 
         .card {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             transition: var(--transition);
         }
 
@@ -208,7 +306,7 @@
 
         .card-img {
             width: 100%;
-            height: 200px;
+            height: 300px;
             object-fit: cover;
         }
 
@@ -235,10 +333,11 @@
         /* Contact Section */
         .contact-section {
             text-align: center;
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(25px) saturate(150%);
             padding: 3rem;
             border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
         .contact-links {
@@ -260,7 +359,7 @@
         }
 
         .btn-outline {
-            border: 2px solid var(--primary-color);
+            border: 1px solid var(--primary-color);
             color: var(--primary-color);
         }
 
@@ -350,14 +449,25 @@
 </head>
 <body>
 
+<!-- Watercolor Background -->
+<div class="watercolor-container">
+    <!-- 좌측 상단 번짐 -->
+    <div class="watercolor-blob blob-top-left" style="width: 560px; height: 560px;"></div>
+    <div class="watercolor-blob blob-top-left" style="width: 340px; height: 340px; background: #ffdee9; opacity: 0.3;"></div>
+    
+    <!-- 우측 하단 번짐 -->
+    <div class="watercolor-blob blob-bottom-right" style="width: 675px; height: 675px;"></div>
+    <div class="watercolor-blob blob-bottom-right" style="width: 450px; height: 450px; background: #e0c3fc; opacity: 0.3;"></div>
+</div>
+
 <!-- Top Navigation -->
 <nav class="navbar">
     <a href="/" class="nav-logo">Soeun Lee</a>
     <ul class="nav-links">
-        <li><a href="javascript:void(0)" class="nav-item active" onclick="showPage('home')">Home</a></li>
-        <li><a href="javascript:void(0)" class="nav-item" onclick="showPage('about')">About</a></li>
-        <li><a href="javascript:void(0)" class="nav-item" onclick="showPage('projects')">Projects</a></li>
-        <li><a href="javascript:void(0)" class="nav-item" onclick="showPage('contact')">Contact</a></li>
+        <li><a href="javascript:void(0)" class="nav-item active" onclick="showPage('home', this)">Home</a></li>
+        <li><a href="javascript:void(0)" class="nav-item" onclick="showPage('about', this)">About</a></li>
+        <li><a href="javascript:void(0)" class="nav-item" onclick="showPage('projects', this)">Projects</a></li>
+        <li><a href="javascript:void(0)" class="nav-item" onclick="showPage('contact', this)">Contact</a></li>
     </ul>
 </nav>
 
@@ -394,7 +504,7 @@
     <div class="about-grid">
         <div class="about-item">
             <h3><i class="fa-solid fa-book"></i> Courses</h3>
-            <p><strong>전공</strong></p><p>메타버스프로그래밍<br>실감미디어컴퓨팅개론<br>XR콘텐츠문화지형도</p>
+            <p><strong>전공</strong></p><p>1학년</p><p>메타버스프로그래밍<br>실감미디어컴퓨팅개론<br>XR콘텐츠문화지형도</p>
         </div>
         <div class="about-item">
             <h3><i class="fa-solid fa-screwdriver-wrench"></i> Skills</h3>
@@ -405,30 +515,36 @@
 
     <!-- Projects Page (Slide 3) -->
     <div id="projects" class="content-page">
-        <h2 class="section-title">Research Interests</h2>
+        <h2 class="section-title">Projects</h2>
+
+        <h3 class="semester-title">1학년 1학기</h3>
         <section class="card-grid">
             <article class="card">
                 <img src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&w=600&q=80" alt="VR Headset" class="card-img">
                 <div class="card-content">
                     <i class="fa-solid fa-shield-halved"></i>
-                    <h3>XR for National Defense</h3>
-                    <p>국방 훈련을 위한 초실감형 인터페이스 연구.</p>
+                    <h3>메타버스프로그래밍</h3>
+                    <p>Escape the Maze : 메이즈러너</p>
                 </div>
             </article>
             <article class="card">
                 <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Data Analysis" class="card-img">
                 <div class="card-content">
                     <i class="fa-solid fa-eye"></i>
-                    <h3>Cybersickness Mitigation</h3>
-                    <p>VR 환경 내 사이버멀미 분석 및 저감 솔루션.</p>
+                    <h3>프로젝트 2</h3>
+                    <p>1학년 1학기에 진행한 두 번째 프로젝트 내용을 입력하세요.</p>
                 </div>
             </article>
+        </section>
+
+        <h3 class="semester-title">1학년 2학기</h3>
+        <section class="card-grid">
             <article class="card">
                 <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80" alt="Medical Technology" class="card-img">
                 <div class="card-content">
                     <i class="fa-solid fa-bed-pulse"></i>
-                    <h3>Digital Therapeutics</h3>
-                    <p>교통약자를 위한 VR 기반 치료 인터페이스 설계.</p>
+                    <h3>프로젝트 3</h3>
+                    <p>1학년 2학기에 진행한 프로젝트 내용을 입력하세요.</p>
                 </div>
             </article>
         </section>
@@ -459,7 +575,7 @@
 </footer>
 
 <script>
-    function showPage(pageId) {
+    function showPage(pageId, element) {
         // 모든 페이지 숨기기
         const pages = document.querySelectorAll('.content-page');
         pages.forEach(page => page.classList.remove('active'));
@@ -472,11 +588,43 @@
         document.getElementById(pageId).classList.add('active');
 
         // 클릭한 메뉴 활성화
-        event.target.classList.add('active');
+        if (element) {
+            element.classList.add('active');
+        }
 
         // 페이지 이동 시 맨 위로 스크롤
         window.scrollTo(0, 0);
     }
+
+    // 마우스 커서가 가까울 때만 개별적으로 움직이는 수채화 효과
+    document.addEventListener('mousemove', (e) => {
+        const blobs = document.querySelectorAll('.watercolor-blob');
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        const threshold = 800; // 반응 거리를 더 넓게 설정
+
+        blobs.forEach((blob) => {
+            const rect = blob.getBoundingClientRect();
+            const blobX = rect.left + rect.width / 2;
+            const blobY = rect.top + rect.height / 2;
+
+            const diffX = mouseX - blobX;
+            const diffY = mouseY - blobY;
+            const distance = Math.sqrt(diffX * diffX + diffY * diffY);
+
+            if (distance < threshold) {
+                // 가까울수록 더 많이 밀려나게 계산 (밀어내는 효과)
+                const power = Math.pow((threshold - distance) / threshold, 2);
+                const moveX = diffX * power * -0.3; // 밀려나는 힘 강화
+                const moveY = diffY * power * -0.3;
+                
+                blob.style.transform = `translate(${moveX}px, ${moveY}px) scale(${1 + power * 0.15})`;
+            } else {
+                // 멀어지면 원래 위치로 (0,0)
+                blob.style.transform = `translate(0, 0) scale(1)`;
+            }
+        });
+    });
 </script>
 
 </body>
