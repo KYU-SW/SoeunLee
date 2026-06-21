@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soeun Lee | DXP Lab</title>
-    <!-- 폰트어썸 (아이콘) 무료 CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- 나눔스퀘어라운드: 동글동글하고 세련된 느낌의 폰트 -->
     <link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css">
     
     <style>
@@ -56,7 +54,8 @@
         .watercolor-blob {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
+            /* 흐림 효과를 크기에 맞춰 약간 줄여 더 선명하게 만듦 */
+            filter: blur(60px); 
             opacity: 0.45;
             mix-blend-mode: multiply; /* 색상이 겹칠 때 더 수채화처럼 맑게 섞임 */
             transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); /* 쫀득한 액체 느낌 */
@@ -72,16 +71,16 @@
 
         /* 왼쪽 상단 번짐 */
         .blob-top-left {
-            top: 5%;
-            left: 5%;
+            top: 10%; /* 위치를 살짝 아래로 조정 */
+            left: 10%; /* 위치를 살짝 오른쪽으로 조정 */
             background: radial-gradient(circle, #ffb7c5 0%, rgba(255,183,197,0) 70%); /* 더 진한 핑크 */
             animation: pulse 10s infinite alternate ease-in-out;
         }
 
         /* 오른쪽 하단 번짐 */
         .blob-bottom-right {
-            bottom: 5%;
-            right: 5%;
+            bottom: 10%; /* 위치를 살짝 위로 조정 */
+            right: 10%; /* 위치를 살짝 왼쪽으로 조정 */
             background: radial-gradient(circle, #c3a6ff 0%, rgba(195,166,255,0) 70%); /* 더 진한 보라 */
             animation: pulse 12s infinite alternate-reverse ease-in-out;
         }
@@ -151,7 +150,6 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 20px 50px rgba(192, 108, 132, 0.1);
             position: relative;
-            overflow: hidden;
         }
 
         /* Subtle Paper/Grain Texture */
@@ -170,6 +168,7 @@
             margin-bottom: 0.5rem;
             background: linear-gradient(135deg, #e3a6b9, #f2cbd5, #f7d7db);
             -webkit-background-clip: text;
+            background-clip: text;
             -webkit-text-fill-color: transparent;
             font-weight: 800; /* 메인 타이틀은 확실하게 동글동글하고 굵게 */
             letter-spacing: -1px;
@@ -190,26 +189,77 @@
         }
 
         .container {
-            max-width: 1400px; /* 더 넓은 화면을 위해 컨테이너 너비 대폭 확장 */
-            margin: 150px auto 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
             padding: 0 20px;
             position: relative;
             flex: 1;
         }
 
-        /* Page System (PPT Like) */
-        .content-page {
-            display: none;
-            animation: fadeIn 0.5s ease-out;
+        /* Scroll */
+        html {
+            scroll-behavior: smooth;
         }
 
-        .content-page.active {
+        .content-page {
             display: block;
+            min-height: 100vh;
+            padding-top: 20px;
+            padding-bottom: 6rem;
+            box-sizing: border-box;
+            scroll-margin-top: 85px;
+        }
+
+        #home {
+            display: flex;
+            align-items: center;
+            padding-top: 85px;
+            padding-bottom: 0;
+        }
+
+        #contact {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: stretch;
+            padding-top: 0;
+            padding-bottom: 85px;
+        }
+
+        #home .home-grid {
+            width: 100%;
         }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Home Grid Layout (PC only) */
+        .home-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: stretch;
+        }
+
+        .home-grid .hero {
+            margin-bottom: 0;
+        }
+
+        .home-grid .about-card {
+            margin-bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .home-grid {
+                grid-template-columns: 1fr;
+            }
+            .home-grid .hero { margin-bottom: 2rem; }
+            .home-grid .about-card { margin-bottom: 3rem; }
         }
 
         /* About Section */
@@ -408,7 +458,7 @@
             }
 
             .container {
-                margin-top: 120px; /* 네비게이션 바 높이에 맞춰 여백 확보 */
+                margin-top: 0;
             }
 
             .hero {
@@ -449,42 +499,38 @@
 </head>
 <body>
 
-<!-- Watercolor Background -->
 <div class="watercolor-container">
-    <!-- 좌측 상단 번짐 -->
-    <div class="watercolor-blob blob-top-left" style="width: 560px; height: 560px;"></div>
-    <div class="watercolor-blob blob-top-left" style="width: 340px; height: 340px; background: #ffdee9; opacity: 0.3;"></div>
+    <div class="watercolor-blob blob-top-left" style="width: 350px; height: 350px;"></div>
+    <div class="watercolor-blob blob-top-left" style="width: 200px; height: 200px; background: #ffdee9; opacity: 0.3;"></div>
     
-    <!-- 우측 하단 번짐 -->
-    <div class="watercolor-blob blob-bottom-right" style="width: 675px; height: 675px;"></div>
-    <div class="watercolor-blob blob-bottom-right" style="width: 450px; height: 450px; background: #e0c3fc; opacity: 0.3;"></div>
+    <div class="watercolor-blob blob-bottom-right" style="width: 400px; height: 400px;"></div>
+    <div class="watercolor-blob blob-bottom-right" style="width: 250px; height: 250px; background: #e0c3fc; opacity: 0.3;"></div>
 </div>
 
-<!-- Top Navigation -->
 <nav class="navbar">
     <a href="/" class="nav-logo">Soeun Lee</a>
     <ul class="nav-links">
-        <li><a href="javascript:void(0)" class="nav-item active" onclick="showPage('home', this)">Home</a></li>
-        <li><a href="javascript:void(0)" class="nav-item" onclick="showPage('about', this)">About</a></li>
-        <li><a href="javascript:void(0)" class="nav-item" onclick="showPage('projects', this)">Projects</a></li>
-        <li><a href="javascript:void(0)" class="nav-item" onclick="showPage('contact', this)">Contact</a></li>
+        <li><a href="#home" class="nav-item active" onclick="scrollToSection('home')">Home</a></li>
+        <li><a href="#about" class="nav-item" onclick="scrollToSection('about')">About</a></li>
+        <li><a href="#projects" class="nav-item" onclick="scrollToSection('projects')">Projects</a></li>
+        <li><a href="#contact" class="nav-item" onclick="scrollToSection('contact')">Contact</a></li>
     </ul>
 </nav>
 
 <main class="container">
-    <!-- Home Page (Slide 1) -->
-    <div id="home" class="content-page active">
-        <header class="hero">
-            <h1>Soeun Lee</h1>
-            <p class="role">National defense XR - student</p>
-        </header>
-        <div class="about-card">
-            <h2><i class="fa-solid fa-rocket"></i> Welcome</h2>
-            <p>안녕하세요! 기술과 콘텐츠의 융합을 연구하는 이소은입니다.</p>
+    <div id="home" class="content-page">
+        <div class="home-grid">
+            <header class="hero">
+                <h1>Soeun Lee</h1>
+                <p class="role">National defense XR - student</p>
+            </header>
+            <div class="about-card">
+                <h2><i class="fa-solid fa-rocket"></i> Welcome</h2>
+                <p>안녕하세요! 기술과 콘텐츠의 융합을 연구하는 이소은입니다.</p>
+            </div>
         </div>
     </div>
 
-    <!-- About Page (Slide 2) -->
     <div id="about" class="content-page">
         <section class="about-card">
             <h2><i class="fa-solid fa-user-tie"></i> About Me</h2>
@@ -497,42 +543,78 @@
                 <h3 style="color: var(--primary-color); margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 10px;">
                     <i class="fa-solid fa-bullseye"></i> Vision
                 </h3>
-                <p>진로 목표와 되고 싶은 전문가상을 입력하세요.</p>
+                <p>기술로 사람과 사회를 연결하는 혁신적인 XR 전문가가 되는 것</p>
             </div>
         </section>
 
     <div class="about-grid">
         <div class="about-item">
             <h3><i class="fa-solid fa-book"></i> Courses</h3>
-            <p><strong>전공</strong></p><p>1학년</p><p>메타버스프로그래밍<br>실감미디어컴퓨팅개론<br>XR콘텐츠문화지형도</p>
+            <p><strong>전공</strong></p><p>1학년</p><p>메타버스프로그래밍<br>실감미디어컴퓨팅개론<br>XR콘텐츠문화지형도 <p><strong>교양</strong></p>SDGs 지역사회문제해결<br>DYC_인간에 대한 다학문적 이해<br>비판적 사고와 글쓰기<br>DYT_뮤지컬</p>
         </div>
         <div class="about-item">
             <h3><i class="fa-solid fa-screwdriver-wrench"></i> Skills</h3>
-            <p><strong>Programming</strong><br>-python(공부중)</p><br><p><strong>Certifications</strong><br>-한국사능력검정시험 3급<br>-토익(공부중)<br>-컴퓨터활용능력(공부중)</p>
+            <p><strong>Programming</strong><br>-python</p><br><p><strong>Certifications</strong><br>-한국사능력검정시험 3급<br>-토익(공부중)<br>-컴퓨터활용능력(공부중)</p>
         </div>
+    </div>
+
+    <div class="about-item" style="margin-top: 2rem; grid-column: span 2;">
+        <h3><i class="fa-solid fa-trophy"></i> Awards</h3>
+        <ul style="list-style: none; padding: 0; display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem;">
+            <li style="display: flex; align-items: flex-start; gap: 10px;">
+                <i class="fa-solid fa-medal" style="color: var(--primary-color); margin-top: 3px;"></i>
+                <div>
+                    <strong>제 23회 대학생 안보토론대회 중고등부 부문 우수상</strong><br>
+                    <span style="color: var(--text-light); font-size: 0.9rem;">육군사관학교·세종대학교 주관 , 2024.10</span>
+                </div>
+            </li>
+            <li style="display: flex; align-items: flex-start; gap: 10px;">
+                <i class="fa-solid fa-medal" style="color: var(--primary-color); margin-top: 3px;"></i>
+                <div>
+                    <strong>수상명</strong><br>
+                    <span style="color: var(--text-light); font-size: 0.9rem;">주관 기관 · 날짜</span>
+                </div>
+            </li>
+        </ul>
     </div>
     </div>
 
-    <!-- Projects Page (Slide 3) -->
     <div id="projects" class="content-page">
         <h2 class="section-title">Projects</h2>
+        <p style="text-align:center; color:var(--text-light); font-size:0.95rem; margin-top:-1rem; margin-bottom:1.5rem;">카드를 눌러서 프로젝트 내용을 확인해보세요!</p>
 
         <h3 class="semester-title">1학년 1학기</h3>
         <section class="card-grid">
             <article class="card">
-                <img src="https://images.unsplash.com/photo-1622979135225-d2ba269cf1ac?auto=format&fit=crop&w=600&q=80" alt="VR Headset" class="card-img">
+                <img src="제목을 입력해주세요. (10).png" alt="escape the maze 메이즈러너" class="card-img">
                 <div class="card-content">
                     <i class="fa-solid fa-shield-halved"></i>
-                    <h3>메타버스프로그래밍</h3>
-                    <p>Escape the Maze : 메이즈러너</p>
+                    <h3>Escape the Maze : 메이즈러너</h3>
+                    <p>메타버스프로그래밍</p>
                 </div>
             </article>
-            <article class="card">
-                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80" alt="Data Analysis" class="card-img">
+            <article class="card" style="cursor:pointer;" onclick="window.open('https://app.notion.com/p/VR-RPG-223566149941428c857f3aeccc389404?source=copy_link', '_blank')">
+                <img src="ddddddddddddddddddddddddddddd.jpg" alt="역사를 바꾸다 백강전투" class="card-img">
                 <div class="card-content">
                     <i class="fa-solid fa-eye"></i>
-                    <h3>프로젝트 2</h3>
-                    <p>1학년 1학기에 진행한 두 번째 프로젝트 내용을 입력하세요.</p>
+                    <h3>&lt;역사를 바꾸다 : 백강전투&gt; VR역사전략RPG게임 기획서</h3>
+                    <p>XR콘텐츠문화지형도</p>
+                </div>
+            </article>
+            <article class="card" style="cursor:pointer;" onclick="window.open('https://app.notion.com/p/AR-Navigation-c180f3ca7e214dedb8b7b57029753ed5?source=copy_link', '_blank')">
+                <img src="실감미디어공간지능.png" alt="네이버 실내 AR Navigation" class="card-img">
+                <div class="card-content">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <h3>네이버 지도로 알아보는 실내 AR Navigation 기술</h3>
+                    <p>실감미디어컴퓨팅개론</p>
+                </div>
+            </article>
+            <article class="card" style="cursor:pointer;" onclick="window.open('https://app.notion.com/p/Pseudo-Haptic-Multimodal-Feedback-22147a66e4e1445886fb6e00429c2277?source=copy_link', '_blank')">
+                <img src="실감미디어 멀티모달피드백.png" alt="Pseudo-Haptic Multimodal Feedback" class="card-img">
+                <div class="card-content">
+                    <i class="fa-solid fa-hand-pointer"></i>
+                    <h3>Pseudo-Haptic, Multimodal Feedback 어떤 기술일까?</h3>
+                    <p>실감미디어컴퓨팅개론</p>
                 </div>
             </article>
         </section>
@@ -550,7 +632,6 @@
         </section>
     </div>
 
-    <!-- Contact Page (Slide 4) -->
     <div id="contact" class="content-page">
         <section class="contact-section">
             <h2>Let's Connect</h2>
@@ -575,25 +656,59 @@
 </footer>
 
 <script>
-    function showPage(pageId, element) {
-        // 모든 페이지 숨기기
-        const pages = document.querySelectorAll('.content-page');
-        pages.forEach(page => page.classList.remove('active'));
+    function scrollToSection(sectionId) {
+        event.preventDefault();
+        document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+    }
 
-        // 모든 메뉴 비활성화
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => item.classList.remove('active'));
+    // 스크롤 위치에 따라 네비게이션 활성화
+    const sections = document.querySelectorAll('.content-page');
+    const navItems = document.querySelectorAll('.nav-item');
 
-        // 선택한 페이지 보여주기
-        document.getElementById(pageId).classList.add('active');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navItems.forEach(item => item.classList.remove('active'));
+                const id = entry.target.id;
+                const activeNav = document.querySelector(`.nav-item[href="#${id}"]`);
+                if (activeNav) activeNav.classList.add('active');
+            }
+        });
+    }, { rootMargin: '-30% 0px -60% 0px' });
 
-        // 클릭한 메뉴 활성화
-        if (element) {
-            element.classList.add('active');
-        }
+    sections.forEach(section => observer.observe(section));
 
-        // 페이지 이동 시 맨 위로 스크롤
-        window.scrollTo(0, 0);
+    // 이스터에그: Soeun Lee 글자 흩어짐
+    const heroH1 = document.querySelector('#home .hero h1');
+    if (heroH1) {
+        heroH1.innerHTML = heroH1.textContent.split('').map(char =>
+            char === ' '
+                ? `<span class="letter" style="display:inline-block;min-width:0.35em">&nbsp;</span>`
+                : `<span class="letter">${char}</span>`
+        ).join('');
+
+        const letters = heroH1.querySelectorAll('.letter');
+
+        heroH1.addEventListener('mouseenter', () => {
+            letters.forEach((letter) => {
+                const angle = Math.random() * Math.PI * 2;
+                const dist = 200 + Math.random() * 400;
+                const x = Math.cos(angle) * dist;
+                const y = Math.sin(angle) * dist;
+                const rotate = (Math.random() - 0.5) * 720;
+                letter.style.transitionDelay = `${Math.random() * 150}ms`;
+                letter.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg) scale(0.3)`;
+                letter.style.opacity = '0';
+            });
+        });
+
+        heroH1.addEventListener('mouseleave', () => {
+            letters.forEach((letter) => {
+                letter.style.transitionDelay = `${Math.random() * 200}ms`;
+                letter.style.transform = '';
+                letter.style.opacity = '';
+            });
+        });
     }
 
     // 마우스 커서가 가까울 때만 개별적으로 움직이는 수채화 효과
