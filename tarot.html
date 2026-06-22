@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>비밀 프로 - 우치의 타로 카드 리딩</title>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #14121f;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            color: #f5f5f7;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background-color: #1e1b2e;
+            border-radius: 28px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            padding: 30px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .friend-speech-area {
+            background-color: #14121f;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            font-size: 1.05em;
+            line-height: 1.6;
+            text-align: left;
+            border-left: 5px solid #6c5ce7;
+        }
+        .friend-speech-area b { color: #ffeaa7; }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .two-cols { grid-template-columns: 1fr 1fr; }
+
+        button {
+            padding: 15px 20px;
+            font-size: 1em;
+            background-color: #2e2a47;
+            color: white;
+            border: 2px solid #3f395e;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+        button:hover:not(:disabled) {
+            background-color: #6c5ce7;
+            border-color: #a29bfe;
+        }
+        button.selected-btn {
+            background-color: #6c5ce7;
+            border-color: #ffeaa7;
+        }
+
+        #tarot-section {
+            display: none;
+            margin-top: 20px;
+        }
+
+        @keyframes shuffle {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(-70px, -15px) rotate(-10deg); }
+            50% { transform: translate(70px, 15px) rotate(10deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        .shuffle-pile {
+            position: relative;
+            width: 120px;
+            height: 200px;
+            margin: 40px auto;
+            display: none;
+        }
+        .shuffle-pile .card-back-mesh {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+            border: 2px solid #a29bfe;
+            animation: shuffle 0.7s ease-in-out infinite;
+        }
+        .pile-2 { animation-delay: 0.15s !important; }
+        .pile-3 { animation-delay: 0.3s !important; }
+
+        .card-fan-container {
+            position: relative;
+            height: 380px;
+            margin-top: 30px;
+            background-color: #0d0b14;
+            border-radius: 20px;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .fan-card {
+            position: absolute;
+            transform-origin: center 380px;
+            top: 20px;
+            left: calc(50% - 40px);
+            width: 80px;
+            height: 140px;
+            background: linear-gradient(135deg, #5f27cd, #6c5ce7);
+            border: 2px solid #a29bfe;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            cursor: pointer;
+            transition: transform 0.2s ease, top 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .fan-card:hover {
+            top: -15px;
+            border-color: #ffeaa7;
+            box-shadow: 0 12px 25px rgba(255, 234, 167, 0.4);
+            z-index: 999 !important;
+        }
+
+        #result-box {
+            display: none;
+            background-color: #14121f;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: left;
+            margin-top: 25px;
+            border: 1px solid #2e2a47;
+        }
+
+        .result-title {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-bottom: 25px;
+            color: #ffeaa7;
+            border-bottom: 1px dashed #2e2a47;
+            padding-bottom: 15px;
+        }
+
+        .reading-grid-layout {
+            display: grid;
+            gap: 25px;
+        }
+        .grid-three { grid-template-columns: 1fr 1fr 1fr; }
+
+        .spread-card-cell { text-align: center; }
+        .cell-tag { font-size: 0.9em; font-weight: bold; color: #a29bfe; margin-bottom: 10px; }
+
+        .revealed-card {
+            width: 110px;
+            height: 180px;
+            background-color: #ffeaa7;
+            color: #2d3436;
+            border-radius: 12px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 3px solid #fdcb6e;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        .interpretation-text-area {
+            line-height: 1.8;
+            font-size: 1.05em;
+            color: #f5f5f7;
+            margin-top: 25px;
+            background-color: #1e1b2e;
+            padding: 25px;
+            border-radius: 14px;
+            border-left: 4px solid #fdcb6e;
+        }
+
+        .step-reading {
+            margin-bottom: 18px;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #2e2a47;
+        }
+        .step-reading:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        .step-title { font-weight: bold; color: #ffeaa7; margin-bottom: 5px; font-size: 1.05em;}
+        .final-conclusion { background-color: #14121f; padding: 15px; border-radius: 10px; border: 1px solid #3f395e; margin-top: 20px;}
+
+        .reset-btn {
+            background-color: #ffeaa7;
+            color: #2d3436;
+            margin-top: 30px;
+            width: 100%;
+            border: none;
+            font-weight: bold;
+            font-size: 1.05em;
+            padding: 15px;
+            border-radius: 14px;
+            cursor: pointer;
+        }
+        .reset-btn:hover { background-color: #f1d279; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="friend-speech-area" id="friendSpeech">
+        어어, 왔어? 기다리고 있었지! <br>요즘 무슨 고민 있어? 말해 편하게 어떤 분야인지 골라봐. 같이 들어올게.
+    </div>
+
+    <div class="btn-group two-cols" id="categoryGroup">
+        <button onclick="selectCategory('연애')">❤️ 연애이</button>
+        <button onclick="selectCategory('성적')">📚 학업/성적</button>
+        <button onclick="selectCategory('금전')">💰 금전이</button>
+        <button onclick="selectCategory('관계')">🤝 인간관계</button>
+    </div>
+
+    <div class="btn-group" id="questionGroup" style="display: none;"></div>
+
+    <div class="btn-group two-cols" id="spreadGroup" style="display: none;">
+        <button id="oneCardBtn" onclick="startShuffle('one')">🃏 한 장만 뽑기 (원카드)</button>
+        <button id="threeCardBtn" onclick="startShuffle('three')">🃏🃏🃏 흐름 분석하기 (쓰리카드)</button>
+    </div>
+
+    <div id="tarot-section">
+        <div class="shuffle-pile" id="shufflePile">
+            <div class="card-back-mesh pile-1"></div>
+            <div class="card-back-mesh pile-2"></div>
+            <div class="card-back-mesh pile-3"></div>
+        </div>
+        <div class="card-fan-container" id="cardFanContainer"></div>
+    </div>
+
+    <div id="result-box">
+        <div class="result-title" id="chosenQuestionTitle">선택한 질문</div>
+        <div class="reading-grid-layout" id="readingGridLayout"></div>
+        <div class="interpretation-text-area" id="friendInterpretationText"></div>
+        <button class="reset-btn" onclick="resetAll()">다른 고민도 이야기하기</button>
+    </div>
+</div>
+
+<script>
+    const tarotData = {
+        '0': { name: 'The Fool', regular: '모험, 무지(無知)', reverse: '경솔, 어리석음',
+               love_pos: '완전 콩깍지이지만 자유롭고 순수한 만남이 생겨날 징조야.', love_neg: '상대방이 성의감이 없거나 너무 가볍게 다가와 상처받을 수 있으니 조심해.',
+               study_pos: '새로운 공부나 계획에 과감하게 도전해보기 아주 좋은 타이밍이야.', study_neg: '구체적인 계획 없이 두루뭉술 잡기 식으로 공부하다가 한지부지될 위험이 커.' },
+        'I': { name: 'The Magician', regular: '창조, 의지', reverse: '사기꾼, 기만',
+               love_pos: '너의 매력이 최고조라 말 한마디로도 이성의 마음을 장악해버릴 수 있어!', love_neg: '말만 번지르르하고 속이 텅 빈 기만적인 사람을 만나거나 잃을 수 있으니 주의해.',
+               study_pos: '너는 학습 능력이 엄청나게 빠른 시기라 집중만 하면 성적이 무조건 올라가.', study_neg: '요령을 부리거나 여러 개 펼쳐며 공부하다가 알던 문제까지 치워버릴 수 있어.' },
+        'II': { name: 'The High Priestess', regular: '지식, 이면', reverse: '억압, 무력함',
+               love_pos: '상대방이 겉으로만 조용해 보여도 앞으로 더 깊게 지켜보고 있어. 진지하게 다가가 봐.', love_neg: '서로 의존선 이으며 칼날 같은 말로 서로에게 상처를 주거나 차갑게 식어버릴 수 있어.',
+               study_pos: '통찰력과 집기력이 최고야. 조용한 암기가 무겁게 쌓여있으면 무조건 이겨.', study_neg: '시험 불안감이나 히스토리 때문에 알던 것도 뇌에 들어오지 않을 만큼 예민해질 위험이야.' },
+        'III': { name: 'The Empress', regular: '풍요, 모성', reverse: '과잉, 방종',
+               love_pos: '풍요롭고 따뜻한 사랑의 결실이 맺혀! 넌 조건 없이 좋아해 줄 사람이 생길 이야이야.', love_neg: '너의 대한 의존이나 집착이 과해져서 쉽게 말히거나, 겉만 된(방종)만 될 관계가 될 수 있어.',
+               study_pos: '함께 노력한 대가가 아주 화성하게 성적으로 돌아올 흐름이야. 최고야!', study_neg: '나태함과 안일함이 극에 달한다. "이 정도면 되겠지" 하다가 미끄러질 수 있어.' },
+        'IV': { name: 'The Emperor', regular: '성실, 부성(父性)', reverse: '지마, 존도',
+               love_pos: '흔들리지 않는 굳건하고 안정감 있는 연인, 널 리드 할 상대를 만나게 될 거야.', love_neg: '상대가 너무 권위적이고 고집불통이라 너를 자기 뜻대로 통제하려 들 수 있어.',
+               study_pos: '스스로를 통제하는 힘이 생겨서 계획한 스케쥴를 완벽하게 밀어부칠 수 있어.', study_neg: '비효율적인 자기 고집만 이으다가 흐름을 놓치거나 고립된 공부를 하게 돼.' },
+        'V': { name: 'The Hierophant', regular: '가르침, 관대함', reverse: '반항, 대항',
+               love_pos: '주변 사람들이 다 축복해주는 바른 연인이야. 중간에 다리를 놓아줄 귀인이 있을 걸?', love_neg: '관계가 너무 고리타분하고 지루해지거나 한쪽이 꼰대처럼 굴어서 대항가 팍 막혀.',
+               study_pos: '존경하는 선생님이나 멘토 선 조언을 구하면 성적이 지빵으로 올라. 존경하드로 가자.', study_neg: '마음이 좋아져서 단순 피드백을 제대로 꿀꺽하고 대학함에 빠져 학습 거리는 중이야.' },
+        'VI': { name: 'The Lovers', regular: '연인, 선택', reverse: '집착, 배신, 삼각',
+               love_pos: '눈만 마주쳐도 불꽃이 팍 타는 강렬한 이끌림이야! 넌 미치도록 좋아하는 사람이 나타나.', love_neg: '3자의 특여이 생기거나 사소한 오해와 집착으로 인해 신뢰가 산산조각 깨질 수 있어.',
+               study_pos: '서로 자극을 주는 좋은 스터디 메이트나 라이벌이 생겨 에너지가 폭발해.', study_neg: '공부 말고 연인이나 노는 것, 스마트폰 같은 것의 특여에 정신을 완전히 빼앗긴 상황이야.' },
+        'VII': { name: 'The Chariot', regular: '의지, 승리', reverse: '폭주, 좌절, 패배',
+               love_pos: '장거리든 뭐든 장애물들 다 부수고 너에게 직진해 달려올 기세야. 연인 직진 최고!', love_neg: '자신 조절 못하고 폭주하다가 차이거나, 맘대로 전달한다고 금방 포기해버려.',
+               study_pos: '무서운 대결력과 기세로 몰아붙이고 있다! 이번 시험은 다 상취한다.', study_neg: '의욕만 앞선 무리한 계획 때문에 타임 페이스 조절에 실패하고 상하게 좌절할 수 있어.' },
+        'VIII': { name: 'Strength', regular: '힘, 용기', reverse: '본성, 자망',
+               love_pos: '부드러운 카리스마로 상대방의 마음을 완전히 내 사람으로 부드럽게 다스릴 수 있어.', love_neg: '감정 조절이 안 돼서 충동적으로 성급한 본성이 튀어나와 깽판을 칠 상황이 있어.',
+               study_pos: '멘탈 관리가 최고야. 포기하지 않고 끈기 있게 물고 늘어져서 결국 승리해.', study_neg: '자기 실력을 너무 과소 평가하고 자망하다가 쉬운 문제에서 다통을 내는 게 맞아 이야.' },
+        'IX': { name: 'The Hermit', regular: '탐색, 사려깊음', reverse: '고독, 반사회적, 방황',
+               love_pos: '화려하지 않지만 정신적으로 깊이 교감하는 지조있고 비밀스러운 사랑이야.', love_neg: '마음의 문을 걸어 잠그고 동굴로 들어가서 이유도 안 들리거나 대화를 거부해 답답해져.',
+               study_pos: '외부 자극을 끊고 혼자 깊이 파고드는 데야. 집중 있는 공부의 아주 정리해.', study_neg: '혼자 강해에 도는 자기만 한다. 모르는 건 부드럽게 맞고 빨리 질문해야 해.' },
+        'X': { name: 'Wheel of Fortune', regular: '기회, 일시적인 행이', reverse: '실수, 불운',
+               love_pos: '타이밍이 기가 맞하게 맞아들어져! 예상치 못한 계기로 인어 극적으로 될 거야.', love_neg: '서로 타이밍이 자꾸 이긋나고 꼬여. 지금 무리하게 달아하면 역효과만 되는 멈춰.',
+               study_pos: '너에게 아주 유리한 타이밍과 시간이 어딘가 있어. 운도 전 맞 흐름이야.', study_neg: '계산 착오가 생기거나 항상 내가 절 본 곳에서만 시험 문제가 나오는 불운이 겹쳐.' },
+        'XI': { name: 'Justice', regular: '균형, 정당함', reverse: '불균형, 편견, 불정',
+               love_pos: '받은만큼 기브앤스테이크가 확실하고 이성적으로 대하는 깔끔한 관계야.', love_neg: '이런 한쪽이 계산기를 너무 두드리거나 편견을 가지고 상대를 평가해 편하고 있어.',
+               study_pos: '다 공부한 시간과 노력을 단 1%의 실수도 없이 아주 정직히 시간이 됐어.', study_neg: '밸런스가 무너졌이. 과목 편중이 심하거나 공부 계획이 한쪽으로 치우쳐진 상황이야.' },
+        'XII': { name: 'The Hanged Man', regular: '자기희생, 인내', reverse: '무의미한 희생, 맹목',
+               love_pos: '지금은 꼬지 못하고 정체됬는 것이지만 인내심을 가지고 상대를 지켜보면 풀려.', love_neg: '가망 없는 관계에 맹목적으로 매달리며 시간과 감정을 낭비하는 상히 희생 중이야.',
+               study_pos: '성적이 당장 안 됩니다는 지식이 꽉꽉 쌓여 드는 중이야. 버티면 빛이 나.', study_neg: '이미 비효율적인 공부 방식에 맹목적으로 고집하며 시간만 촌내고 있는 상황이야.' },
+        'XIII': { name: 'Death', regular: '격변, 이별', reverse: '변화에 저보, 고착',
+               love_pos: '애매한 관계는 끊어지고 완전히 새로운 국면(재귀거나 헤어지거나)으로 격변해.', love_neg: '이미 끝난 인연에 미련을 의지로 부잡고 지지 다르면서 스스로를 고통스럽게 해.',
+               study_pos: '잘못된 공부 습관을 쳐 가위질하고 이제 새롭게 포맷해야 성적이 이어돼.', study_neg: '바꿔야 하는 걸 알면서도 귀찮아서 이던 정도의 변화를 버리은 채 고착된 성 이어걸이야.' },
+        'XIV': { name: 'Temperance', regular: '조화, 견줌', reverse: '낭비, 불안정',
+               love_pos: '서로 다른 점들이 기가 맞하게 조화롭게 조율해가며 깊어지는 견줌한 사랑이야.', love_neg: '감정 조율 장치가 고장 달려. 과하게 반비하다 분해져고 마음만 상하게 낭비해.',
+               study_pos: '컨디션 조율 능력이 좋아 균형 있게 모든 과목을 안정적으로 이어가가.', study_neg: '감정 기복이 너 빠이에서 공부 흐름이 늘 됐다 나기고, 멘탈 관리가 전혀 안 되는 중이야.' },
+        'XV': { name: 'The Devil', regular: '사재, 억압, 타락', reverse: '억압으로부터의 각성',
+               love_pos: '이성으로 통제 절 될 만큼 육체적, 본능적으로 강력하게 끌리는 중독성 강한 인연이야.', love_neg: '진지 드려다는 가스라이팅이나 집착, 클로이 억압에서 자정을 정신이 받지 차려.',
+               study_pos: '무서운 집중과 일마이 생겨서 성적 머리를 첨박고 미칠 듯이 집중할 수 있어.', study_neg: '큰 중독, 게임, 소라이더라는 영리에게 발목을 꽉 잡혀서 공부를 아예 안 들고 있다.' },
+        'XVI': { name: 'The Tower', regular: '파괴, 멸망', reverse: '쉬어로 하던 파괴',
+               love_pos: '예상치 못한 대벼락 같은 사건이든 마디기으로 관계가 아이죠창 흔들릴 시기야.', love_neg: '굳어진 것 터진 것뿐이야! 오히려 불필요한 가식과 다 부수고 이서로 새롭게 할 기회이지.',
+               study_pos: '기존에 하던 한 공부 계획이 충격적인 방식으로 박이 뒤고 기초부터 다시 쌓게 돼.', study_neg: '충격적인 자극를 계기로 정신이 범용 들어와서 전 좋지한 흐름을 완전히 들려 부수게 됨.' },
+        'XVII': { name: 'The Star', regular: '희망, 대경', reverse: '멸망, 비전',
+               love_pos: '꿈꾸던 이상형을 만나거나 밤하늘의 별처럼 반짝이는 순수하고 로맨틱한 연인이!', love_neg: '현실성 없는 허하지 기대감만 하고 있다가 상대의 실체를 보고 멸망을 됩는 수 있어.',
+               study_pos: '명확한 비전과 목표가 생겨서 공부 에너지가 용솟고 미래가 밝게 이어려.', study_neg: '목표만 sky로 하게 잡고 실천에 전로라 자기 괴감과 우인함만 싸여가는 중이야.' },
+        'XVIII': { name: 'The Moon', regular: '불안, 저매함, 혼던', reverse: '불안 해이, 명료함, 혼의',
+               love_pos: '상대의 나마도 내 마음도 생각 처럼 저매해서 불확감과 착해가 따려와.', love_neg: '의심과 불확감이 진 걷히고 거진만 가이도 상대의 진진 나마이이 명확한 뒤로 보여.',
+               study_pos: '극사한 사라한의 성적 불확감을 강화서. 심리 멘탈 관리가 시긴한 떼야.', study_neg: '막막한 공부 방향이 잡히고 넘 얽힌 개념들이 명료하게 이해되기 시작해.' },
+        'XIX': { name: 'The Sun', regular: '밝은 미래, 만족', reverse: '연기(延期), 실패',
+               love_pos: '숨길 것 하던 없는 넘길의 이! 같이만 있어도 에너지가 충전이 되는 해처럼인 만남이야.', love_neg: '다 좋은데도 결정적인 시간의 약속이 연기되거나 사소한 아침으로 100% 만족이 안 돼.',
+               study_pos: '자신 팍 폭발! 시합 합격이나 성적 폭등의 에너지가 아주 강하게 들어왔이.', study_neg: '다 이제 마친에 마무리가 실패거나 계획이 연기될 수 있으니 까지까지 방세 금물!' },
+        'XX': { name: 'Judgement', regular: '부활, 개신', reverse: '재기부류, 항항',
+               love_pos: '다이이진 연락이 다시 오거나 오해가 풀리는 극적인 부활과 보시의 흐름이야.', love_neg: '과거에 받은 기억이나 트라우마를 이겨내지 못하고 계속 미련 담며 항항하고 있어.',
+               study_pos: '노력한 것에 대한 확실한 보상이 와. 성적이 전 기를 깨고 넘게 개선돼.', study_neg: '기회를 때려고 라서 이겠게 항항할 수 있어. 지금 선 정위 자리면 재기하기 힘들어.' },
+        'XXI': { name: 'The World', regular: '완성, 완료', reverse: '미완성, 이중감함',
+               love_pos: '더할 나이이 없이 완벽한 이인이야. 고백 성공이나 연인의 완성, 해피엔딩이!', love_neg: '다 알고 마지막 고비를 못 넘겨서 재귀도 것도 재귀도 것도 없는 이중감 상황이야.',
+               study_pos: '다 목표한 최종 달러에 완벽하게 안착할 흐름으로 최고의 결길 카드야.', study_neg: '마무리가 2% 부족해서 한지부지 돼. 끝까지 집중력을 안 잃고 매달져야 해.' }
+    };
+
+    const questions = {
+        '연애': ["내가 좋아하는 사람이 나를 어떻게 생각할까?", "나를 좋아하는 사람이 있을까?", "언제쯤 연인을 하게 될까?"],
+        '성적': ["이번 시험을 잘 볼 수 있을까?", "앞으로 이렇게 공부하면 계획대로 공부하면 될까?", "부족한 점을 성충하기 위해 어떻게 공부해야할까?"],
+        '금전': ["올해 내 금전이야기 어떨까?", "미래에 나는 돈을 잘 벌까?"],
+        '관계': ["그 친구와 잘 지라 수 있을까?", "그 친구는 나를 어떻게 생각할까?", "그 친구와 더 친해질 수 있는 시기는 언제일까?"]
+    };
+
+    let session = { category: '', question: '', spread: '', selected: [], toPick: 0 };
+
+    function selectCategory(cat) {
+        session.category = cat;
+        document.getElementById('friendSpeech').innerHTML = `오라, <b>${cat}</b>이야 궁금하구나! <br>그중에서 어떤 게 더 마음에 젤 걸려? 골라봐봐.`;
+        document.querySelectorAll('#categoryGroup button').forEach(b => {
+            if(b.innerText.includes(cat)) b.classList.add('selected-btn'); else b.style.display = 'none';
+        });
+        const qGroup = document.getElementById('questionGroup');
+        qGroup.innerHTML = '';
+        questions[cat].forEach(q => {
+            const b = document.createElement('button'); b.innerText = q;
+            b.onclick = () => {
+                session.question = q;
+                document.getElementById('friendSpeech').innerHTML = `<b>"${q}"</b> 이거구나. <br>그라면 카드를 한 장만 깔끔하게 볼든, 아니면 과거-현재-미래 흐름을 다 볼든?`;
+                document.querySelectorAll('#questionGroup button').forEach(qb => { if(qb !== b) qb.style.display = 'none'; else qb.classList.add('selected-btn'); });
+                document.getElementById('spreadGroup').style.display = 'grid';
+            };
+            qGroup.appendChild(b);
+        });
+        qGroup.style.display = 'grid';
+    }
+
+    function startShuffle(spreadType) {
+        session.spread = spreadType;
+        session.toPick = spreadType === 'one' ? 1 : 3;
+        document.querySelectorAll('#spreadGroup button').forEach(b => {
+            if(b.id.includes(spreadType)) b.classList.add('selected-btn'); else b.style.display = 'none';
+        });
+        document.getElementById('tarot-section').style.display = 'block';
+        const pile = document.getElementById('shufflePile');
+        pile.style.display = 'block';
+        document.getElementById('friendSpeech').innerHTML = "정성껏 섞어줄게. 앞으로 다 질문을 계속 깊게 생각하고 있어봐!";
+        setTimeout(() => {
+            pile.style.display = 'none';
+            generateCardFan();
+        }, 1500);
+    }
+
+    function generateCardFan() {
+        const container = document.getElementById('cardFanContainer');
+        container.innerHTML = '';
+        container.style.display = 'block';
+        document.getElementById('friendSpeech').innerHTML = `오리지널 라이더 웨이트 스펙으로 무지개 배열 완료! 🌈 <br>마음이 끌리는 위치의 카드를 <b>${session.toPick}장</b>만 콕 집어서 골라줘.`;
+        const totalCards = 22;
+        const startAngle = -55;
+        const endAngle = 55;
+        const angleStep = (endAngle - startAngle) / (totalCards - 1);
+        for (let i = 0; i < totalCards; i++) {
+            const card = document.createElement('div');
+            card.className = 'fan-card';
+            const currentAngle = startAngle + (angleStep * i);
+            card.style.transform = `rotate(${currentAngle}deg)`;
+            card.style.zIndex = i + 1;
+            card.onclick = () => {
+                card.style.visibility = 'hidden';
+                pickCardLogic();
+            };
+            container.appendChild(card);
+        }
+    }
+
+    function pickCardLogic() {
+        if (session.toPick <= 0) return;
+        session.toPick--;
+        const keys = Object.keys(tarotData);
+        const randomKey = keys[Math.floor(Math.random() * keys.length)];
+        const isRegular = Math.random() < 0.5;
+        session.selected.push({ key: randomKey, isRegular: isRegular });
+        if (session.toPick > 0) {
+            document.getElementById('friendSpeech').innerHTML = `오케이야 골랐고! 흐름을 맞춰 내야 하니까 <b>${session.toPick}장</b> 더 터치해줘!`;
+        } else {
+            showFinalResult();
+        }
+    }
+
+    function showFinalResult() {
+        document.getElementById('tarot-section').style.display = 'none';
+        document.getElementById('chosenQuestionTitle').innerText = `💬 네 고민: "${session.question}"`;
+        const grid = document.getElementById('readingGridLayout');
+        grid.innerHTML = '';
+        if (session.spread === 'one') grid.classList.remove('grid-three'); else grid.classList.add('grid-three');
+        const tags = ['[과거의 흐름]', '[현재의 상황]', '[미래의 결과]'];
+        session.selected.forEach((card, idx) => {
+            const data = tarotData[card.key];
+            const direction = card.isRegular ? '정방향' : '역방향';
+            const rawKeyword = card.isRegular ? data.regular : data.reverse;
+            const cell = document.createElement('div');
+            cell.className = 'spread-card-cell';
+            cell.innerHTML = `
+                <div class="cell-tag">${session.spread === 'one' ? '[오늘의 이언]' : tags[idx]}</div>
+                <div class="revealed-card" style="${card.isRegular ? '' : 'transform: scaleY(-1);'}">
+                    <div style="${card.isRegular ? '' : 'transform: scaleY(-1);'}">
+                        <b style="font-size:1.15em;">${card.key}</b><br>
+                        <span style="font-size:0.85em;">${data.name}</span><br>
+                        <span style="font-size:0.65em; color:#777;">(${direction})</span>
+                    </div>
+                </div>
+                <div style="font-size:0.75em; color:#a29bfe; margin-top:10px;">키워드: ${rawKeyword}</div>
+            `;
+            grid.appendChild(cell);
+        });
+        document.getElementById('friendInterpretationText').innerHTML = buildAdvancedReading(session.category, session.question, session.spread, session.selected);
+        document.getElementById('result-box').style.display = 'block';
+        document.getElementById('friendSpeech').innerHTML = "결과 해석 나왔어! 카드별 의미와 종합 결론까지 찬히 읽어봐!";
+    }
+
+    function buildAdvancedReading(category, question, spread, selectedCards) {
+        let htmlStr = '';
+        const tags = ['⏮️ 과거', '⏳ 현재', '🔮 미래'];
+        htmlStr += `<h3 style="color:#ffeaa7; margin-top:0; border-bottom:1px solid #3f395e; padding-bottom:10px;">🔍 카드별 상세 리딩</h3>`;
+        selectedCards.forEach((card, idx) => {
+            const data = tarotData[card.key];
+            const directionStr = card.isRegular ? '정방향' : '역방향';
+            const keyword = card.isRegular ? data.regular : data.reverse;
+            let textPiece = '';
+            if (category === '연애') {
+                textPiece = card.isRegular ? data.love_pos : data.love_neg;
+            } else if (category === '성적') {
+                textPiece = card.isRegular ? data.study_pos : data.study_neg;
+            } else {
+                textPiece = `이 단계에서 카드는 <b>'${keyword}'</b>의 기운을 담고 있어. ${card.isRegular ? '상황이 긍정적이고 순하게 흘러가거나 원하는 보상을 얻는 흐름이야.' : '중간에 오해가 생기거나 의사와 불리다 타이밍이 어긋날 수 있으니 매서히 조심하는 게 좋아.'}`;
+            }
+            const stepLabel = spread === 'one' ? '✨ 오늘의 조언' : tags[idx];
+            htmlStr += `
+                <div class="step-reading">
+                    <div class="step-title">${stepLabel}: ${card.key}. ${data.name} (${directionStr})</div>
+                    <div style="font-size:0.9em; color:#a29bfe; margin-bottom:5px;">핵심 의미: ${keyword}</div>
+                    <p style="margin: 5px 0 0 0; color:#e2e2e9;">${textPiece}</p>
+                </div>
+            `;
+        });
+        if (spread === 'three') {
+            const c1 = selectedCards[0];
+            const c2 = selectedCards[1];
+            const c3 = selectedCards[2];
+            let storyText = '';
+            if (question.includes("나를 좋아하는 사람이 있을까?")) {
+                if (c2.isRegular && c3.isRegular) {
+                    storyText = `<b>"대박이야! 지금 당장 주변을 살리하게 둘러봐!"</b> 과거의 감정이 정체되거나 지루했을지 몰라도(${tarotData[c1.key].name}), 현재 너를 어마어마하게 매력적으로 보거나 사랑하는 사람(${tarotData[c2.key].name})이 확실히 근처에 있어. 미래 카드의 흐름도 긍정적이라 머지않아 고백을 받거나 기분 좋은 전개로 발전할 가능성이 진짜 높아!`;
+                } else if (!c2.isRegular && c3.isRegular) {
+                    storyText = `<b>"지금 당장은 없어 보이는 중, 하지만 반전이 온다!"</b> 과거부터 현재까지는 서로 타이밍이 어긋거나 놓칠를 보내라 아무도 없는 것처럼 꽁꽁 숨어있던 데. 하지만 미래 카드가 아주 좋게 뒤집혔기 때문에, 조마가 숨어있던 호감이 외상의 껍질을 깨고 넌 멋지게 등장할 흐름이야.`;
+                } else if (c2.isRegular && !c3.isRegular) {
+                    storyText = `<b>"주변에 호감인 드려나는 사람은 분명 있는데, 상대가 너무 빠라!"</b> 현재 너를 되게 좋게 생각하는 귀인이나 이성이 분명 매트 아래 깔려있어. 다만 미래 결과 카드가 역방향인 걸 보면, 다가 놓칠성지 못하고 지나치거나 혹은 상대가 너무 조심스럽게 굴어서 관계가 한지부지 될 우려가 있어. 호감이 느껴진다면 너가 먼저 나서 살펴줘봐!`;
+                } else {
+                    storyText = `<b>"지금은 인연을 찾기보다 스스로의 매력을 충전할 타이밍!"</b> 현재와 미래 카드의 기운이 조금 가라앉아 있거나 불균형이 다소 꼬여있다. 네가 더 좋아했는지 나나았가 아니라, 지금 다 주변 상황이나 멘탈이 연인을 적극적으로 받아들일 준비가 안 돼서 서로 타이밍의 상대가도 상황이야. 조금해하지 말고 더 일상을 행복하게 가꾸다 보면 인연은 자연스럽게 찾아올 거야.`;
+                }
+            } else if (category === '성적') {
+                if (c3.isRegular) {
+                    storyText = `<b>"공부 흐름의 최종 착착지는 아마 합격 기대!"</b> 과정 중에 뒤의 걱정거림이나 나태함이 혹시 싸여있을지라도, 마지막 미래 결과가 아주 정당하고 화하게 긍정방향으로 완성됐어. 지금 하는 방식대로 피드백만 조금씩 적용하면서 밀어붙이면 시험 비으에서 무조건 쉬어 있으니 통고를 해!`;
+                } else {
+                    storyText = `<b>"다 좋은데 마지막 뒷정과 마무리 점검이 필수!"</b> 어쩐 흐름이나 현재 집중도 높아졌는데, 미래 결과의 역방향 꼬임이 아직 보인다. 이건 시험 직전에 방하에서 안 던 문제를 놓치거나 피로에 눈으로 타임 페이스가 깨질 수 있다는 경고야. 오답 노트 확실히 하고 끝까지 긴장 해지 말!`;
+                }
+            } else {
+                const regCount = selectedCards.filter(c => c.isRegular).length;
+                if (regCount >= 2) {
+                    storyText = `전체적인 흐름의 에너지가 아주 긍정적이고 정당하게 흘러가고 있어! 과거의 고통이나 애매함이 있었다면 현재를 기점에 한으로 풀리기 시작할 거고, 미래에도 다 주도권을 잡고 싶하는 방향으로 결실을 맺을 수 있는 아주 좋은 스텝인 데야. 자신 가져도 돼!`;
+                } else {
+                    storyText = `상황이 생각보다 불침이 있거나 변수가 많아서 멘탈을 꽉 잡아야만 하는 흐름이야. 한쪽의 과한 고집이나 불확가 원인일 수 있으니, 과거의 실수를 반면교지해지 않도록 현재 상황을 객관적으로 들여보고 과감하게 변화를 주는 걸 추천할 거.`;
+                }
+            }
+            htmlStr += `
+                <div class="final-conclusion">
+                    <div style="font-weight:bold; color:#fdcb6e; margin-bottom:8px; font-size:1.1em;">🎯 우치 마스터의 최종 종합 결론</div>
+                    <p style="margin:0; line-height:1.7; color:#f5f5f7;">${storyText}</p>
+                </div>
+            `;
+        }
+        return htmlStr;
+    }
+
+    function resetAll() {
+        session = { category: '', question: '', spread: '', selected: [], toPick: 0 };
+        document.getElementById('friendSpeech').innerHTML = "어어, 왔어? 기다리고 있었지! <br>요즘 무슨 고민 있어? 말해 편하게 어떤 분야인지 골라봐. 같이 들어올게.";
+        document.getElementById('categoryGroup').style.display = 'grid';
+        document.querySelectorAll('#categoryGroup button').forEach(b => { b.style.display = 'block'; b.classList.remove('selected-btn'); });
+        document.getElementById('questionGroup').style.display = 'none';
+        document.getElementById('spreadGroup').style.display = 'none';
+        document.querySelectorAll('#spreadGroup button').forEach(b => { b.style.display = 'block'; b.classList.remove('selected-btn'); });
+        document.getElementById('tarot-section').style.display = 'none';
+        document.getElementById('cardFanContainer').style.display = 'none';
+        document.getElementById('result-box').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

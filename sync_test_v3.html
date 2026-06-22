@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인간 오디오 싱크 민감도 테스트 v3</title>
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #121212; color: #eee; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        #container { text-align: center; background: #1e1e1e; padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 400px; }
+
+        #flash-target { width: 130px; height: 130px; background-color: #333; border-radius: 50%; margin: 25px auto; transition: background-color 0.05s; border: 4px solid #1e1e1e; }
+        .active-video { background-color: #00ff88 !important; box-shadow: 0 0 25px #00ff88; }
+
+        .mode-container { display: flex; justify-content: space-between; margin-bottom: 20px; gap: 10px; }
+        .mode-btn { flex: 1; background-color: #2a2a2a; color: #aaa; border: 2px solid #444; padding: 12px; font-size: 15px; border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .mode-btn:hover { background-color: #333; color: #fff; }
+        .mode-btn.active { background-color: #007bff; color: white; border-color: #0056b3; box-shadow: 0 0 10px rgba(0,123,255,0.5); }
+
+        .slider-container { margin: 25px 0; padding: 20px; background: #252525; border-radius: 12px; }
+        input[type=range] { width: 100%; cursor: pointer; height: 6px; accent-color: #007bff; }
+        #delay-val { font-weight: bold; color: #00ff88; font-size: 1.3em; }
+        #status { font-size: 16px; font-weight: bold; margin-top: 15px; min-height: 1.5em; color: #00ff88; }
+
+        #action-btn { background-color: #28a745; color: white; border: none; padding: 12px 30px; font-size: 16px; border-radius: 8px; cursor: pointer; width: 100%; font-weight: bold; margin-top: 10px; }
+        #action-btn.stop { background-color: #dc3545; }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <h2>오디오 싱크 체감 테스트</h2>
+    <p style="color: #888; font-size: 14px;">모드를 고르고 재생 중 슬라이더를 실시간으로 움직여보세요.</p>
+
+    <div class="mode-container">
+        <button class="mode-btn active" id="mode-audio">🔊 소리 먼저 나오게</button>
+        <button class="mode-btn" id="mode-video">🎬 영상 먼저 나오게</button>
+    </div>
+
+    <div id="flash-target"></div>
+
+    <div class="slider-container">
+        <label for="delay-slider">지연 시간 설정: <span id="delay-val">0</span> ms</label><br><br>
+        <input type="range" id="delay-slider" min="0" max="400" step="10" value="0">
+    </div>
+
+    <button id="action-btn">테스트 재생 ▶</button>
+    <div id="status">대기 중... 버튼을 눌러 시작하세요.</div>
+</div>
+
+<script>
+    let isRunning = false;
+    let loopTimeoutId = null;
+    let audioCtx = null;
+    let currentMode = 'audio';
+    const LOOP_INTERVAL = 1300;
+
+    const flashTarget = document.getElementById('flash-target');
+    const actionBtn = document.getElementById('action-btn');
+    const delaySlider = document.getElementById('delay-slider');
+    const delayVal = document.getElementById('delay-val');
+    const statusText = document.getElementById('status');
+    const modeAudioBtn = document.getElementById('mode-audio');
+    const modeVideoBtn = document.getElementById('mode-video');
+
+    function initAudio() {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    function playBeep(time) {
+        const oscillator = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(800, time);
+        gainNode.gain.setValueAtTime(0.4, time);
+        gainNode.gain.exponentialRampToValueAtTime(0.001, time + 0.08);
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+        oscillator.start(time);
+        oscillator.stop(time + 0.08);
+    }
+
+    function triggerFlash() {
+        flashTarget.classList.add('active-video');
+        setTimeout(() => flashTarget.classList.remove('active-video'), 60);
+    }
+
+    function syncLoop() {
+        if (!isRunning) return;
+
+        const delay = parseInt(delaySlider.value);
+        const currentTime = audioCtx.currentTime;
+        const targetAudioTime = currentTime + 0.05;
+
+        if (delay === 0) {
+            playBeep(targetAudioTime);
+            triggerFlash();
+        }
+        else if (currentMode === 'audio') {
+            playBeep(targetAudioTime);
+            setTimeout(triggerFlash, delay);
+        }
+        else {
+            triggerFlash();
+            playBeep(targetAudioTime + (delay / 1000));
+        }
+
+        loopTimeoutId = setTimeout(syncLoop, LOOP_INTERVAL);
+    }
+
+    function updateStatusText() {
+        const val = delaySlider.value;
+        delayVal.textContent = val;
+        if (val == 0) {
+            statusText.textContent = "완벽한 동기화 (0ms)";
+        } else {
+            statusText.textContent = currentMode === 'audio'
+                ? `현재 소리가 ${val}ms 먼저 나오고 있습니다.`
+                : `현재 영상이 ${val}ms 먼저 나오고 있습니다.`;
+        }
+    }
+
+    delaySlider.addEventListener('input', updateStatusText);
+
+    modeAudioBtn.addEventListener('click', () => {
+        currentMode = 'audio';
+        modeAudioBtn.classList.add('active');
+        modeVideoBtn.classList.remove('active');
+        updateStatusText();
+    });
+
+    modeVideoBtn.addEventListener('click', () => {
+        currentMode = 'video';
+        modeVideoBtn.classList.add('active');
+        modeAudioBtn.classList.remove('active');
+        updateStatusText();
+    });
+
+    actionBtn.addEventListener('click', () => {
+        initAudio();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        if (isRunning) {
+            isRunning = false;
+            clearTimeout(loopTimeoutId);
+            actionBtn.textContent = "테스트 재생 ▶";
+            actionBtn.classList.remove('stop');
+            statusText.textContent = "정지됨";
+        } else {
+            isRunning = true;
+            actionBtn.textContent = "테스트 정지 ■";
+            actionBtn.classList.add('stop');
+            updateStatusText();
+            syncLoop();
+        }
+    });
+</script>
+
+</body>
+</html>

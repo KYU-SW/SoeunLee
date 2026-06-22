@@ -364,12 +364,46 @@
 
         .semester-title {
             color: var(--primary-color);
-            margin: 3rem 0 1.5rem;
-            padding-left: 15px;
+            margin: 3rem 0 0;
+            padding: 1rem 1.2rem;
             border-left: 5px solid var(--primary-color);
-            font-size: 2.1rem;
+            font-size: 1.8rem;
             text-align: left;
             font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 0 10px 10px 0;
+            transition: background 0.2s;
+            user-select: none;
+        }
+
+        .semester-title:hover {
+            background: rgba(227, 166, 185, 0.08);
+        }
+
+        .semester-title .chevron {
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .semester-title.collapsed .chevron {
+            transform: rotate(-90deg);
+        }
+
+        .accordion-body {
+            overflow: hidden;
+            max-height: 2000px;
+            transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+            opacity: 1;
+            margin-top: 1.5rem;
+        }
+
+        .accordion-body.collapsed {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
         }
 
         .card-grid {
@@ -779,7 +813,10 @@
         <h2 class="section-title">Projects</h2>
         <p style="text-align:center; color:var(--text-light); font-size:0.95rem; margin-top:-1rem; margin-bottom:1.5rem;">카드를 눌러서 프로젝트 내용을 확인해보세요!</p>
 
-        <h3 class="semester-title">1학년 1학기</h3>
+        <h3 class="semester-title" onclick="toggleAccordion(this)">
+            1학년 1학기 <i class="fa-solid fa-chevron-down chevron"></i>
+        </h3>
+        <div class="accordion-body">
         <section class="card-grid">
             <article class="card">
                 <img src="제목을 입력해주세요. (10).png" alt="escape the maze 메이즈러너" class="card-img">
@@ -822,8 +859,12 @@
                 </div>
             </article>
         </section>
+        </div>
 
-        <h3 class="semester-title">1학년 2학기</h3>
+        <h3 class="semester-title" onclick="toggleAccordion(this)">
+            1학년 2학기 <i class="fa-solid fa-chevron-down chevron"></i>
+        </h3>
+        <div class="accordion-body">
         <section class="card-grid">
             <article class="card">
                 <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=600&q=80" alt="Medical Technology" class="card-img">
@@ -834,6 +875,56 @@
                 </div>
             </article>
         </section>
+        </div>
+
+        <h3 class="semester-title" onclick="toggleAccordion(this)">
+            개인 프로젝트 <i class="fa-solid fa-chevron-down chevron"></i>
+        </h3>
+        <div class="accordion-body">
+        <section class="card-grid">
+            <article class="card" onclick="window.open('sync_test_v3.html', '_blank')" style="cursor:pointer;">
+                <div class="card-image" style="background: linear-gradient(135deg, #fff0f5 0%, #f0f7ff 100%); display:flex; align-items:center; justify-content:center; min-height:160px;">
+                    <div style="text-align:center;">
+                        <div style="font-size:4.5rem; line-height:1;">🎧</div>
+                        <div style="font-size:0.8rem; color:#b39ddb; letter-spacing:3px; font-weight:700; margin-top:10px;">SYNC TEST</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.5rem;">
+                        <i class="fa-solid fa-wave-square" style="color:#e3a6b9;"></i>
+                        <h3 style="margin:0;">오디오 싱크 테스트</h3>
+                    </div>
+                    <p>멀티모달 피드백을 실제로 경험해볼 수 있는 테스트 사이트</p>
+                    <div style="margin-top:1rem; display:flex; gap:8px; flex-wrap:wrap;">
+                        <span style="background:#fce4ec; color:#e3a6b9; padding:3px 10px; border-radius:20px; font-size:0.78rem;">HTML</span>
+                        <span style="background:#fce4ec; color:#e3a6b9; padding:3px 10px; border-radius:20px; font-size:0.78rem;">CSS</span>
+                        <span style="background:#fce4ec; color:#e3a6b9; padding:3px 10px; border-radius:20px; font-size:0.78rem;">JavaScript</span>
+                    </div>
+                </div>
+            </article>
+
+            <article class="card" onclick="window.open('tarot.html', '_blank')" style="cursor:pointer;">
+                <div class="card-image" style="background: linear-gradient(135deg, #fff0f5 0%, #f3eeff 100%); display:flex; align-items:center; justify-content:center; min-height:160px; position:relative; overflow:hidden;">
+                    <div style="text-align:center;">
+                        <div style="font-size:4.5rem; line-height:1;">🃏</div>
+                        <div style="font-size:0.8rem; color:#b39ddb; letter-spacing:3px; font-weight:700; margin-top:10px;">TAROT READING</div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.5rem;">
+                        <i class="fa-solid fa-star" style="color:#e3a6b9;"></i>
+                        <h3 style="margin:0;">타로 카드 리딩</h3>
+                    </div>
+                    <p>연애·학업·금전·인간관계 고민을 타로 카드로 풀어보는 사이트</p>
+                    <div style="margin-top:1rem; display:flex; gap:8px; flex-wrap:wrap;">
+                        <span style="background:#fce4ec; color:#e3a6b9; padding:3px 10px; border-radius:20px; font-size:0.78rem;">HTML</span>
+                        <span style="background:#fce4ec; color:#e3a6b9; padding:3px 10px; border-radius:20px; font-size:0.78rem;">CSS</span>
+                        <span style="background:#fce4ec; color:#e3a6b9; padding:3px 10px; border-radius:20px; font-size:0.78rem;">JavaScript</span>
+                    </div>
+                </div>
+            </article>
+        </section>
+        </div>
     </div>
 
     <div id="contact" class="content-page">
@@ -858,7 +949,7 @@
         <div class="comment-form">
             <input id="comment-name" type="text" placeholder="닉네임" maxlength="20">
             <textarea id="comment-text" placeholder="댓글을 남겨주세요 :)"></textarea>
-            <button class="comment-submit" onclick="submitComment()">남기기</button>
+            <button type="button" class="comment-submit" onclick="submitComment()">남기기</button>
         </div>
         <div id="comments-list">
             <p style="text-align:center; color:var(--text-light); font-size:0.9rem;">아직 댓글이 없어요. 첫 번째 댓글을 남겨보세요!</p>
@@ -880,6 +971,12 @@
             document.getElementById('navDropdown').classList.remove('open');
         }
     });
+
+    function toggleAccordion(title) {
+        const body = title.nextElementSibling;
+        title.classList.toggle('collapsed');
+        body.classList.toggle('collapsed');
+    }
 
     function scrollToSection(sectionId) {
         event.preventDefault();
@@ -972,78 +1069,76 @@
     });
 </script>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <script>
-    // ⬇ Firebase 설정값을 아래에 채워주세요
-    const firebaseConfig = {
-        apiKey: "AIzaSyDA6rOuvBpxKryXqLS-AeuRLe-uCE71QbY",
-        authDomain: "website-a92c1.firebaseapp.com",
-        databaseURL: "https://website-a92c1-default-rtdb.firebaseio.com",
-        projectId: "website-a92c1",
-        storageBucket: "website-a92c1.firebasestorage.app",
-        messagingSenderId: "191800118773",
-        appId: "1:191800118773:web:db435f7b028060ce1824bc"
-    };
+    const DB_URL = 'https://website-a92c1-default-rtdb.firebaseio.com';
 
     function escapeHtml(str) {
         return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
     }
 
-    let db = null;
-    try {
-        firebase.initializeApp(firebaseConfig);
-        db = firebase.database();
-
-        db.ref('comments').orderByChild('timestamp').on('value', (snapshot) => {
-            const list = document.getElementById('comments-list');
-            const comments = [];
-            snapshot.forEach(child => comments.push({ _key: child.key, ...child.val() }));
-            if (comments.length === 0) {
-                list.innerHTML = '<p style="text-align:center; color:var(--text-light); font-size:0.9rem;">아직 댓글이 없어요. 첫 번째 댓글을 남겨보세요!</p>';
-                return;
-            }
-            list.innerHTML = comments.reverse().map(c => {
-                const date = new Date(c.timestamp).toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' });
-                return `
-                    <div class="comment-item">
-                        <div class="comment-meta">
-                            <span class="comment-name">${escapeHtml(c.name)}</span>
-                            <div style="display:flex; align-items:center; gap:12px;">
-                                <span class="comment-date">${date}</span>
-                                <button onclick="deleteComment('${c._key}')" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:0;transition:color 0.2s;" title="삭제">
-                                    <i class="fa-regular fa-trash-can"></i>
-                                </button>
-                            </div>
+    function renderComments(data) {
+        const list = document.getElementById('comments-list');
+        if (!data) {
+            list.innerHTML = '<p style="text-align:center; color:var(--text-light); font-size:0.9rem;">아직 댓글이 없어요. 첫 번째 댓글을 남겨보세요!</p>';
+            return;
+        }
+        const comments = Object.entries(data).map(([key, val]) => ({ _key: key, ...val }));
+        comments.sort((a, b) => b.timestamp - a.timestamp);
+        list.innerHTML = comments.map(c => {
+            const date = new Date(c.timestamp).toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' });
+            return `
+                <div class="comment-item">
+                    <div class="comment-meta">
+                        <span class="comment-name">${escapeHtml(c.name)}</span>
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <span class="comment-date">${date}</span>
+                            <button onclick="deleteComment('${c._key}')" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:0;transition:color 0.2s;" title="삭제">
+                                <i class="fa-regular fa-trash-can"></i>
+                            </button>
                         </div>
-                        <p class="comment-text">${escapeHtml(c.text)}</p>
-                    </div>`;
-            }).join('');
-        });
-    } catch(e) {
-        console.warn('Firebase 설정이 필요합니다.');
+                    </div>
+                    <p class="comment-text">${escapeHtml(c.text)}</p>
+                </div>`;
+        }).join('');
+    }
+
+    function loadComments() {
+        fetch(`${DB_URL}/comments.json`)
+            .then(r => r.json())
+            .then(data => renderComments(data))
+            .catch(() => renderComments(null));
+    }
+
+    function submitComment() {
+        const name = document.getElementById('comment-name').value.trim();
+        const text = document.getElementById('comment-text').value.trim();
+        if (!name) { alert('닉네임을 입력해주세요!'); return; }
+        if (!text) { alert('댓글 내용을 입력해주세요!'); return; }
+        fetch(`${DB_URL}/comments.json`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, text, timestamp: Date.now() })
+        })
+        .then(() => {
+            document.getElementById('comment-text').value = '';
+            loadComments();
+        })
+        .catch(err => alert('저장 실패: ' + err.message));
     }
 
     function deleteComment(key) {
         const pw = prompt('관리자 비밀번호를 입력하세요:');
         if (pw === null) return;
         if (pw === 'password') {
-            db.ref('comments/' + key).remove();
+            fetch(`${DB_URL}/comments/${key}.json`, { method: 'DELETE' })
+                .then(() => loadComments())
+                .catch(err => alert('삭제 실패: ' + err.message));
         } else {
             alert('비밀번호가 틀렸어요.');
         }
     }
 
-    function submitComment() {
-        if (!db) { alert('Firebase 설정이 필요합니다.'); return; }
-        const name = document.getElementById('comment-name').value.trim();
-        const text = document.getElementById('comment-text').value.trim();
-        if (!name) { alert('닉네임을 입력해주세요!'); return; }
-        if (!text) { alert('댓글 내용을 입력해주세요!'); return; }
-        db.ref('comments').push({ name, text, timestamp: Date.now() });
-        document.getElementById('comment-name').value = '';
-        document.getElementById('comment-text').value = '';
-    }
+    loadComments();
 </script>
 
 </body>
