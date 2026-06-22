@@ -697,6 +697,14 @@
 
 <nav class="navbar">
     <a href="/" class="nav-logo">Soeun Lee</a>
+    <div style="display:flex; align-items:center; gap:16px;">
+    <span style="display:flex; align-items:center; gap:5px; font-size:0.9rem; color:var(--text-light);">
+        <i class="fa-solid fa-user"></i>
+        <span id="visit-count">-</span>
+    </span>
+    <button id="music-btn" onclick="toggleMusic()" style="background:none; border:none; cursor:pointer; color:var(--text-light); font-size:1.1rem; padding:4px 8px; border-radius:20px; transition:var(--transition);" title="음악 켜기/끄기">
+        <i class="fa-solid fa-volume-xmark" id="music-icon"></i>
+    </button>
     <div class="nav-kebab">
         <button class="kebab-btn" onclick="toggleDropdown()">
             <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -705,11 +713,14 @@
             <li><a href="#home" class="nav-item active" onclick="scrollToSection('home')">Home</a></li>
             <li><a href="#about" class="nav-item" onclick="scrollToSection('about')">About</a></li>
             <li><a href="#projects" class="nav-item" onclick="scrollToSection('projects')">Projects</a></li>
-            <li><a href="#contact" class="nav-item" onclick="scrollToSection('contact')">Contact</a></li>
             <li><a href="#comments" class="nav-item" onclick="scrollToSection('comments')">Comments</a></li>
+            <li><a href="#contact" class="nav-item" onclick="scrollToSection('contact')">Contact</a></li>
         </ul>
     </div>
+    </div>
 </nav>
+
+<audio id="bgm" src="Peach (복숭아).mp3" loop autoplay muted></audio>
 
 <main class="container">
     <div id="home" class="content-page">
@@ -858,6 +869,13 @@
                     <p>DYC_인간에 대한 다학문적 이해</p>
                 </div>
             </article>
+            <article class="card">
+                <div class="card-content" style="padding: 2rem;">
+                    <i class="fa-solid fa-code"></i>
+                    <h3>프로젝트 이름</h3>
+                    <p>설명을 입력하세요.</p>
+                </div>
+            </article>
         </section>
         </div>
 
@@ -894,7 +912,7 @@
                         <i class="fa-solid fa-wave-square" style="color:#e3a6b9;"></i>
                         <h3 style="margin:0;">오디오 싱크 테스트</h3>
                     </div>
-                    <p>멀티모달 피드백을 실제로 경험해볼 수 있는 테스트 사이트</p>
+                    <p>멀티모달 피드백을 실제로 경험해볼 수 있는 테스트 사이트-실감미디어 발표 자료</p>
                     <div style="margin-top:1rem; display:flex; gap:8px; flex-wrap:wrap;">
                         <span style="background:#fce4ec; color:#e3a6b9; padding:3px 10px; border-radius:20px; font-size:0.78rem;">HTML</span>
                         <span style="background:#fce4ec; color:#e3a6b9; padding:3px 10px; border-radius:20px; font-size:0.78rem;">CSS</span>
@@ -913,7 +931,7 @@
                 <div class="card-content">
                     <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.5rem;">
                         <i class="fa-solid fa-star" style="color:#e3a6b9;"></i>
-                        <h3 style="margin:0;">타로 카드 리딩</h3>
+                        <h3 style="margin:0;">타로 카드</h3>
                     </div>
                     <p>연애·학업·금전·인간관계 고민을 타로 카드로 풀어보는 사이트</p>
                     <div style="margin-top:1rem; display:flex; gap:8px; flex-wrap:wrap;">
@@ -927,6 +945,17 @@
         </div>
     </div>
 
+    <div id="comments" class="comments-section">
+        <h2 class="section-title" style="font-size:1.8rem; margin-bottom:1.5rem;">Comments</h2>
+        <div class="comment-form">
+            <input id="comment-name" type="text" placeholder="닉네임" maxlength="20">
+            <textarea id="comment-text" placeholder="댓글을 남겨주세요 :)"></textarea>
+            <button type="button" class="comment-submit" onclick="submitComment()">남기기</button>
+        </div>
+        <div id="comments-list">
+            <p style="text-align:center; color:var(--text-light); font-size:0.9rem;">아직 댓글이 없어요. 첫 번째 댓글을 남겨보세요!</p>
+        </div>
+    </div>
     <div id="contact" class="content-page">
         <section class="contact-section">
             <h2>Let's Connect</h2>
@@ -943,17 +972,6 @@
                 </a>
             </div>
         </section>
-    </div>
-    <div id="comments" class="comments-section">
-        <h2 class="section-title" style="font-size:1.8rem; margin-bottom:1.5rem;">Comments</h2>
-        <div class="comment-form">
-            <input id="comment-name" type="text" placeholder="닉네임" maxlength="20">
-            <textarea id="comment-text" placeholder="댓글을 남겨주세요 :)"></textarea>
-            <button type="button" class="comment-submit" onclick="submitComment()">남기기</button>
-        </div>
-        <div id="comments-list">
-            <p style="text-align:center; color:var(--text-light); font-size:0.9rem;">아직 댓글이 없어요. 첫 번째 댓글을 남겨보세요!</p>
-        </div>
     </div>
 </main>
 
@@ -1076,6 +1094,22 @@
         return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
     }
 
+    function commentHtml(c) {
+        const date = new Date(c.timestamp).toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' });
+        return `<div class="comment-item">
+            <div class="comment-meta">
+                <span class="comment-name">${escapeHtml(c.name)}</span>
+                <div style="display:flex; align-items:center; gap:12px;">
+                    <span class="comment-date">${date}</span>
+                    <button onclick="deleteComment('${c._key}')" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:0;transition:color 0.2s;" title="삭제">
+                        <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+            <p class="comment-text">${escapeHtml(c.text)}</p>
+        </div>`;
+    }
+
     function renderComments(data) {
         const list = document.getElementById('comments-list');
         if (!data) {
@@ -1084,22 +1118,37 @@
         }
         const comments = Object.entries(data).map(([key, val]) => ({ _key: key, ...val }));
         comments.sort((a, b) => b.timestamp - a.timestamp);
-        list.innerHTML = comments.map(c => {
-            const date = new Date(c.timestamp).toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' });
-            return `
-                <div class="comment-item">
-                    <div class="comment-meta">
-                        <span class="comment-name">${escapeHtml(c.name)}</span>
-                        <div style="display:flex; align-items:center; gap:12px;">
-                            <span class="comment-date">${date}</span>
-                            <button onclick="deleteComment('${c._key}')" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:0;transition:color 0.2s;" title="삭제">
-                                <i class="fa-regular fa-trash-can"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <p class="comment-text">${escapeHtml(c.text)}</p>
-                </div>`;
-        }).join('');
+
+        const top2 = comments.slice(0, 2);
+        const rest = comments.slice(2);
+
+        let html = top2.map(commentHtml).join('');
+
+        if (rest.length > 0) {
+            html += `
+            <div id="more-comments" style="overflow:hidden; max-height:0; transition:max-height 0.4s ease, opacity 0.3s ease; opacity:0;">
+                ${rest.map(commentHtml).join('')}
+            </div>
+            <button onclick="toggleMoreComments(this)" style="margin-top:12px; background:none; border:1px solid var(--primary-color); color:var(--primary-color); border-radius:20px; padding:6px 18px; font-size:0.85rem; cursor:pointer; width:100%; transition:all 0.2s;">
+                댓글 ${rest.length}개 더 보기 <i class="fa-solid fa-chevron-down" style="font-size:0.75rem; margin-left:4px;"></i>
+            </button>`;
+        }
+
+        list.innerHTML = html;
+    }
+
+    function toggleMoreComments(btn) {
+        const more = document.getElementById('more-comments');
+        const isOpen = more.style.maxHeight !== '0px' && more.style.maxHeight !== '';
+        if (isOpen) {
+            more.style.maxHeight = '0';
+            more.style.opacity = '0';
+            btn.innerHTML = `댓글 더 보기 <i class="fa-solid fa-chevron-down" style="font-size:0.75rem; margin-left:4px;"></i>`;
+        } else {
+            more.style.maxHeight = more.scrollHeight + 'px';
+            more.style.opacity = '1';
+            btn.innerHTML = `접기 <i class="fa-solid fa-chevron-up" style="font-size:0.75rem; margin-left:4px;"></i>`;
+        }
     }
 
     function loadComments() {
@@ -1139,6 +1188,57 @@
     }
 
     loadComments();
+
+    // 배경음악
+    const bgm = document.getElementById('bgm');
+    const musicIcon = document.getElementById('music-icon');
+    let musicOn = true;
+    let started = false;
+
+    musicIcon.className = 'fa-solid fa-volume-high';
+
+    function toggleMusic() {
+        if (musicOn) {
+            bgm.muted = true;
+            musicIcon.className = 'fa-solid fa-volume-xmark';
+            musicOn = false;
+        } else {
+            bgm.muted = false;
+            bgm.play();
+            musicIcon.className = 'fa-solid fa-volume-high';
+            musicOn = true;
+        }
+    }
+
+    // 첫 번째 클릭/터치 시 소리 있게 재생
+    function startBgm() {
+        if (started) return;
+        started = true;
+        bgm.muted = false;
+        bgm.play().catch(() => {});
+    }
+    document.addEventListener('click', startBgm, { once: true });
+    document.addEventListener('keydown', startBgm, { once: true });
+
+    // 일별 방문자 카운트
+    function trackVisit() {
+        const today = new Date().toISOString().slice(0, 10); // "2026-06-22"
+        const visitUrl = `${DB_URL}/visits/${today}.json`;
+        fetch(visitUrl, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ '.sv': { 'increment': 1 } })
+        })
+        .then(r => r.json())
+        .then(count => {
+            document.getElementById('visit-count').textContent = count;
+        })
+        .catch(() => {
+            document.getElementById('visit-count').textContent = '?';
+        });
+    }
+    trackVisit();
+
 </script>
 
 </body>
