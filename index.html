@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soeun Lee | DXP Lab</title>
+    <title>Soeun Lee | Konyang University National Defense XR</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css">
     
@@ -79,8 +79,8 @@
 
         /* 오른쪽 하단 번짐 */
         .blob-bottom-right {
-            bottom: 10%; /* 위치를 살짝 위로 조정 */
-            right: 10%; /* 위치를 살짝 왼쪽으로 조정 */
+            bottom: -5%;
+            right: 10%;
             background: radial-gradient(circle, #c3a6ff 0%, rgba(195,166,255,0) 70%); /* 더 진한 보라 */
             animation: pulse 12s infinite alternate-reverse ease-in-out;
         }
@@ -113,29 +113,69 @@
             gap: 10px;
         }
 
-        .nav-links {
-            list-style: none;
-            display: flex;
-            gap: 30px;
+        .nav-kebab {
+            position: relative;
         }
 
-        .nav-links a {
-            text-decoration: none;
+        .kebab-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
             color: var(--text-color);
-            font-weight: 700; /* 메뉴 가독성을 위해 굵게 설정 */
-            padding: 12px 24px;
+            font-size: 1.4rem;
+            padding: 8px 14px;
             border-radius: 30px;
-            font-size: 1.2rem;
             transition: var(--transition);
+            display: flex;
+            align-items: center;
         }
 
-        .nav-links a:hover {
-            background-color: var(--bg-color);
+        .kebab-btn:hover {
+            background: rgba(255,255,255,0.6);
             color: var(--primary-color);
         }
 
-        .nav-links a.active {
-            background-color: var(--primary-color);
+        .nav-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(30px) saturate(150%);
+            -webkit-backdrop-filter: blur(30px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            min-width: 160px;
+            z-index: 999;
+        }
+
+        .nav-dropdown.open {
+            display: block;
+        }
+
+        .nav-dropdown li {
+            list-style: none;
+        }
+
+        .nav-dropdown a {
+            display: block;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 700;
+            padding: 12px 24px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .nav-dropdown a:hover {
+            background: rgba(227, 166, 185, 0.15);
+            color: var(--primary-color);
+        }
+
+        .nav-dropdown a.active {
+            background: var(--primary-color);
             color: var(--white);
         }
 
@@ -189,7 +229,7 @@
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1100px;
             margin: 0 auto;
             padding: 0 20px;
             position: relative;
@@ -427,6 +467,120 @@
             filter: brightness(0.9);
         }
 
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            15%       { transform: rotate(20deg); }
+            30%       { transform: rotate(-10deg); }
+            45%       { transform: rotate(16deg); }
+            60%       { transform: rotate(-8deg); }
+            75%       { transform: rotate(12deg); }
+        }
+
+        .wave-hand {
+            display: inline-block;
+            transform-origin: 70% 70%;
+            animation: wave 2s ease-in-out infinite;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            padding: 1.5rem 0 2.5rem;
+            scroll-margin-top: 85px;
+        }
+
+        .comment-form {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(25px);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            margin-bottom: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            background: rgba(255, 255, 255, 0.5);
+            border: 1px solid rgba(227, 166, 185, 0.3);
+            border-radius: 8px;
+            padding: 0.8rem 1rem;
+            font-family: 'NanumSquareRound', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-color);
+            outline: none;
+            transition: border-color 0.3s;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .comment-form input:focus,
+        .comment-form textarea:focus {
+            border-color: var(--primary-color);
+        }
+
+        .comment-form textarea {
+            resize: none;
+            height: 100px;
+        }
+
+        .comment-form input::placeholder,
+        .comment-form textarea::placeholder {
+            color: var(--text-light);
+        }
+
+        .comment-submit {
+            align-self: flex-end;
+            background: var(--primary-color);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            padding: 10px 28px;
+            font-family: 'NanumSquareRound', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .comment-submit:hover {
+            filter: brightness(0.9);
+        }
+
+        .comment-item {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            margin-bottom: 1rem;
+        }
+
+        .comment-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-name {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .comment-date {
+            font-size: 0.82rem;
+            color: var(--text-light);
+        }
+
+        .comment-text {
+            color: var(--text-color);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            word-break: break-word;
+        }
+
         footer {
             text-align: center;
             padding: 2rem 0;
@@ -500,21 +654,27 @@
 <body>
 
 <div class="watercolor-container">
-    <div class="watercolor-blob blob-top-left" style="width: 350px; height: 350px;"></div>
-    <div class="watercolor-blob blob-top-left" style="width: 200px; height: 200px; background: #ffdee9; opacity: 0.3;"></div>
-    
-    <div class="watercolor-blob blob-bottom-right" style="width: 400px; height: 400px;"></div>
-    <div class="watercolor-blob blob-bottom-right" style="width: 250px; height: 250px; background: #e0c3fc; opacity: 0.3;"></div>
+    <div class="watercolor-blob blob-top-left" style="width: 40vw; height: 40vw;"></div>
+    <div class="watercolor-blob blob-top-left" style="width: 22vw; height: 22vw; background: #ffdee9; opacity: 0.3;"></div>
+
+    <div class="watercolor-blob blob-bottom-right" style="width: 45vw; height: 45vw;"></div>
+    <div class="watercolor-blob blob-bottom-right" style="width: 28vw; height: 28vw; background: #e0c3fc; opacity: 0.3;"></div>
 </div>
 
 <nav class="navbar">
     <a href="/" class="nav-logo">Soeun Lee</a>
-    <ul class="nav-links">
-        <li><a href="#home" class="nav-item active" onclick="scrollToSection('home')">Home</a></li>
-        <li><a href="#about" class="nav-item" onclick="scrollToSection('about')">About</a></li>
-        <li><a href="#projects" class="nav-item" onclick="scrollToSection('projects')">Projects</a></li>
-        <li><a href="#contact" class="nav-item" onclick="scrollToSection('contact')">Contact</a></li>
-    </ul>
+    <div class="nav-kebab">
+        <button class="kebab-btn" onclick="toggleDropdown()">
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+        </button>
+        <ul class="nav-dropdown" id="navDropdown">
+            <li><a href="#home" class="nav-item active" onclick="scrollToSection('home')">Home</a></li>
+            <li><a href="#about" class="nav-item" onclick="scrollToSection('about')">About</a></li>
+            <li><a href="#projects" class="nav-item" onclick="scrollToSection('projects')">Projects</a></li>
+            <li><a href="#contact" class="nav-item" onclick="scrollToSection('contact')">Contact</a></li>
+            <li><a href="#comments" class="nav-item" onclick="scrollToSection('comments')">Comments</a></li>
+        </ul>
+    </div>
 </nav>
 
 <main class="container">
@@ -525,8 +685,8 @@
                 <p class="role">National defense XR - student</p>
             </header>
             <div class="about-card">
-                <h2><i class="fa-solid fa-rocket"></i> Welcome</h2>
-                <p>안녕하세요! 기술과 콘텐츠의 융합을 연구하는 이소은입니다.</p>
+                <h2><i class="fa-solid fa-hand wave-hand"></i> Welcome</h2>
+                <p>안녕하세요 :> <br>기술과 콘텐츠의 융합을 연구하는 이소은입니다.</p>
             </div>
         </div>
     </div>
@@ -543,7 +703,7 @@
                 <h3 style="color: var(--primary-color); margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 10px;">
                     <i class="fa-solid fa-bullseye"></i> Vision
                 </h3>
-                <p>기술로 사람과 사회를 연결하는 혁신적인 XR 전문가가 되는 것</p>
+                <p>기술로 사람과 사회를 연결하는 혁신적인 XR 전문가가 되고자 합니다.</p>
             </div>
         </section>
 
@@ -554,7 +714,7 @@
         </div>
         <div class="about-item">
             <h3><i class="fa-solid fa-screwdriver-wrench"></i> Skills</h3>
-            <p><strong>Programming</strong><br>-python</p><br><p><strong>Certifications</strong><br>-한국사능력검정시험 3급<br>-토익(공부중)<br>-컴퓨터활용능력(공부중)</p>
+            <p><strong>Programming</strong><br>-python</p><br><p><strong>Certifications</strong><br>-한국사능력검정시험 3급<br>-토익(공부중)<br>-컴퓨터활용능력(공부중)<br>CPR 교육 일반인 심화과정 수료</p>
         </div>
         <div class="about-item">
             <h3><i class="fa-solid fa-briefcase"></i> Experience</h3>
@@ -633,7 +793,7 @@
                 <img src="ddddddddddddddddddddddddddddd.jpg" alt="역사를 바꾸다 백강전투" class="card-img">
                 <div class="card-content">
                     <i class="fa-solid fa-eye"></i>
-                    <h3>&lt;역사를 바꾸다 : 백강전투&gt; VR역사전략RPG게임 기획서</h3>
+                    <h3>&lt;역사를 바꾸다 : 백강전투&gt; VR역사전략RPG게임 기획</h3>
                     <p>XR콘텐츠문화지형도</p>
                 </div>
             </article>
@@ -651,6 +811,14 @@
                     <i class="fa-solid fa-hand-pointer"></i>
                     <h3>Pseudo-Haptic, Multimodal Feedback 어떤 기술일까?</h3>
                     <p>실감미디어컴퓨팅개론</p>
+                </div>
+            </article>
+            <article class="card" style="cursor:pointer;" onclick="window.open('https://app.notion.com/p/387ec9659a8480729e02da7ec0182b2e?source=copy_link', '_blank')">
+                <img src="스크린샷 2026-06-22 123407.png" alt="나를 들여다보는 인정과 자기이해" class="card-img">
+                <div class="card-content">
+                    <i class="fa-solid fa-person-circle-question"></i>
+                    <h3>나를 들여다보는 인정과 자기이해</h3>
+                    <p>DYC_인간에 대한 다학문적 이해</p>
                 </div>
             </article>
         </section>
@@ -685,15 +853,37 @@
             </div>
         </section>
     </div>
+    <div id="comments" class="comments-section">
+        <h2 class="section-title" style="font-size:1.8rem; margin-bottom:1.5rem;">Comments</h2>
+        <div class="comment-form">
+            <input id="comment-name" type="text" placeholder="닉네임" maxlength="20">
+            <textarea id="comment-text" placeholder="댓글을 남겨주세요 :)"></textarea>
+            <button class="comment-submit" onclick="submitComment()">남기기</button>
+        </div>
+        <div id="comments-list">
+            <p style="text-align:center; color:var(--text-light); font-size:0.9rem;">아직 댓글이 없어요. 첫 번째 댓글을 남겨보세요!</p>
+        </div>
+    </div>
 </main>
 
 <footer>
-    <p>&copy; 2026 Soeun Lee & DXP Lab. All rights reserved.</p>
+    <p>&copy; 2026 Soeun Lee & Konyang University National Defense XR. All rights reserved.</p>
 </footer>
 
 <script>
+    function toggleDropdown() {
+        document.getElementById('navDropdown').classList.toggle('open');
+    }
+
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.nav-kebab')) {
+            document.getElementById('navDropdown').classList.remove('open');
+        }
+    });
+
     function scrollToSection(sectionId) {
         event.preventDefault();
+        document.getElementById('navDropdown').classList.remove('open');
         document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
     }
 
@@ -714,33 +904,37 @@
 
     sections.forEach(section => observer.observe(section));
 
-    // 이스터에그: Soeun Lee 글자 흩어짐
-    const heroH1 = document.querySelector('#home .hero h1');
-    if (heroH1) {
-        heroH1.innerHTML = heroH1.textContent.split('').map(char =>
+    // 이스터에그: 글자 흩어짐
+    function makeScatter(el, isGradient) {
+        el.innerHTML = el.textContent.split('').map(char =>
             char === ' '
-                ? `<span class="letter" style="display:inline-block;min-width:0.35em">&nbsp;</span>`
-                : `<span class="letter">${char}</span>`
+                ? `<span style="display:inline-block;min-width:0.35em"> </span>`
+                : isGradient
+                    ? `<span class="sl" style="display:inline-block;transition:transform 0.85s cubic-bezier(0.23,1,0.32,1),opacity 0.85s ease;-webkit-text-fill-color:#e3a6b9;color:#e3a6b9;">${char}</span>`
+                    : `<span class="sl" style="display:inline-block;transition:transform 0.85s cubic-bezier(0.23,1,0.32,1),opacity 0.85s ease;">${char}</span>`
         ).join('');
+    }
 
-        const letters = heroH1.querySelectorAll('.letter');
+    const heroH1 = document.querySelector('#home .hero h1');
+    const heroRole = document.querySelector('#home .hero .role');
+    if (heroH1) makeScatter(heroH1, true);
+    if (heroRole) makeScatter(heroRole, false);
 
-        heroH1.addEventListener('mouseenter', () => {
-            letters.forEach((letter) => {
+    const hero = document.querySelector('#home .hero');
+    if (hero) {
+        const allLetters = hero.querySelectorAll('.sl');
+        hero.addEventListener('mouseenter', () => {
+            allLetters.forEach(letter => {
                 const angle = Math.random() * Math.PI * 2;
-                const dist = 200 + Math.random() * 400;
-                const x = Math.cos(angle) * dist;
-                const y = Math.sin(angle) * dist;
-                const rotate = (Math.random() - 0.5) * 720;
-                letter.style.transitionDelay = `${Math.random() * 150}ms`;
-                letter.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg) scale(0.3)`;
+                const dist = 80 + Math.random() * 180;
+                letter.style.transitionDelay = `${Math.random() * 200}ms`;
+                letter.style.transform = `translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist}px) rotate(${(Math.random()-0.5)*360}deg) scale(0.2)`;
                 letter.style.opacity = '0';
             });
         });
-
-        heroH1.addEventListener('mouseleave', () => {
-            letters.forEach((letter) => {
-                letter.style.transitionDelay = `${Math.random() * 200}ms`;
+        hero.addEventListener('mouseleave', () => {
+            allLetters.forEach(letter => {
+                letter.style.transitionDelay = `${Math.random() * 250}ms`;
                 letter.style.transform = '';
                 letter.style.opacity = '';
             });
@@ -776,6 +970,80 @@
             }
         });
     });
+</script>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+    // ⬇ Firebase 설정값을 아래에 채워주세요
+    const firebaseConfig = {
+        apiKey: "AIzaSyDA6rOuvBpxKryXqLS-AeuRLe-uCE71QbY",
+        authDomain: "website-a92c1.firebaseapp.com",
+        databaseURL: "https://website-a92c1-default-rtdb.firebaseio.com",
+        projectId: "website-a92c1",
+        storageBucket: "website-a92c1.firebasestorage.app",
+        messagingSenderId: "191800118773",
+        appId: "1:191800118773:web:db435f7b028060ce1824bc"
+    };
+
+    function escapeHtml(str) {
+        return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
+    let db = null;
+    try {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.database();
+
+        db.ref('comments').orderByChild('timestamp').on('value', (snapshot) => {
+            const list = document.getElementById('comments-list');
+            const comments = [];
+            snapshot.forEach(child => comments.push({ _key: child.key, ...child.val() }));
+            if (comments.length === 0) {
+                list.innerHTML = '<p style="text-align:center; color:var(--text-light); font-size:0.9rem;">아직 댓글이 없어요. 첫 번째 댓글을 남겨보세요!</p>';
+                return;
+            }
+            list.innerHTML = comments.reverse().map(c => {
+                const date = new Date(c.timestamp).toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' });
+                return `
+                    <div class="comment-item">
+                        <div class="comment-meta">
+                            <span class="comment-name">${escapeHtml(c.name)}</span>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <span class="comment-date">${date}</span>
+                                <button onclick="deleteComment('${c._key}')" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:0;transition:color 0.2s;" title="삭제">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="comment-text">${escapeHtml(c.text)}</p>
+                    </div>`;
+            }).join('');
+        });
+    } catch(e) {
+        console.warn('Firebase 설정이 필요합니다.');
+    }
+
+    function deleteComment(key) {
+        const pw = prompt('관리자 비밀번호를 입력하세요:');
+        if (pw === null) return;
+        if (pw === 'password') {
+            db.ref('comments/' + key).remove();
+        } else {
+            alert('비밀번호가 틀렸어요.');
+        }
+    }
+
+    function submitComment() {
+        if (!db) { alert('Firebase 설정이 필요합니다.'); return; }
+        const name = document.getElementById('comment-name').value.trim();
+        const text = document.getElementById('comment-text').value.trim();
+        if (!name) { alert('닉네임을 입력해주세요!'); return; }
+        if (!text) { alert('댓글 내용을 입력해주세요!'); return; }
+        db.ref('comments').push({ name, text, timestamp: Date.now() });
+        document.getElementById('comment-name').value = '';
+        document.getElementById('comment-text').value = '';
+    }
 </script>
 
 </body>
