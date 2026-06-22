@@ -9,11 +9,11 @@
     
     <style>
         :root {
-            --primary-rose: #e6a4b4; /* 더 연하고 맑은 로즈 */
-            --primary-color: #e3a6b9; /* 채도를 낮춘 연한 로즈 */
+            --primary-rose: #e6a4b4;
+            --primary-color: #e3a6b9;
             --accent-light: #fff0f3;
-            --text-color: #b08d96; /* 연하고 부드러운 핑크빛 브라운 */
-            --text-light: #d1b8bd; /* 아주 연한 핑크 그레이 */
+            --text-color: #b08d96;
+            --text-light: #d1b8bd;
             --bg-color: #ffffff;
             --white: #ffffff;
             --transition: all 0.3s ease;
@@ -54,34 +54,30 @@
         .watercolor-blob {
             position: absolute;
             border-radius: 50%;
-            /* 흐림 효과를 크기에 맞춰 약간 줄여 더 선명하게 만듦 */
-            filter: blur(60px); 
+            filter: blur(60px);
             opacity: 0.45;
-            mix-blend-mode: multiply; /* 색상이 겹칠 때 더 수채화처럼 맑게 섞임 */
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); /* 쫀득한 액체 느낌 */
+            mix-blend-mode: multiply;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             pointer-events: none;
         }
 
-        /* 기본 숨쉬는 듯한 애니메이션 추가 */
         @keyframes pulse {
             0% { border-radius: 50% 50% 50% 50%; }
             50% { border-radius: 45% 55% 48% 52%; }
             100% { border-radius: 50% 50% 50% 50%; }
         }
 
-        /* 왼쪽 상단 번짐 */
         .blob-top-left {
-            top: 10%; /* 위치를 살짝 아래로 조정 */
-            left: 10%; /* 위치를 살짝 오른쪽으로 조정 */
-            background: radial-gradient(circle, #ffb7c5 0%, rgba(255,183,197,0) 70%); /* 더 진한 핑크 */
+            top: 10%;
+            left: 10%;
+            background: radial-gradient(circle, #ffb7c5 0%, rgba(255,183,197,0) 70%);
             animation: pulse 10s infinite alternate ease-in-out;
         }
 
-        /* 오른쪽 하단 번짐 */
         .blob-bottom-right {
             bottom: -5%;
             right: 10%;
-            background: radial-gradient(circle, #c3a6ff 0%, rgba(195,166,255,0) 70%); /* 더 진한 보라 */
+            background: radial-gradient(circle, #c3a6ff 0%, rgba(195,166,255,0) 70%);
             animation: pulse 12s infinite alternate-reverse ease-in-out;
         }
 
@@ -245,7 +241,7 @@
             display: block;
             min-height: 100vh;
             padding-top: 20px;
-            padding-bottom: 6rem;
+            padding-bottom: 10rem;
             box-sizing: border-box;
             scroll-margin-top: 85px;
         }
@@ -304,7 +300,7 @@
 
         /* About Section */
         .about-card {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.04);
             backdrop-filter: blur(30px) saturate(150%);
             -webkit-backdrop-filter: blur(30px) saturate(150%);
             border-radius: 12px;
@@ -394,7 +390,7 @@
 
         .accordion-body {
             overflow: hidden;
-            max-height: 2000px;
+            max-height: 5000px;
             transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
             opacity: 1;
             margin-top: 1.5rem;
@@ -696,7 +692,7 @@
 </div>
 
 <nav class="navbar">
-    <a href="/" class="nav-logo">Soeun Lee</a>
+    <a href="/" class="nav-logo">portfolio</a>
     <div style="display:flex; align-items:center; gap:16px;">
     <span style="display:flex; align-items:center; gap:5px; font-size:0.9rem; color:var(--text-light);">
         <i class="fa-solid fa-user"></i>
@@ -738,7 +734,7 @@
 
     <div id="about" class="content-page">
         <section class="about-card">
-            <h2><i class="fa-solid fa-user-tie"></i> About Me</h2>
+            <h2 onclick="aboutMeClick(event)" style="cursor:default; user-select:none;"><i class="fa-solid fa-user-tie"></i> About Me</h2>
             <p>
                 저는 건양대학교 AI·SW융합대학 국방XR학부 학생으로,<br>
                 <strong>XR · 디지털 콘텐츠 · 사용자 경험</strong>에 관심을 가지고 있습니다.
@@ -759,7 +755,7 @@
         </div>
         <div class="about-item">
             <h3><i class="fa-solid fa-screwdriver-wrench"></i> Skills</h3>
-            <p><strong>Programming</strong><br>-python</p><br><p><strong>Certifications</strong><br>-한국사능력검정시험 3급<br>-토익(공부중)<br>-컴퓨터활용능력(공부중)<br>CPR 교육 일반인 심화과정 수료</p>
+            <p><strong>Programming</strong><br>Python<br>C++<br>Lua<br>HTML/CSS/JavaScript</p><br><p><strong>Certifications</strong><br>-한국사능력검정시험 3급<br>-토익(공부중)<br>-컴퓨터활용능력(공부중)<br>CPR 교육 일반인 심화과정 수료</p>
         </div>
         <div class="about-item">
             <h3><i class="fa-solid fa-briefcase"></i> Experience</h3>
@@ -833,7 +829,7 @@
                 <img src="제목을 입력해주세요. (10).png" alt="escape the maze 메이즈러너" class="card-img">
                 <div class="card-content">
                     <i class="fa-solid fa-shield-halved"></i>
-                    <h3>Escape the Maze : 메이즈러너</h3>
+                    <h3>Escape the Maze : 메이즈러너 (곧 링크 연결하겠습니다!)</h3>
                     <p>메타버스프로그래밍</p>
                 </div>
             </article>
@@ -869,11 +865,20 @@
                     <p>DYC_인간에 대한 다학문적 이해</p>
                 </div>
             </article>
-            <article class="card">
-                <div class="card-content" style="padding: 2rem;">
-                    <i class="fa-solid fa-code"></i>
-                    <h3>프로젝트 이름</h3>
-                    <p>설명을 입력하세요.</p>
+            <article class="card" style="cursor:pointer;" onclick="window.open('https://app.notion.com/p/SDGs-387ec9659a84809f9b99f43df9e1f613?source=copy_link', '_blank')">
+                <img src="스크린샷 2026-06-22 175912.png" alt="배 부른 재활용 SDGs" class="card-img">
+                <div class="card-content">
+                    <i class="fa-solid fa-recycle"></i>
+                    <h3>못난이 농산물 재활용을 통한 취약계층 식사 지원 정책 제안</h3>
+                    <p>SDGs 지역사회 문제해결</p>
+                </div>
+            </article>
+            <article class="card" style="cursor:pointer;" onclick="window.open('https://www.youtube.com/shorts/YOHrg-G4kqQ', '_blank')">
+                <img src="https://img.youtube.com/vi/YOHrg-G4kqQ/0.jpg" alt="초록빛 별의 노래" class="card-img">
+                <div class="card-content">
+                    <i class="fa-brands fa-youtube" style="color:#e3a6b9;"></i>
+                    <h3>초록빛 별의 노래(시카고 패러디)</h3>
+                    <p>DYT_뮤지컬</p>
                 </div>
             </article>
         </section>
@@ -958,7 +963,7 @@
     </div>
     <div id="contact" class="content-page">
         <section class="contact-section">
-            <h2>Let's Connect</h2>
+            <h2 id="connect-title" onclick="connectClick(event)" style="cursor:default; user-select:none;">Let's Connect</h2>
             <p style="margin-top: 10px; color: var(--text-light);">제 프로젝트와 활동에 관심이 있으시거나 함께 이야기 나누고 싶으시다면 언제든 연락주세요 :></p>
             <div class="contact-links">
                 <a href="mailto:isoeun0220@gmail.com" class="btn btn-outline">
@@ -1096,11 +1101,17 @@
 
     function commentHtml(c) {
         const date = new Date(c.timestamp).toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' });
-        return `<div class="comment-item">
-            <div class="comment-meta">
+        const pinColor = c.pinned ? 'var(--primary-color)' : 'var(--text-light)';
+        const pinTitle = c.pinned ? '핀 해제' : '핀 꽂기';
+        return `<div class="comment-item" style="${c.pinned ? 'border:1px solid var(--primary-color); position:relative;' : ''}">
+            ${c.pinned ? `<span style="position:absolute; top:10px; left:14px; font-size:0.72rem; color:var(--primary-color); font-weight:700; letter-spacing:1px;">📌 고정됨</span>` : ''}
+            <div class="comment-meta" style="${c.pinned ? 'margin-top:1rem;' : ''}">
                 <span class="comment-name">${escapeHtml(c.name)}</span>
                 <div style="display:flex; align-items:center; gap:12px;">
                     <span class="comment-date">${date}</span>
+                    <button onclick="pinComment('${c._key}', ${!!c.pinned})" style="background:none;border:none;cursor:pointer;color:${pinColor};font-size:0.85rem;padding:0;transition:color 0.2s;" title="${pinTitle}">
+                        <i class="fa-solid fa-thumbtack"></i>
+                    </button>
                     <button onclick="deleteComment('${c._key}')" style="background:none;border:none;cursor:pointer;color:var(--text-light);font-size:0.85rem;padding:0;transition:color 0.2s;" title="삭제">
                         <i class="fa-regular fa-trash-can"></i>
                     </button>
@@ -1117,12 +1128,13 @@
             return;
         }
         const comments = Object.entries(data).map(([key, val]) => ({ _key: key, ...val }));
-        comments.sort((a, b) => b.timestamp - a.timestamp);
+        const pinned = comments.filter(c => c.pinned).sort((a, b) => b.timestamp - a.timestamp);
+        const normal = comments.filter(c => !c.pinned).sort((a, b) => b.timestamp - a.timestamp);
 
-        const top2 = comments.slice(0, 2);
-        const rest = comments.slice(2);
+        const top2 = normal.slice(0, 2);
+        const rest = normal.slice(2);
 
-        let html = top2.map(commentHtml).join('');
+        let html = pinned.map(commentHtml).join('') + top2.map(commentHtml).join('');
 
         if (rest.length > 0) {
             html += `
@@ -1175,6 +1187,19 @@
         .catch(err => alert('저장 실패: ' + err.message));
     }
 
+    function pinComment(key, isPinned) {
+        const pw = prompt('관리자 비밀번호를 입력하세요:');
+        if (pw === null) return;
+        if (pw !== 'password') { alert('비밀번호가 틀렸어요.'); return; }
+        fetch(`${DB_URL}/comments/${key}.json`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ pinned: !isPinned })
+        })
+        .then(() => loadComments())
+        .catch(err => alert('핀 실패: ' + err.message));
+    }
+
     function deleteComment(key) {
         const pw = prompt('관리자 비밀번호를 입력하세요:');
         if (pw === null) return;
@@ -1196,6 +1221,7 @@
     let started = false;
 
     musicIcon.className = 'fa-solid fa-volume-high';
+
 
     function toggleMusic() {
         if (musicOn) {
@@ -1222,7 +1248,9 @@
 
     // 일별 방문자 카운트
     function trackVisit() {
-        const today = new Date().toISOString().slice(0, 10); // "2026-06-22"
+        const now = new Date();
+        const kst = new Date(now.getTime() + 9 * 60 * 60 * 1000);
+        const today = kst.toISOString().slice(0, 10);
         const visitUrl = `${DB_URL}/visits/${today}.json`;
         fetch(visitUrl, {
             method: 'PUT',
@@ -1239,7 +1267,219 @@
     }
     trackVisit();
 
+    // About Me 이스터에그: 5번 클릭 → TMI 퀴즈
+    let aboutClickCount = 0;
+    let aboutClickTimer = null;
+    function aboutMeClick(e) {
+        aboutClickCount++;
+        clearTimeout(aboutClickTimer);
+        aboutClickTimer = setTimeout(() => { aboutClickCount = 0; }, 1500);
+        if (aboutClickCount >= 5) { aboutClickCount = 0; openQuiz(); }
+    }
+
+    const quizData = [
+        { q: 'Q1. 내가 다녀온 여행지는?',                  opts: ['대만', '필리핀', '중국-상하이'],                answer: 0 },
+        { q: 'Q2. 내가 시험 전날 가장 많이 하는 생각은?',  opts: ['진짜 망했다?', '어떡하지?', '아직 하루나 남았네~'], answer: 1 },
+        { q: 'Q3. 내 생일은?',                             opts: ['0223', '0202', '0220'],                       answer: 2 },
+    ];
+    const optNums = ['①', '②', '③'];
+    let quizAnswers = [null, null, null];
+
+    function openQuiz() {
+        quizAnswers = [null, null, null];
+        const qc = document.getElementById('quiz-questions');
+        qc.innerHTML = quizData.map((q, qi) =>
+            `<div style="margin-bottom:1.4rem;">
+                <p style="font-weight:700; color:var(--text-color); margin-bottom:0.6rem; font-size:0.95rem;">${q.q}</p>
+                <div style="display:flex; flex-direction:column; gap:7px;">
+                    ${q.opts.map((opt, oi) =>
+                        `<button id="q${qi}o${oi}" onclick="selectAnswer(${qi},${oi})"
+                            style="background:rgba(255,255,255,0.6); border:1.5px solid rgba(230,164,180,0.35); border-radius:10px; padding:9px 14px; text-align:left; cursor:pointer; color:var(--text-color); font-family:inherit; font-size:0.88rem; transition:all 0.2s; width:100%;">
+                            <span style="color:var(--primary-color); font-weight:700; margin-right:6px;">${optNums[oi]}</span>${opt}
+                        </button>`
+                    ).join('')}
+                </div>
+            </div>`
+        ).join('') + `<button id="quiz-submit" onclick="showFinalResult()" disabled
+            style="width:100%; margin-top:0.5rem; padding:11px; border-radius:12px; border:none; background:rgba(230,164,180,0.3); color:var(--text-light); font-family:inherit; font-size:0.95rem; font-weight:700; cursor:not-allowed; transition:all 0.2s;">
+            제출하기
+        </button>`;
+        document.getElementById('tmi-overlay').style.display = 'flex';
+    }
+
+    function selectAnswer(qi, oi) {
+        quizAnswers[qi] = oi;
+        // 같은 문제 내 버튼 선택 상태 갱신 (재선택 가능)
+        quizData[qi].opts.forEach((_, i) => {
+            const btn = document.getElementById('q' + qi + 'o' + i);
+            if (i === oi) {
+                btn.style.borderColor = 'var(--primary-color)';
+                btn.style.background = 'rgba(230,164,180,0.18)';
+            } else {
+                btn.style.borderColor = 'rgba(230,164,180,0.35)';
+                btn.style.background = 'rgba(255,255,255,0.6)';
+                btn.style.opacity = '1';
+            }
+        });
+        // 3문제 모두 선택됐을 때 제출 버튼 활성화
+        const submitBtn = document.getElementById('quiz-submit');
+        if (quizAnswers.every(a => a !== null)) {
+            submitBtn.disabled = false;
+            submitBtn.style.background = 'var(--primary-color)';
+            submitBtn.style.color = '#fff';
+            submitBtn.style.cursor = 'pointer';
+        }
+    }
+
+    function showFinalResult() {
+        closeQuiz();
+        const allCorrect = quizAnswers.every((a, i) => a === quizData[i].answer);
+
+        const overlay = document.createElement('div');
+        overlay.style.cssText = 'position:fixed; inset:0; z-index:10000; background:rgba(200,150,168,0.18); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center;';
+        overlay.onclick = (e) => { if (e.target === overlay) overlay.remove(); };
+
+        const box = document.createElement('div');
+        box.style.cssText = 'background:rgba(255,255,255,0.9); backdrop-filter:blur(30px) saturate(150%); border:1px solid rgba(255,255,255,0.7); border-radius:24px; padding:2.5rem 3rem; max-width:360px; width:90%; box-shadow:0 20px 60px rgba(192,108,132,0.25); position:relative; text-align:center;';
+
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = '×';
+        closeBtn.style.cssText = 'position:absolute; top:14px; right:18px; background:none; border:none; font-size:1.5rem; color:var(--text-light); cursor:pointer; font-family:inherit; line-height:1;';
+        closeBtn.onclick = () => overlay.remove();
+
+        if (allCorrect) {
+            box.innerHTML = '<p style="font-size:2.2rem; margin-bottom:0.8rem;">🎊</p><p style="font-weight:800; color:var(--primary-color); font-size:1.2rem; margin-bottom:8px;">축하합니다!</p><p style="color:var(--text-color); font-size:0.9rem;">제 연락처로 <strong>123</strong>이라고 보내주세요!!</p>';
+            box.appendChild(closeBtn);
+            overlay.appendChild(box);
+            document.body.appendChild(overlay);
+            launchConfetti();
+        } else {
+            box.innerHTML = '<p style="font-size:2.2rem; margin-bottom:0.8rem;">😭</p><p style="font-weight:800; color:var(--text-color); font-size:1.1rem;">아쉬워요 ㅜㅜ</p>';
+            box.appendChild(closeBtn);
+            overlay.appendChild(box);
+            document.body.appendChild(overlay);
+            launchCryingRain();
+        }
+    }
+
+    function launchCryingRain() {
+        const faces = ['😭', '😢'];
+        for (let i = 0; i < 40; i++) {
+            setTimeout(() => {
+                const el = document.createElement('div');
+                el.textContent = faces[Math.floor(Math.random() * faces.length)];
+                el.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-50px; font-size:${1.1 + Math.random()*0.9}rem; pointer-events:none; z-index:10001;`;
+                document.body.appendChild(el);
+                const dur = 1000 + Math.random() * 1200;
+                requestAnimationFrame(() => requestAnimationFrame(() => {
+                    el.style.transition = `top ${dur}ms linear, opacity 300ms ease ${dur - 300}ms`;
+                    el.style.top = (window.innerHeight + 60) + 'px';
+                    el.style.opacity = '0';
+                }));
+                setTimeout(() => el.remove(), dur + 350);
+            }, Math.random() * 2500);
+        }
+    }
+
+    function closeQuiz() { document.getElementById('tmi-overlay').style.display = 'none'; }
+
+    function launchConfetti() {
+        const colors = ['#e3a6b9', '#f9c8d4', '#ffd166', '#ff9eb5', '#a78bfa', '#7dd3fc', '#86efac', '#ffb347'];
+        for (let i = 0; i < 90; i++) {
+            setTimeout(() => {
+                const el = document.createElement('div');
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const size = 7 + Math.random() * 7;
+                const isRect = Math.random() > 0.5;
+                el.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-20px; width:${size}px; height:${isRect ? size*2.5 : size}px; background:${color}; border-radius:${isRect ? '3px' : '50%'}; pointer-events:none; z-index:10002; transform:rotate(${Math.random()*360}deg);`;
+                document.body.appendChild(el);
+                const dur = 1600 + Math.random() * 1400;
+                const dx = (Math.random() - 0.5) * 200;
+                requestAnimationFrame(() => requestAnimationFrame(() => {
+                    el.style.transition = `top ${dur}ms cubic-bezier(0.3, 0, 0.8, 1), transform ${dur}ms ease, opacity 400ms ease ${dur - 400}ms`;
+                    el.style.top = (window.innerHeight + 30) + 'px';
+                    el.style.transform = `translateX(${dx}px) rotate(${Math.random()*720}deg)`;
+                    el.style.opacity = '0';
+                }));
+                setTimeout(() => el.remove(), dur + 450);
+            }, Math.random() * 700);
+        }
+    }
+
+    // Let's Connect 이스터에그: 5번 클릭 → 하트 파티클 폭발
+    let connectClickCount = 0;
+    let connectClickTimer = null;
+
+    function connectClick(e) {
+        connectClickCount++;
+        clearTimeout(connectClickTimer);
+        connectClickTimer = setTimeout(() => { connectClickCount = 0; }, 1500);
+
+        if (connectClickCount >= 5) {
+            connectClickCount = 0;
+            launchHearts(e.clientX, e.clientY);
+        }
+    }
+
+    function launchHearts(originX, originY) {
+        const iconTypes = ['fa-heart', 'fa-heart', 'fa-heart', 'fa-star', 'fa-star'];
+        const colors = ['#e3a6b9', '#e6a4b4', '#f0bece', '#d49aac', '#f5d0da', '#c990a8'];
+        for (let i = 0; i < 28; i++) {
+            const el = document.createElement('i');
+            el.className = 'fa-solid ' + iconTypes[Math.floor(Math.random() * iconTypes.length)];
+            const size = 0.75 + Math.random() * 0.85;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            el.style.cssText = `
+                position: fixed;
+                left: ${originX}px;
+                top: ${originY}px;
+                font-size: ${size}rem;
+                color: ${color};
+                pointer-events: none;
+                z-index: 9999;
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 1;
+            `;
+            document.body.appendChild(el);
+
+            const angle = (Math.random() * 360) * (Math.PI / 180);
+            const dist = 130 + Math.random() * 220;
+            const dx = Math.cos(angle) * dist;
+            const dy = Math.sin(angle) * dist - 40;
+            const flyDuration = 550 + Math.random() * 350;
+            const rotation = (Math.random() - 0.5) * 80;
+
+            // 팡! — 먼저 빠르게 튀어오른 뒤 사방으로 날아가며 사라짐
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    el.style.transition = `transform 160ms cubic-bezier(0.34, 1.56, 0.64, 1)`;
+                    el.style.transform = `translate(-50%, -50%) scale(1.4)`;
+
+                    setTimeout(() => {
+                        el.style.transition = `transform ${flyDuration}ms cubic-bezier(0.05, 0.7, 0.3, 1), opacity ${flyDuration * 0.65}ms ease ${flyDuration * 0.25}ms`;
+                        el.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(0.85) rotate(${rotation}deg)`;
+                        el.style.opacity = '0';
+                    }, 160);
+                });
+            });
+
+            setTimeout(() => el.remove(), flyDuration + 220);
+        }
+    }
+
 </script>
+
+<!-- TMI 퀴즈 모달 -->
+<div id="tmi-overlay" onclick="if(event.target===this)closeQuiz()" style="display:none; position:fixed; inset:0; z-index:10000; background:rgba(200,150,168,0.18); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); align-items:center; justify-content:center;">
+    <div style="background:rgba(255,255,255,0.9); backdrop-filter:blur(30px) saturate(150%); -webkit-backdrop-filter:blur(30px) saturate(150%); border:1px solid rgba(255,255,255,0.7); border-radius:24px; padding:2rem 2.5rem; max-width:460px; width:92%; box-shadow:0 20px 60px rgba(192,108,132,0.25); position:relative; max-height:90vh; overflow-y:auto;">
+        <button onclick="closeQuiz()" style="position:absolute; top:14px; right:18px; background:none; border:none; font-size:1.5rem; color:var(--text-light); cursor:pointer; line-height:1; font-family:inherit;">×</button>
+        <div style="text-align:center; margin-bottom:1.8rem;">
+            <p style="font-size:1.3rem; font-weight:800; color:var(--primary-color);">TMI 퀴즈!</p>
+            <p style="font-size:0.85rem; color:var(--text-light); margin-top:5px;">다 맞추면 선물 드려요 :-></p>
+        </div>
+        <div id="quiz-questions"></div>
+    </div>
+</div>
 
 </body>
 </html>
