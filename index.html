@@ -241,7 +241,7 @@
             display: block;
             min-height: 100vh;
             padding-top: 20px;
-            padding-bottom: 10rem;
+            padding-bottom: 22rem;
             box-sizing: border-box;
             scroll-margin-top: 85px;
         }
@@ -755,7 +755,7 @@
         </div>
         <div class="about-item">
             <h3><i class="fa-solid fa-screwdriver-wrench"></i> Skills</h3>
-            <p><strong>Programming</strong><br>Python<br>C++<br>Lua<br>HTML/CSS/JavaScript</p><br><p><strong>Certifications</strong><br>-한국사능력검정시험 3급<br>-토익(공부중)<br>-컴퓨터활용능력(공부중)<br>CPR 교육 일반인 심화과정 수료</p>
+            <p><strong>Programming</strong><br>Python<br>C++<br>Lua<br>HTML/CSS/JavaScript</p><br><p><strong>Certifications</strong><br>- 태권도 4단<br>- 한국사능력검정시험 3급<br>- 운전면허증 1종<br>- CPR 교육 일반인 심화과정 수료<br>- ACP Photoshop</p>
         </div>
         <div class="about-item">
             <h3><i class="fa-solid fa-briefcase"></i> Experience</h3>
@@ -825,11 +825,11 @@
         </h3>
         <div class="accordion-body">
         <section class="card-grid">
-            <article class="card">
+            <article class="card" style="cursor:pointer;" onclick="window.open('https://www.roblox.com/ko/games/71383658861677/MazeRunner-map', '_blank')">
                 <img src="제목을 입력해주세요. (10).png" alt="escape the maze 메이즈러너" class="card-img">
                 <div class="card-content">
                     <i class="fa-solid fa-shield-halved"></i>
-                    <h3>Escape the Maze : 메이즈러너 (곧 링크 연결하겠습니다!)</h3>
+                    <h3>Escape the Maze : 메이즈러너</h3>
                     <p>메타버스프로그래밍</p>
                 </div>
             </article>
@@ -926,7 +926,7 @@
                 </div>
             </article>
 
-            <article class="card" onclick="window.open('tarot.html', '_blank')" style="cursor:pointer;">
+            <article class="card" onclick="window.open('https://soeun-00.github.io/tarot-frontend/', '_blank')" style="cursor:pointer;">
                 <div class="card-image" style="background: linear-gradient(135deg, #fff0f5 0%, #f3eeff 100%); display:flex; align-items:center; justify-content:center; min-height:160px; position:relative; overflow:hidden;">
                     <div style="text-align:center;">
                         <div style="font-size:4.5rem; line-height:1;">🃏</div>
@@ -936,9 +936,9 @@
                 <div class="card-content">
                     <div style="display:flex; align-items:center; gap:8px; margin-bottom:0.5rem;">
                         <i class="fa-solid fa-star" style="color:#e3a6b9;"></i>
-                        <h3 style="margin:0;">타로 카드</h3>
+                        <h3 style="margin:0;">타로 AI (Tarot AI)</h3>
                     </div>
-                    <p>연애·학업·금전·인간관계 고민을 타로 카드로 풀어보는 사이트</p>
+                    <p>인공지능(AI)이 타로카드를 정밀하게 분석하고 풀어주는 사이트</p>
                     <div style="margin-top:1rem; display:flex; gap:8px; flex-wrap:wrap;">
                         <span style="background:#fce4ec; color:#e3a6b9; padding:3px 10px; border-radius:20px; font-size:0.78rem;">HTML</span>
                         <span style="background:#fce4ec; color:#e3a6b9; padding:3px 10px; border-radius:20px; font-size:0.78rem;">CSS</span>
@@ -1266,6 +1266,65 @@
         });
     }
     trackVisit();
+
+    // 부드러운 JS 스크롤 스냅
+    (function() {
+        const sections = ['home', 'about', 'projects', 'comments', 'contact']
+            .map(id => document.getElementById(id)).filter(Boolean);
+        const NAVBAR = 85;
+        let locked = false;
+
+        function pos(s) {
+            const r = s.getBoundingClientRect();
+            return { top: r.top + window.scrollY, height: s.offsetHeight };
+        }
+
+        function snapTo(targetY) {
+            locked = true;
+            window.scrollTo({ top: targetY, behavior: 'smooth' });
+            let fallback = setTimeout(() => { locked = false; cleanup(); }, 1500);
+            function onScroll() {
+                if (Math.abs(window.scrollY - targetY) < 8) { locked = false; cleanup(); }
+            }
+            function cleanup() { clearTimeout(fallback); window.removeEventListener('scroll', onScroll); }
+            window.addEventListener('scroll', onScroll, { passive: true });
+        }
+
+        window.addEventListener('wheel', function(e) {
+            if (locked) return;
+
+            const dir = e.deltaY > 0 ? 1 : -1;
+            const scrollY = window.scrollY;
+            const vh = window.innerHeight;
+
+            // 현재 섹션 (매번 실제 위치로 계산)
+            let curIdx = 0;
+            sections.forEach((s, i) => {
+                if (pos(s).top - NAVBAR <= scrollY + 10) curIdx = i;
+            });
+
+            const { top: curTop, height: curH } = pos(sections[curIdx]);
+
+            // 뷰포트보다 긴 섹션은 경계에서만 스냅
+            if (curH > vh + 80) {
+                const atBottom = scrollY + vh >= curTop + curH - 80;
+                const atTop    = scrollY <= curTop - NAVBAR + 80;
+                if (dir > 0 && !atBottom) return;
+                if (dir < 0 && !atTop) return;
+            }
+
+            const nextIdx = curIdx + dir;
+            if (nextIdx < 0 || nextIdx >= sections.length) return;
+
+            e.preventDefault();
+            const { top: nextTop, height: nextH } = pos(sections[nextIdx]);
+            const isContact = sections[nextIdx].id === 'contact';
+            const targetY = isContact
+                ? nextTop + nextH / 2 - vh / 2
+                : nextTop - NAVBAR;
+            snapTo(Math.max(0, targetY));
+        }, { passive: false });
+    })();
 
     // About Me 이스터에그: 5번 클릭 → TMI 퀴즈
     let aboutClickCount = 0;
