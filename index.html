@@ -186,6 +186,8 @@
             border: 1px solid rgba(255, 255, 255, 0.5);
             box-shadow: 0 20px 50px rgba(192, 108, 132, 0.1);
             position: relative;
+            overflow: hidden;
+            position: relative;
         }
 
         /* Subtle Paper/Grain Texture */
@@ -294,8 +296,8 @@
             .home-grid {
                 grid-template-columns: 1fr;
             }
-            .home-grid .hero { margin-bottom: 2rem; }
-            .home-grid .about-card { margin-bottom: 3rem; }
+            .home-grid .hero { margin-bottom: 1.5rem; }
+            .home-grid .about-card { margin-bottom: 2rem; }
         }
 
         /* About Section */
@@ -621,45 +623,101 @@
 
         /* Mobile Responsive */
         @media (max-width: 768px) {
+            /* Navbar */
             .navbar {
-                padding: 0.8rem 1rem;
-                flex-direction: column;
-                gap: 5px;
+                padding: 0.75rem 1.2rem;
             }
 
             .nav-logo {
-                font-size: 1.2rem;
+                font-size: 1.5rem;
             }
 
-            .nav-links {
-                margin-top: 2px;
-                gap: 5px;
-            }
-
-            .nav-links a {
-                padding: 6px 10px;
-                font-size: 0.85rem;
-            }
-
+            /* Layout */
             .container {
-                margin-top: 0;
+                padding: 0 14px;
             }
 
+            .content-page {
+                padding-bottom: 6rem;
+                min-height: auto;
+            }
+
+            #home {
+                min-height: 100vh;
+                padding-top: 75px;
+            }
+
+            #contact {
+                padding-bottom: 3rem;
+            }
+
+            /* Hero */
             .hero {
-                padding: 5rem 1rem;
+                padding: 3.5rem 1.5rem;
             }
 
             .hero h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
 
+            .hero .role {
+                font-size: 0.8rem;
+                letter-spacing: 1.5px;
+            }
+
+            #logo-photo-card > div {
+                width: 200px !important;
+                height: 200px !important;
+            }
+
+            /* About */
             .about-card {
-                padding: 1.5rem;
+                padding: 2rem 1.5rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 1.2rem;
+            }
+
+            .about-item {
+                padding: 1.5rem 1.2rem;
+            }
+
+            .about-item:only-child {
+                grid-column: span 1;
+            }
+
+            /* Section titles */
+            .section-title {
+                font-size: 1.7rem;
+                margin-bottom: 1.2rem;
+            }
+
+            .semester-title {
+                font-size: 1.15rem;
+                padding: 0.75rem 1rem;
+                margin: 1.5rem 0 0;
+            }
+
+            /* Cards */
+            .card-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .card-img {
+                height: 180px;
+            }
+
+            /* Contact */
+            .contact-section {
+                padding: 2rem 1.5rem;
             }
 
             .contact-links {
                 flex-direction: column;
-                align-items: center;
+                align-items: stretch;
             }
 
             .btn {
@@ -667,16 +725,10 @@
                 justify-content: center;
             }
 
-            .about-grid {
-                grid-template-columns: 1fr; /* 모바일에서는 1열 배치 (위 아래) */
-            }
-
-            .about-item:only-child {
-                grid-column: span 1;
-            }
-
-            .card-grid {
-                grid-template-columns: 1fr; /* 모바일에서는 다시 1열로 */
+            /* Comments */
+            .comment-submit {
+                width: 100%;
+                align-self: stretch;
             }
         }
     </style>
@@ -722,8 +774,13 @@
     <div id="home" class="content-page">
         <div class="home-grid">
             <header class="hero">
-                <h1>Soeun Lee</h1>
-                <p class="role">National defense XR - student</p>
+                <h1 id="hero-name" style="cursor:pointer;">Soeun Lee</h1>
+                <p class="role" id="hero-role" style="cursor:pointer;">National defense XR - student</p>
+                <div id="logo-photo-card" style="display:none; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); z-index:10; opacity:0; transition:opacity 0.35s ease;">
+                    <div style="width:300px; height:300px; overflow:hidden; border-radius:50%; box-shadow:0 12px 40px rgba(192,108,132,0.35);">
+                        <img src="홈페이지 사진.jpg" style="width:100%; height:100%; object-fit:cover; object-position:center center;">
+                    </div>
+                </div>
             </header>
             <div class="about-card">
                 <h2><i class="fa-solid fa-hand wave-hand"></i> Welcome</h2>
@@ -771,9 +828,17 @@
                 <li style="display: flex; align-items: flex-start; gap: 10px;">
                     <i class="fa-solid fa-circle-dot" style="color: var(--primary-color); margin-top: 5px; font-size: 0.7rem;"></i>
                     <div>
-                        <strong>제 23회 대학생 안보토론대회 중고등부 부문 포스터 제작</strong><br>
+                        <strong>제 23회 대학생 안보토론대회 중고등부 부문 포스터 제작(육군사관학교·세종대학교 주관 대회 참가)</strong><br>
                         <span style="color: var(--text-color); font-size: 0.9rem;">한민고 · 정책 제안 및 포스터 제작</span><br>
                         <span style="color: var(--text-light); font-size: 0.85rem;">2024.10</span>
+                    </div>
+                </li>
+                <li style="display: flex; align-items: flex-start; gap: 10px;">
+                    <i class="fa-solid fa-circle-dot" style="color: var(--primary-color); margin-top: 5px; font-size: 0.7rem;"></i>
+                    <div>
+                        <strong>PLAY백제 AI 영상 공모전 참가(백제세계유산센터 주관)</strong><br>
+                        <span style="color: var(--text-color); font-size: 0.9rem;">건양대 · AI를 활용한 게임 트레일러 영상 제작</span><br>
+                        <span style="color: var(--text-light); font-size: 0.85rem;">2026.06</span>
                     </div>
                 </li>
                 <li style="display: flex; align-items: flex-start; gap: 10px;">
@@ -1267,6 +1332,75 @@
     }
     trackVisit();
 
+    // Soeun Lee 이름 scatter + 사진 reveal
+    (function() {
+        const h1 = document.getElementById('hero-name');
+        if (!h1) return;
+
+        // 글자를 개별 span으로 분리 — 그라디언트를 각 span에 직접 적용
+        h1.style.background = 'none';
+        h1.style.webkitTextFillColor = 'unset';
+        h1.innerHTML = Array.from(h1.textContent).map(ch =>
+            `<span class="nc" style="display:inline-block; background:linear-gradient(135deg,#e3a6b9,#f2cbd5,#f7d7db); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; transition:transform 0.65s cubic-bezier(0.4,0,0.2,1), opacity 0.45s ease;">${ch === ' ' ? '&nbsp;' : ch}</span>`
+        ).join('');
+
+        // role도 span 분리
+        const role = document.getElementById('hero-role');
+        if (role) {
+            role.innerHTML = Array.from(role.textContent).map(ch =>
+                `<span class="rc" style="display:inline-block; transition:transform 0.65s cubic-bezier(0.4,0,0.2,1), opacity 0.45s ease;">${ch === ' ' ? '&nbsp;' : ch}</span>`
+            ).join('');
+        }
+
+        let photoOpen = false;
+
+        function scatterAll() {
+            [...h1.querySelectorAll('.nc'), ...(role ? role.querySelectorAll('.rc') : [])].forEach(s => {
+                const dx = (Math.random() - 0.5) * 700;
+                const dy = (Math.random() - 0.5) * 500;
+                const rot = (Math.random() - 0.5) * 130;
+                s.style.transform = `translate(${dx}px,${dy}px) rotate(${rot}deg)`;
+                s.style.opacity = '0';
+            });
+        }
+
+        function gatherAll() {
+            [...h1.querySelectorAll('.nc'), ...(role ? role.querySelectorAll('.rc') : [])].forEach(s => {
+                s.style.transform = 'translate(0,0) rotate(0deg)';
+                s.style.opacity = '1';
+            });
+        }
+
+        function openPhoto(anchorEl) {
+            const card = document.getElementById('logo-photo-card');
+            scatterAll();
+            setTimeout(() => {
+                card.style.display = 'block';
+                requestAnimationFrame(() => requestAnimationFrame(() => { card.style.opacity = '1'; }));
+            }, 720);
+            photoOpen = true;
+        }
+
+        function closePhoto() {
+            const card = document.getElementById('logo-photo-card');
+            card.style.opacity = '0';
+            setTimeout(() => { card.style.display = 'none'; }, 320);
+            gatherAll();
+            photoOpen = false;
+        }
+
+        h1.addEventListener('click', () => { photoOpen ? closePhoto() : openPhoto(h1); });
+        if (role) role.addEventListener('click', () => { photoOpen ? closePhoto() : openPhoto(role); });
+
+        document.addEventListener('click', function(e) {
+            const card = document.getElementById('logo-photo-card');
+            if (photoOpen && !h1.contains(e.target) && !card.contains(e.target) && (!role || !role.contains(e.target))) {
+                closePhoto();
+            }
+        });
+    })();
+
+
     // 부드러운 JS 스크롤 스냅
     (function() {
         const sections = ['home', 'about', 'projects', 'comments', 'contact']
@@ -1527,6 +1661,7 @@
     }
 
 </script>
+
 
 <!-- TMI 퀴즈 모달 -->
 <div id="tmi-overlay" onclick="if(event.target===this)closeQuiz()" style="display:none; position:fixed; inset:0; z-index:10000; background:rgba(200,150,168,0.18); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); align-items:center; justify-content:center;">
