@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Log | Soeun Lee Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://hangeul.pstatic.net/hangeul_static/css/nanum-square-round.css">
+    <style>
+        :root {
+            --primary: #d4849a;
+            --text: #5a3a45;
+            --text-sub: #7a5560;
+            --transition: all 0.3s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'NanumSquareRound', sans-serif;
+            line-height: 1.8;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            color: var(--text);
+            background: #fff;
+            overflow-x: hidden;
+        }
+
+        /* BG */
+        .bg {
+            position: fixed; inset: 0; z-index: -1;
+            background: #fff; overflow: hidden;
+        }
+        .blob {
+            position: absolute; border-radius: 50%;
+            filter: blur(70px); opacity: 0.32;
+            mix-blend-mode: multiply; pointer-events: none;
+        }
+        .blob-a { top:-5%; left:-5%; width:55vw; height:55vw;
+            background: radial-gradient(circle,#ffb7c5,rgba(255,183,197,0) 70%); }
+        .blob-b { bottom:-5%; right:-5%; width:60vw; height:60vw;
+            background: radial-gradient(circle,#c3a6ff,rgba(195,166,255,0) 70%); }
+
+        /* NAV */
+        nav {
+            position: fixed; inset: 0 0 auto 0;
+            background: rgba(255,255,255,0.28);
+            backdrop-filter: blur(30px) saturate(160%);
+            -webkit-backdrop-filter: blur(30px) saturate(160%);
+            border-bottom: 0.5px solid rgba(255,255,255,0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.1rem 5%; z-index: 1000;
+        }
+        .nav-title { font-size:1.35rem; font-weight:800; color:var(--primary); }
+        .nav-back {
+            display: inline-flex; align-items: center; gap:7px;
+            color: var(--text-sub); text-decoration: none; font-size:.88rem;
+            font-weight:700; padding:6px 16px; border-radius:20px;
+            border:1px solid rgba(212,132,154,0.3); transition:var(--transition);
+        }
+        .nav-back:hover { color:var(--primary); border-color:var(--primary); background:rgba(212,132,154,0.05); }
+
+        /* LAYOUT */
+        .wrap { max-width:860px; margin:0 auto; padding:115px 24px 100px; }
+
+        /* HEADER */
+        .page-header { text-align:center; margin-bottom:3rem; }
+        .eyebrow {
+            display:inline-block; background:rgba(212,132,154,0.12);
+            color:var(--primary); font-size:.72rem; font-weight:800;
+            letter-spacing:3.5px; text-transform:uppercase;
+            padding:4px 16px; border-radius:20px; margin-bottom:1rem;
+        }
+        .page-header h1 {
+            font-size:2.5rem; font-weight:800; line-height:1.2; margin-bottom:.8rem;
+            background:linear-gradient(135deg,#d4849a,#f2cbd5,#b39ddb);
+            -webkit-background-clip:text; background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+        .page-header p { color:var(--text-sub); font-size:.93rem; line-height:1.85; }
+
+        /* CHIPS */
+        .chips { display:flex; gap:.7rem; justify-content:center; flex-wrap:wrap; margin-bottom:3.5rem; }
+        .chip {
+            background:rgba(255,255,255,0.3); backdrop-filter:blur(16px);
+            border:1px solid rgba(255,255,255,0.55); border-radius:30px;
+            padding:6px 16px; font-size:.82rem; color:var(--text);
+            display:flex; align-items:center; gap:6px; font-weight:600;
+        }
+        .chip i { color:var(--primary); }
+
+        /* SECTION TITLE */
+        .sec { display:flex; align-items:center; gap:12px; margin:3.5rem 0 1.5rem; }
+        .sec-ico {
+            width:36px; height:36px; border-radius:50%;
+            background:rgba(212,132,154,0.12);
+            display:flex; align-items:center; justify-content:center;
+            color:var(--primary); font-size:.95rem; flex-shrink:0;
+        }
+        .sec h2 { font-size:1.1rem; font-weight:800; color:var(--primary); }
+
+        /* TECH BADGES */
+        .badges { display:flex; flex-wrap:wrap; gap:.55rem; }
+        .badge {
+            background:rgba(255,255,255,0.35); border:1px solid rgba(212,132,154,0.2);
+            border-radius:8px; padding:5px 13px; font-size:.82rem;
+            color:var(--text); font-weight:700;
+            display:flex; align-items:center; gap:5px;
+        }
+        .badge i { color:var(--primary); font-size:.76rem; }
+
+        /* GIT TIMELINE */
+        .git-line { position:relative; padding-left:30px; }
+        .git-line::before {
+            content:''; position:absolute; left:10px; top:8px; bottom:8px;
+            width:2px; border-radius:2px;
+            background:linear-gradient(to bottom,#d4849a,rgba(195,166,255,.3));
+        }
+        .git-item { position:relative; margin-bottom:1.2rem; }
+        .git-dot {
+            position:absolute; left:-22px; top:13px;
+            width:11px; height:11px; border-radius:50%;
+            border:2px solid #fff; box-shadow:0 0 0 2px rgba(212,132,154,.3);
+        }
+        .dot-main  { background:var(--primary); }
+        .dot-pivot { background:#b39ddb; }
+        .dot-add   { background:#7ecba1; }
+        .dot-fix   { background:#f5b942; }
+
+        .git-card {
+            background:rgba(255,255,255,0.22); backdrop-filter:blur(18px);
+            border:1px solid rgba(255,255,255,0.55); border-radius:14px;
+            overflow:hidden; transition:var(--transition);
+        }
+        .git-card:hover { background:rgba(255,255,255,.36); box-shadow:0 8px 28px rgba(192,108,132,.07); }
+
+        .git-head {
+            padding:1.1rem 1.4rem; cursor:pointer;
+            display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+            user-select:none;
+        }
+        .git-head-left { flex:1; }
+        .git-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:.4rem; }
+        .gdate {
+            font-size:.7rem; font-weight:800; letter-spacing:1px; color:var(--text-sub);
+            background:rgba(212,132,154,0.1); padding:2px 9px; border-radius:20px;
+        }
+        .gtag {
+            font-size:.65rem; font-weight:800; letter-spacing:1.5px;
+            text-transform:uppercase; padding:2px 9px; border-radius:20px;
+        }
+        .gt-init  { background:rgba(212,132,154,.15); color:#a05070; }
+        .gt-pivot { background:rgba(179,157,219,.18); color:#7050b8; }
+        .gt-feat  { background:rgba(126,203,161,.15); color:#2a7a4a; }
+        .gt-fix   { background:rgba(245,185,66,.15);  color:#906010; }
+        .gt-merge { background:rgba(100,180,255,.13); color:#2060a0; }
+
+        .git-card h3 { font-size:.97rem; font-weight:800; color:var(--text); }
+        .git-chev { color:var(--text-sub); font-size:.85rem; margin-top:3px; transition:transform .3s ease; flex-shrink:0; }
+        .git-chev.open { transform:rotate(180deg); }
+
+        .git-body {
+            max-height:0; overflow:hidden;
+            transition:max-height .38s ease, opacity .3s ease;
+            opacity:0;
+        }
+        .git-body.open { max-height:1200px; opacity:1; }
+        .git-body-inner {
+            padding:0 1.4rem 1.2rem;
+            font-size:.86rem; color:var(--text-sub); line-height:1.82;
+            border-top:1px solid rgba(255,255,255,.5);
+            padding-top:.9rem;
+        }
+        .git-body-inner ul { padding-left:1.2rem; }
+        .git-body-inner li { margin-bottom:.3rem; }
+
+        /* FEATURE CARDS (accordion) */
+        .flist { display:flex; flex-direction:column; gap:1.2rem; }
+
+        .fcard {
+            background:rgba(255,255,255,.22); backdrop-filter:blur(20px);
+            border:1px solid rgba(255,255,255,.55); border-radius:16px;
+            overflow:hidden; transition:var(--transition);
+        }
+        .fcard:hover { background:rgba(255,255,255,.35); }
+
+        .fcard-head {
+            padding:1.3rem 1.6rem; cursor:pointer;
+            display:flex; align-items:flex-start; gap:14px;
+            user-select:none;
+        }
+        .fnum {
+            width:27px; height:27px; border-radius:50%;
+            background:linear-gradient(135deg,#d4849a,#b39ddb);
+            color:#fff; font-size:.72rem; font-weight:800;
+            display:flex; align-items:center; justify-content:center;
+            flex-shrink:0; margin-top:2px;
+        }
+        .fcard-title { flex:1; }
+        .ftags { display:flex; gap:5px; flex-wrap:wrap; margin-bottom:4px; }
+        .ftag {
+            font-size:.65rem; font-weight:800; letter-spacing:1.5px;
+            text-transform:uppercase; padding:2px 8px; border-radius:20px;
+        }
+        .tf  { background:rgba(212,132,154,.15); color:#a05070; }
+        .tx  { background:rgba(245,185,66,.15);  color:#906010; }
+        .ta  { background:rgba(255,80,80,.12);   color:#900030; }
+        .td  { background:rgba(179,157,219,.18); color:#7050b8; }
+        .tm  { background:rgba(80,200,240,.12);  color:#1878a0; }
+        .tp  { background:rgba(126,203,161,.15); color:#1a6a3a; }
+
+        .fcard h3 { font-size:1rem; font-weight:800; color:var(--text); }
+        .fcard-chev { color:var(--text-sub); font-size:.85rem; margin-top:3px; transition:transform .3s ease; flex-shrink:0; }
+        .fcard-chev.open { transform:rotate(180deg); }
+
+        .fcard-body {
+            max-height:0; overflow:hidden;
+            transition:max-height .42s ease, opacity .32s ease;
+            opacity:0;
+        }
+        .fcard-body.open { max-height:6000px; opacity:1; }
+        .fcard-inner { padding:0 1.6rem 1.4rem; border-top:1px solid rgba(255,255,255,.5); padding-top:1rem; }
+
+        .fdesc { font-size:.87rem; color:var(--text-sub); line-height:1.82; margin-bottom:1rem; }
+
+        /* PROBLEM / SOLUTION */
+        .ps { border-radius:11px; overflow:hidden; border:1px solid rgba(255,255,255,.45); margin-bottom:.75rem; }
+        .ps-head {
+            display:flex; align-items:center; gap:7px;
+            padding:.45rem .95rem; font-size:.67rem; font-weight:800;
+            letter-spacing:1.5px; text-transform:uppercase;
+        }
+        .ph { background:rgba(255,80,80,.08); color:#900030; border-bottom:1px solid rgba(255,80,80,.1); }
+        .sh { background:rgba(60,180,120,.08); color:#1a6040; border-bottom:1px solid rgba(60,180,120,.1); }
+        .ps-body {
+            padding:.8rem 1rem; font-size:.85rem; line-height:1.82;
+            background:rgba(255,255,255,.18);
+        }
+        .pb { color:#800028; }
+        .sb { color:#165035; }
+
+        /* AI CALLOUT */
+        .ai-box {
+            background:rgba(255,70,70,.05); border:1px solid rgba(255,70,70,.14);
+            border-radius:11px; padding:1rem 1.1rem; margin-bottom:.75rem;
+            font-size:.85rem; color:#800028; line-height:1.82;
+        }
+        .ai-box strong {
+            display:block; font-size:.67rem; letter-spacing:1.5px;
+            text-transform:uppercase; margin-bottom:.35rem; color:#700020;
+        }
+
+        /* CODE BLOCK */
+        .cblock { border-radius:10px; overflow:hidden; border:1px solid rgba(212,132,154,.18); margin-top:.7rem; margin-bottom:.75rem; }
+        .clabel {
+            display:flex; align-items:center; gap:7px;
+            padding:.38rem .95rem; font-size:.65rem; font-weight:800;
+            letter-spacing:1.5px; text-transform:uppercase;
+        }
+        .cl-before { background:rgba(255,80,80,.07); color:#900030; border-bottom:1px solid rgba(255,80,80,.1); }
+        .cl-after  { background:rgba(60,180,120,.07); color:#1a6040; border-bottom:1px solid rgba(60,180,120,.1); }
+        .cl-info   { background:rgba(212,132,154,.09); color:#a05070; border-bottom:1px solid rgba(212,132,154,.14); }
+
+        pre {
+            background:rgba(252,249,254,.92); padding:.9rem 1.1rem;
+            font-family:'Courier New',monospace; font-size:.76rem;
+            line-height:1.72; overflow-x:auto; color:#4a2a38; white-space:pre;
+        }
+
+        code {
+            background:rgba(212,132,154,.12); color:#a05070;
+            padding:1px 5px; border-radius:4px;
+            font-size:.83em; font-family:'Courier New',monospace;
+        }
+
+        /* DECISION CARDS */
+        .dcards { display:flex; flex-direction:column; gap:1rem; }
+        .dcard {
+            background:rgba(255,255,255,.22); backdrop-filter:blur(18px);
+            border:1px solid rgba(255,255,255,.55); border-radius:14px;
+            overflow:hidden;
+        }
+        .dcard-head {
+            padding:1.1rem 1.5rem; cursor:pointer;
+            display:flex; align-items:center; justify-content:space-between; gap:12px;
+            user-select:none;
+        }
+        .dcard-head h3 {
+            font-size:.97rem; font-weight:800; color:var(--text);
+            display:flex; align-items:center; gap:9px; flex:1;
+        }
+        .dcard-head h3 i { color:var(--primary); }
+        .dcard-chev { color:var(--text-sub); font-size:.85rem; transition:transform .3s ease; }
+        .dcard-chev.open { transform:rotate(180deg); }
+        .dcard-body { max-height:0; overflow:hidden; transition:max-height .38s ease, opacity .3s ease; opacity:0; }
+        .dcard-body.open { max-height:1000px; opacity:1; }
+        .dcard-body-inner {
+            padding:0 1.5rem 1.2rem; font-size:.87rem;
+            color:var(--text-sub); line-height:1.85;
+            border-top:1px solid rgba(255,255,255,.5); padding-top:.9rem;
+        }
+        .dcard:hover { background:rgba(255,255,255,.35); }
+
+        /* FOOTER */
+        .pfooter {
+            text-align:center; padding:2.5rem 0 0; margin-top:5rem;
+            border-top:1px solid rgba(212,132,154,.14);
+            color:var(--text-sub); font-size:.85rem;
+        }
+        .pfooter a { color:var(--primary); text-decoration:none; }
+
+        @media(max-width:768px){
+            .wrap { padding:100px 16px 70px; }
+            .page-header h1 { font-size:1.85rem; }
+            .fcard-head, .git-head { padding:1rem 1.1rem; }
+            .fcard-inner, .git-body-inner { padding-left:1.1rem; padding-right:1.1rem; }
+            pre { font-size:.71rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg">
+    <div class="blob blob-a"></div>
+    <div class="blob blob-b"></div>
+</div>
+
+<nav>
+    <span class="nav-title">dev log</span>
+    <a href="index.html" class="nav-back"><i class="fa-solid fa-arrow-left"></i> 포트폴리오로</a>
+</nav>
+
+<div class="wrap">
+
+    <div class="page-header">
+        <div class="eyebrow">Developer Notes</div>
+        <h1>포트폴리오 개발 기록</h1>
+        <p>설계 피벗, 시행착오와 해결까지 — 얼렁뚱땅 만들어진 포트폴리오 기록</p>
+    </div>
+
+    <div class="chips">
+        <div class="chip"><i class="fa-solid fa-file-code"></i> 단일 HTML 파일</div>
+        <div class="chip"><i class="fa-solid fa-fire"></i> Firebase REST API</div>
+        <div class="chip"><i class="fa-solid fa-wand-magic-sparkles"></i> 이스터에그 2개</div>
+        <div class="chip"><i class="fa-solid fa-robot"></i> Claude Sonnet 4.6</div>
+        <div class="chip"><i class="fa-brands fa-github"></i> GitHub Pages 배포</div>
+        <div class="chip"><i class="fa-solid fa-code-commit"></i> 커밋 15개</div>
+    </div>
+
+    <!-- 기술 스택 -->
+    <div class="sec">
+        <div class="sec-ico"><i class="fa-solid fa-layer-group"></i></div>
+        <h2>최종 기술 스택</h2>
+    </div>
+    <div class="badges">
+        <div class="badge"><i class="fa-brands fa-html5"></i> HTML5</div>
+        <div class="badge"><i class="fa-brands fa-css3-alt"></i> CSS3 · Glassmorphism</div>
+        <div class="badge"><i class="fa-brands fa-js"></i> Vanilla JavaScript</div>
+        <div class="badge"><i class="fa-solid fa-fire"></i> Firebase Realtime DB</div>
+        <div class="badge"><i class="fa-solid fa-font"></i> NanumSquareRound</div>
+        <div class="badge"><i class="fa-brands fa-font-awesome"></i> Font Awesome 6.4</div>
+        <div class="badge"><i class="fa-brands fa-github"></i> GitHub Pages</div>
+    </div>
+
+    <!-- Git 히스토리 -->
+    <div class="sec">
+        <div class="sec-ico"><i class="fa-brands fa-git-alt"></i></div>
+        <h2>Git 커밋 히스토리</h2>
+    </div>
+
+    <div class="git-line">
+
+        <!-- 05.04 -->
+        <div class="git-item">
+            <div class="git-dot dot-main"></div>
+            <div class="git-card">
+                <div class="git-head" onclick="toggleGit(this)">
+                    <div class="git-head-left">
+                        <div class="git-meta">
+                            <span class="gdate">2026.05.04</span>
+                            <span class="gtag gt-init">Init</span>
+                        </div>
+                        <h3>포트폴리오 첫 커밋 — index.html 327줄</h3>
+                    </div>
+                    <i class="fa-solid fa-chevron-down git-chev"></i>
+                </div>
+                <div class="git-body">
+                    <div class="git-body-inner">
+                        <code>index.html</code>(327줄) + <code>README.md</code> 생성. 섹션 구성은 Home / About / Projects / Contact 4개. 기본 스타일 시스템 수립:
+                        <ul style="margin-top:.6rem;">
+                            <li>수채화 블롭 배경 (radial-gradient + filter:blur)</li>
+                            <li>글래스모피즘 카드 (backdrop-filter, rgba 배경)</li>
+                            <li>NanumSquareRound 폰트 + Font Awesome 아이콘</li>
+                            <li>CSS 변수로 색상 시스템 정의 (--primary-color, --text-color 등)</li>
+                            <li>fixed 네비게이션 바 + 섹션별 앵커 링크</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 05.11 React -->
+        <div class="git-item">
+            <div class="git-dot dot-pivot"></div>
+            <div class="git-card">
+                <div class="git-head" onclick="toggleGit(this)">
+                    <div class="git-head-left">
+                        <div class="git-meta">
+                            <span class="gdate">2026.05.11 오전</span>
+                            <span class="gtag gt-pivot">Pivot 시도</span>
+                        </div>
+                        <h3>React 도입 시도 — 커밋 메시지 "?"(커밋 메시지 설정을 직접 해야하는줄도 몰랐었다 ㅎㅎ)</h3>
+                    </div>
+                    <i class="fa-solid fa-chevron-down git-chev"></i>
+                </div>
+                <div class="git-body">
+                    <div class="git-body-inner">
+                        컴포넌트 재사용을 위해 React 구조로 전환 시도. <code>Layout.jsx</code>와 <code>Navbar.jsx</code>를 작성했다.
+                        <div class="cblock" style="margin-top:.8rem;">
+                            <div class="clabel cl-info"><i class="fa-solid fa-code"></i> 작성했던 Navbar.jsx</div>
+<pre>import React from 'react';
+
+const Navbar = () => {
+  return (
+    &lt;nav style={{ display:'flex', justifyContent:'space-between',
+      height:'70px', position:'sticky', top:0, zIndex:1000 }}&gt;
+      &lt;div&gt;SoeunLee&lt;/div&gt;
+      &lt;div&gt;
+        &lt;a href="/"&gt;Home&lt;/a&gt;
+        &lt;a href="/about"&gt;About&lt;/a&gt;
+        &lt;a href="/projects"&gt;Projects&lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+  );
+};
+export default Navbar;</pre>
+                        </div>
+                        문제: GitHub Pages는 정적 파일만 서빙. JSX를 브라우저에서 실행하려면 Babel CDN이 필요한데 프로덕션엔 부적합하고, Vite/CRA를 쓰면 배포 파이프라인이 복잡해짐. 같은 날 바로 Vanilla로 복귀.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 05.11 복귀 -->
+        <div class="git-item">
+            <div class="git-dot dot-main"></div>
+            <div class="git-card">
+                <div class="git-head" onclick="toggleGit(this)">
+                    <div class="git-head-left">
+                        <div class="git-meta">
+                            <span class="gdate">2026.05.11 오후</span>
+                            <span class="gtag gt-pivot">Vanilla 복귀</span>
+                        </div>
+                        <h3>단일 HTML 확정 · 대규모 리팩토링 (247줄 변경)</h3>
+                    </div>
+                    <i class="fa-solid fa-chevron-down git-chev"></i>
+                </div>
+                <div class="git-body">
+                    <div class="git-body-inner">
+                        React 시도를 완전히 포기하고 <code>index.html</code> 단일 파일 방식으로 확정. Layout.jsx / Navbar.jsx는 커밋 이력에 남아 있지만 실제 서비스에는 사용되지 않음. 247줄 변경으로 섹션 구성과 스타일 전반 정비.
+                        <ul style="margin-top:.6rem;">
+                            <li>About 섹션 그리드 레이아웃 초안 추가</li>
+                            <li>Projects 카드 그리드 초안</li>
+                            <li>CSS 변수 체계 정비</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 05.19 PR -->
+        <div class="git-item">
+            <div class="git-dot dot-add"></div>
+            <div class="git-card">
+                <div class="git-head" onclick="toggleGit(this)">
+                    <div class="git-head-left">
+                        <div class="git-meta">
+                            <span class="gdate">2026.05.19</span>
+                            <span class="gtag gt-merge">Merge PR</span>
+                        </div>
+                        <h3>Pull Request #1 병합 — KYU-SW/master</h3>
+                    </div>
+                    <i class="fa-solid fa-chevron-down git-chev"></i>
+                </div>
+                <div class="git-body">
+                    <div class="git-body-inner">
+                        KYU-SW 브랜치에서 작업한 내용을 master 브랜치로 병합. GitHub의 Pull Request 기능을 활용한 첫 번째 병합 작업.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 05.20 -->
+        <div class="git-item">
+            <div class="git-dot dot-add"></div>
+            <div class="git-card">
+                <div class="git-head" onclick="toggleGit(this)">
+                    <div class="git-head-left">
+                        <div class="git-meta">
+                            <span class="gdate">2026.05.20</span>
+                            <span class="gtag gt-feat">Content · Style ×2</span>
+                        </div>
+                        <h3>About 실제 내용 채우기 · 모바일 CSS 첫 추가 · 레이아웃 정리</h3>
+                    </div>
+                    <i class="fa-solid fa-chevron-down git-chev"></i>
+                </div>
+                <div class="git-body">
+                    <div class="git-body-inner">
+                        당일 2개의 커밋 (12:41, 15:07). 플레이스홀더 텍스트를 실제 정보로 채우고 레이아웃을 정비했다.
+                        <ul style="margin-top:.6rem;">
+                            <li><strong>About 내용:</strong> 수강 과목(메타버스프로그래밍, 실감미디어컴퓨팅개론, XR콘텐츠문화지형도), 스킬(Python 공부중), 자격증(한국사능력검정시험 3급 등)</li>
+                            <li><strong>연락처:</strong> isoeun0220@gmail.com, Instagram(@eunth0i) 실제 정보로 교체</li>
+                            <li><strong>모바일 CSS 첫 추가:</strong> navbar 2열, hero 패딩 축소, btn 전체 너비</li>
+                            <li><strong>레이아웃:</strong> about-grid / card-grid를 <code>repeat(auto-fit)</code>에서 <code>1fr 1fr</code> 2열 고정으로 변경, container max-width 조정</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 06.20 -->
+        <div class="git-item">
+            <div class="git-dot dot-fix"></div>
+            <div class="git-card">
+                <div class="git-head" onclick="toggleGit(this)">
+                    <div class="git-head-left">
+                        <div class="git-meta">
+                            <span class="gdate">2026.06.20</span>
+                            <span class="gtag gt-feat">Feature</span>
+                            <span class="gtag gt-fix">Fix 多</span>
+                        </div>
+                        <h3>JS 스크롤 스냅 구현 첫 시도 (252줄 변경)</h3>
+                    </div>
+                    <i class="fa-solid fa-chevron-down git-chev"></i>
+                </div>
+                <div class="git-body">
+                    <div class="git-body-inner">
+                        CSS <code>scroll-snap-type</code>이 아닌 <code>wheel</code> 이벤트 기반 JS 스냅의 첫 버전. 이후 세션에서 5번 이상 수정되는 가장 복잡한 기능이었다.
+                        <ul style="margin-top:.6rem;">
+                            <li>Comments 섹션 건너뜀 → class 기반 수집에서 ID 배열로 교체</li>
+                            <li>맨 아래까지 스크롤 안 됨 → offsetTop 캐싱 제거, getBoundingClientRect() 매번 fresh 계산</li>
+                            <li>스크롤이 버벅거리는 현상이 생김</li>
+                            <li>위로 스냅 안 됨 → 고정 타임아웃 → scroll 이벤트로 실제 도달 감지</li>
+                            <li>Let's Connect 상단 고정 → contact만 중앙 계산 로직 별도 처리</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 06.21 -->
+        <div class="git-item">
+            <div class="git-dot dot-add"></div>
+            <div class="git-card">
+                <div class="git-head" onclick="toggleGit(this)">
+                    <div class="git-head-left">
+                        <div class="git-meta">
+                            <span class="gdate">2026.06.21</span>
+                            <span class="gtag gt-feat">Feature ×2</span>
+                        </div>
+                        <h3>프로젝트 카드 이미지 · 학기별 어코디언 UI</h3>
+                    </div>
+                    <i class="fa-solid fa-chevron-down git-chev"></i>
+                </div>
+                <div class="git-body">
+                    <div class="git-body-inner">
+                        <ul>
+                            <li>프로젝트 썸네일 이미지 4종 추가 (메이즈러너, 백강전투 VR, AR Navigation, 멀티모달 피드백)</li>
+                            <li>학기별 접이식 어코디언 UI (1학년 1학기 / 1학년 2학기 / 개인 프로젝트)</li>
+                            <li>카드 클릭 → 외부 링크(Roblox, Notion 등) 연결</li>
+                            <li>card-img 높이 고정, 호버 시 translateY(-10px) 효과</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 06.22 (대규모) -->
+        <div class="git-item">
+            <div class="git-dot dot-add"></div>
+            <div class="git-card">
+                <div class="git-head" onclick="toggleGit(this)">
+                    <div class="git-head-left">
+                        <div class="git-meta">
+                            <span class="gdate">2026.06.22</span>
+                            <span class="gtag gt-feat">Feature ×6</span>
+                            <span class="gtag gt-pivot">Pivot</span>
+                        </div>
+                        <h3>Firebase · 방문자 카운터 · 댓글 · 타로 · BGM · 이스터에그 (830줄 추가)</h3>
+                    </div>
+                    <i class="fa-solid fa-chevron-down git-chev"></i>
+                </div>
+                <div class="git-body">
+                    <div class="git-body-inner">
+                        가장 많은 기능이 추가된 날. 당일 커밋 4개.
+                        <ul style="margin-top:.6rem;">
+                            <li><strong>댓글 시스템:</strong> Firebase Realtime Database를 JS SDK(<code>firebase-app-compat.js</code>)로 먼저 구현 → 같은 날 번들 크기·복잡도 문제로 SDK만 제거, REST API <code>fetch()</code>로 접근 방식 교체 (Firebase 자체는 계속 사용)</li>
+                            <li><strong>방문자 카운터:</strong> 일별 <code>/visits/{YYYY-MM-DD}.json</code>에 기록, 네비바 실시간 표시. SDK 없이 순수 fetch로 구현</li>
+                            <li><strong>tarot.html:</strong> 516줄 타로 페이지 직접 제작. 이후 별도 GitHub 레포로 분리 배포(<code>soeun-00.github.io/tarot-frontend/</code>)하면서 링크만 교체</li>
+                            <li><strong>sync_test_v3.html:</strong> 멀티모달 피드백 발표자료용 오디오 싱크 테스트 페이지 (HTML/CSS/JS 단독 페이지)</li>
+                            <li><strong>BGM 플레이어:</strong> Peach(복숭아).mp3 네비바에 추가, 뮤트 상태로 자동재생 후 버튼으로 토글</li>
+                            <li><strong>파티클 버스트 이스터에그:</strong> Let's Connect 5번 클릭 → Font Awesome 별·하트 파티클 버스트</li>
+                            <li><strong>TMI 퀴즈 이스터에그:</strong> About Me 5번 클릭 → 3문제 퀴즈 모달, 전체 정답 시 confetti, 오답 시 우는 이모지 비</li>
+                            <li><strong>About 내용 보강:</strong> Experience(레이저 태그, 안보토론대회), Awards, 강의 내용 상세화</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 06.25 -->
+        <div class="git-item">
+            <div class="git-dot dot-main"></div>
+            <div class="git-card">
+                <div class="git-head" onclick="toggleGit(this)">
+                    <div class="git-head-left">
+                        <div class="git-meta">
+                            <span class="gdate">2026.06.25</span>
+                            <span class="gtag gt-feat">Feature</span>
+                            <span class="gtag gt-fix">Fix ×6</span>
+                        </div>
+                        <h3>프로필 사진 인터랙션 · 모바일 전면 개선 · devlog 제작</h3>
+                    </div>
+                    <i class="fa-solid fa-chevron-down git-chev"></i>
+                </div>
+                <div class="git-body">
+                    <div class="git-body-inner">
+                        당일 커밋 2개 + 프로필 사진 파일 추가.
+                        <ul style="margin-top:.6rem;">
+                            <li><strong>글자 scatter + 프로필 사진:</strong> h1 "Soeun Lee" · role 텍스트를 낱글자 span으로 분리, 클릭 시 랜덤 방향으로 scatter 후 720ms 뒤 원형 프로필 사진 등장</li>
+                            <li><strong>홈페이지 사진.jpg:</strong> 프로필 사진 파일 1.87MB 추가</li>
+                            <li><strong>position 수정:</strong> fixed → absolute (hero 카드 내부 배치), 스크롤 따라다니는 문제 해결</li>
+                            <li><strong>모바일 CSS 전면 정비:</strong> 불필요한 column navbar 제거, padding-bottom 22rem→6rem, card-img 300→180px 등</li>
+                            <li><strong>타로 링크 교체:</strong> 로컬 tarot.html → 외부 배포 URL</li>
+                            <li><strong>개발자 노트 페이지(devlog.html) 제작</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /git-line -->
+
+    <!-- 시행착오 전체 기록 -->
+    <div class="sec">
+        <div class="sec-ico"><i class="fa-solid fa-bug"></i></div>
+        <h2>시행착오 &amp; 해결 전체 기록</h2>
+    </div>
+
+    <div class="flist">
+
+        <!-- 01 React -->
+        <div class="fcard">
+            <div class="fcard-head" onclick="toggleCard(this)">
+                <div class="fnum">01</div>
+                <div class="fcard-title">
+                    <div class="ftags"><span class="ftag tp">설계 피벗</span></div>
+                    <h3>React 시도 → Vanilla HTML 복귀</h3>
+                </div>
+                <i class="fa-solid fa-chevron-down fcard-chev"></i>
+            </div>
+            <div class="fcard-body">
+                <div class="fcard-inner">
+                    <div class="fdesc">컴포넌트 재사용성을 위해 React로 시작했지만 GitHub Pages 환경과의 충돌로 당일 포기했다.</div>
+                    <div class="ps">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> 문제</div>
+                        <div class="ps-body pb">
+                            GitHub Pages는 빌드 결과물(정적 파일)만 서빙 가능. JSX를 브라우저에서 바로 실행하려면 CDN Babel이 필요한데 성능이 나쁘고, Vite/CRA 빌드 도구를 도입하면 "파일 하나 수정 → GitHub에 올리면 바로 배포" 흐름이 깨짐. 포트폴리오 목적에 오버엔지니어링.
+                        </div>
+                    </div>
+                    <div class="cblock">
+                        <div class="clabel cl-before"><i class="fa-solid fa-xmark"></i> Before — React JSX (GitHub Pages에서 동작 안 함)</div>
+<pre>// Layout.jsx
+import React from 'react';
+import Navbar from './Navbar';
+
+const Layout = ({ children }) => (
+  &lt;div className="app-layout"&gt;
+    &lt;Navbar /&gt;
+    &lt;main&gt;{children}&lt;/main&gt;
+  &lt;/div&gt;
+);
+export default Layout;</pre>
+                        <div class="clabel cl-after"><i class="fa-solid fa-check"></i> After — 단일 index.html, 빌드 없음</div>
+<pre>&lt;!DOCTYPE html&gt;
+&lt;html lang="ko"&gt;
+&lt;head&gt;
+  &lt;style&gt; /* CSS 전부 인라인 */ &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;nav class="navbar"&gt;...&lt;/nav&gt;
+  &lt;main class="container"&gt;...&lt;/main&gt;
+  &lt;script&gt; /* JS 전부 인라인 */ &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+                    </div>
+                    <div class="ps">
+                        <div class="ps-head sh"><i class="fa-solid fa-lightbulb"></i> 배운 점</div>
+                        <div class="ps-body sb">React는 팀 협업·대규모 상태관리가 필요한 앱에서 진가를 발휘한다. 포트폴리오처럼 단일 페이지 + 간단한 인터랙션은 Vanilla HTML이 더 빠르고 관리하기 쉽다. 도구는 문제에 맞게 선택해야 한다.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 02 Firebase -->
+        <div class="fcard">
+            <div class="fcard-head" onclick="toggleCard(this)">
+                <div class="fnum">02</div>
+                <div class="fcard-title">
+                    <div class="ftags"><span class="ftag tf">Feature</span><span class="ftag tp">접근 방식 변경</span></div>
+                    <h3>Firebase 접근 방식 변경 — JS SDK → REST API 직접 호출</h3>
+                </div>
+                <i class="fa-solid fa-chevron-down fcard-chev"></i>
+            </div>
+            <div class="fcard-body">
+                <div class="fcard-inner">
+                    <div class="fdesc">Firebase Realtime Database는 그대로 사용하되, 접근 방식을 Firebase JS SDK에서 REST API 직접 호출로 바꿨다. 데이터베이스 자체는 변경 없음.</div>
+                    <div class="ps">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> 문제 — Firebase SDK</div>
+                        <div class="ps-body pb">
+                            <code>firebase-app-compat.js</code> + <code>firebase-database-compat.js</code> 두 개의 외부 스크립트를 로드해야 하고, SDK 초기화 코드가 길고 복잡함. 단순 fetch로 할 수 있는 걸 SDK가 추상화해서 오히려 코드량이 늘어남.
+                        </div>
+                    </div>
+                    <div class="cblock">
+                        <div class="clabel cl-before"><i class="fa-solid fa-xmark"></i> Before — Firebase SDK 방식</div>
+<pre>&lt;script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"&gt;&lt;/script&gt;
+&lt;script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  firebase.initializeApp({ apiKey:"...", databaseURL:"...", ... });
+  const db = firebase.database();
+  db.ref('/comments').push({ name, text, time });
+  db.ref('/comments').on('value', snap => { /* 렌더링 */ });
+&lt;/script&gt;</pre>
+                        <div class="clabel cl-after"><i class="fa-solid fa-check"></i> After — REST API fetch() 직접 호출</div>
+<pre>const DB = 'https://website-a92c1-default-rtdb.firebaseio.com';
+
+// 댓글 작성
+fetch(`${DB}/comments.json`, {
+  method: 'POST',
+  body: JSON.stringify({ name, text, time: Date.now() })
+});
+
+// 댓글 목록
+fetch(`${DB}/comments.json`)
+  .then(r => r.json())
+  .then(data => renderComments(data));
+
+// 방문자 카운터 (일별)
+const today = new Date().toISOString().slice(0,10);
+fetch(`${DB}/visits/${today}.json`)
+  .then(r => r.json())
+  .then(n => {
+    fetch(`${DB}/visits/${today}.json`,
+      { method:'PUT', body: JSON.stringify((n||0)+1) });
+  });</pre>
+                    </div>
+                    <div class="ps">
+                        <div class="ps-head sh"><i class="fa-solid fa-check"></i> 결과</div>
+                        <div class="ps-body sb">외부 스크립트 2개 제거, 초기화 코드 없음, 의존성 0. Firebase REST API는 <code>.json</code> 엔드포인트에 GET/POST/PUT/DELETE만 하면 되므로 fetch 10줄로 동일 기능 구현 가능.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 03 타로 피벗 -->
+        <div class="fcard">
+            <div class="fcard-head" onclick="toggleCard(this)">
+                <div class="fnum">03</div>
+                <div class="fcard-title">
+                    <div class="ftags"><span class="ftag tp">설계 피벗</span><span class="ftag tf">Feature</span></div>
+                    <h3>타로 페이지 직접 제작 → 외부 배포 링크로 교체</h3>
+                </div>
+                <i class="fa-solid fa-chevron-down fcard-chev"></i>
+            </div>
+            <div class="fcard-body">
+                <div class="fcard-inner">
+                    <div class="fdesc">처음엔 <code>tarot.html</code>(516줄)을 포트폴리오 레포 안에 직접 넣었다. 이후 타로 프론트엔드를 별도 레포로 분리해 독립 배포하면서 포트폴리오의 링크만 교체했다.</div>
+                    <div class="ps">
+                        <div class="ps-head sh"><i class="fa-solid fa-check"></i> 결과 및 이유</div>
+                        <div class="ps-body sb">
+                            별도 레포 분리의 이점:<br>
+                            · <code>index.html</code>이 더 가벼워지고 관심사 분리(Separation of Concerns)가 됨<br>
+                            · 타로 프로젝트 자체가 독립 포트폴리오 항목으로 관리 가능<br>
+                            · 타로 코드 수정이 포트폴리오 메인에 영향을 주지 않음
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 04 AI 실수 -->
+        <div class="fcard">
+            <div class="fcard-head" onclick="toggleCard(this)">
+                <div class="fnum">04</div>
+                <div class="fcard-title">
+                    <div class="ftags"><span class="ftag ta">AI 실수</span></div>
+                    <h3>Claude가 틀렸던 순간들 — 5가지</h3>
+                </div>
+                <i class="fa-solid fa-chevron-down fcard-chev"></i>
+            </div>
+            <div class="fcard-body">
+                <div class="fcard-inner">
+                    <div class="fdesc">AI에게 코드를 요청할 때 잘 못알아 듣는 경우가 많았다.</div>
+
+                    <div class="ai-box">
+                        <strong><i class="fa-solid fa-robot"></i> 실수 1 — 엉뚱한 요소를 scatter 처리</strong>
+                        "Soeun Lee 글자가 흩어지게 해줘"라고 했더니 AI가 Hero 섹션의 h1이 아닌 nav 상단의 "portfolio" 로고를 scatter 처리했다. 히어로 h1과 nav 로고를 구분하지 못하고 <code>document.querySelector('h1')</code>으로 첫 번째 h1을 잡은 것. "아니 이거 아니야"라고 직접 잡아줘서 <code>id="hero-name"</code>으로 수정.
+                    </div>
+
+                    <div class="ai-box">
+                        <strong><i class="fa-solid fa-robot"></i> 실수 2 — 사진 회전 방향을 두 번 틀림</strong>
+                        프로필 사진이 세로로 나오자 AI가 <code>rotate(90deg)</code>를 적용했으나 반대 방향. 다시 <code>rotate(-90deg)</code>로 수정했으나 이것도 어색함. 결국 CSS 회전을 아예 제거하고 브라우저의 EXIF 자동 처리에 맡기는 것이 정답이었음. 두 번 틀리고 나서야 원인을 제대로 파악.
+                    </div>
+
+                    <div class="ai-box">
+                        <strong><i class="fa-solid fa-robot"></i> 실수 3 — position:fixed로 사진 배치</strong>
+                        프로필 사진 카드를 <code>position:fixed</code>로 배치하고 JS로 뷰포트 좌표를 세팅. 처음엔 제자리처럼 보였지만 스크롤하면 사진이 뷰포트에 고정된 채 콘텐츠 위를 떠다니는 심각한 UX 문제 발생. "카드를 다시 안 누르면 이미지가 같이 내려오잖아" 피드백 후 hero 내부 <code>position:absolute</code>로 교체.
+                    </div>
+
+                    <div class="ai-box">
+                        <strong><i class="fa-solid fa-robot"></i> 실수 4 — 사진이 글자보다 먼저 등장</strong>
+                        scatter 애니메이션 duration이 0.65s인데 사진 등장 setTimeout을 300ms로 설정. 글자가 아직 화면에 있는데 사진이 겹쳐 나타남. "글자가 다 흩어지고 나면 사진이 뜨게"라는 피드백으로 720ms로 수정.
+                    </div>
+
+                    <div class="ai-box">
+                        <strong><i class="fa-solid fa-robot"></i> 실수 5 — 컨텍스트 윈도우 소진</strong>
+                        개발 세션이 길어지면서 AI의 대화 컨텍스트가 가득 차 이전 대화 내용이 압축·소실됨. 새 세션에서는 이전에 논의한 세부 사항을 AI가 기억하지 못해, 인간이 직접 맥락을 다시 설명해야 했음. 한 세션에서 너무 많은 작업을 몰아서 하면 AI의 기억력이 한계에 부딪힌다.
+                    </div>
+
+                    <div class="ps">
+                        <div class="ps-head sh"><i class="fa-solid fa-lightbulb"></i> 교훈</div>
+                        <div class="ps-body sb">AI는 코드를 빠르게 생성하지만 실제 UI 맥락(어떤 요소인지, 어떻게 보이는지)을 오해하는 경우가 생긴다. 생성된 코드는 반드시 브라우저에서 직접 확인하고, 틀리면 구체적으로 피드백하는 반복 루프가 핵심. AI가 컨텍스트를 잃기 전에 중요한 결정을 먼저 내리는 것도 중요하다.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 05 스크롤 스냅 -->
+        <div class="fcard">
+            <div class="fcard-head" onclick="toggleCard(this)">
+                <div class="fnum">05</div>
+                <div class="fcard-title">
+                    <div class="ftags"><span class="ftag tf">Feature</span><span class="ftag tx">Fix ×5</span></div>
+                    <h3>JS 커스텀 스크롤 스냅 — 가장 많이 고친 기능</h3>
+                </div>
+                <i class="fa-solid fa-chevron-down fcard-chev"></i>
+            </div>
+            <div class="fcard-body">
+                <div class="fcard-inner">
+                    <div class="fdesc">CSS <code>scroll-snap-type</code>은 키 큰 섹션(About, Projects) 내부에서 스크롤이 완전히 막히는 치명적 단점이 있어서 제외. <code>wheel</code> 이벤트를 직접 핸들링해 구현했지만 수정을 5번 반복했다.</div>
+
+                    <div class="ps">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> 문제 1 — Comments 섹션이 스냅 목록에서 누락</div>
+                        <div class="ps-body pb">섹션을 <code>querySelectorAll('.content-page')</code>로 수집했는데, Comments 섹션의 클래스명이 <code>comments-section</code>이어서 목록에서 빠짐. Comments로 스냅이 되지 않고 Projects에서 바로 Let's Connect로 건너뜀.</div>
+                    </div>
+                    <div class="cblock">
+                        <div class="clabel cl-before"><i class="fa-solid fa-xmark"></i> Before</div>
+<pre>const sections = document.querySelectorAll('.content-page');
+// .comments-section은 클래스가 달라서 포함 안 됨</pre>
+                        <div class="clabel cl-after"><i class="fa-solid fa-check"></i> After — ID 배열로 명시</div>
+<pre>const sections = ['home','about','projects','comments','contact']
+  .map(id => document.getElementById(id))
+  .filter(Boolean);</pre>
+                    </div>
+
+                    <div class="ps" style="margin-top:.8rem;">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> 문제 2 — 맨 아래까지 스크롤이 안 됨</div>
+                        <div class="ps-body pb">섹션 위치를 페이지 로드 시점에 1회 캐싱. 댓글이 동적으로 로드되면 섹션들의 실제 위치가 달라지는데, 저장된 값을 그대로 사용해서 타겟이 틀어짐.</div>
+                    </div>
+                    <div class="cblock">
+                        <div class="clabel cl-before"><i class="fa-solid fa-xmark"></i> Before — 1회 캐싱</div>
+<pre>// 로드 시 한 번만 계산 → 이후 동적 변화 반영 안 됨
+const positions = sections.map(s => s.offsetTop);</pre>
+                        <div class="clabel cl-after"><i class="fa-solid fa-check"></i> After — 매 wheel 이벤트마다 fresh 계산</div>
+<pre>function pos(s) {
+  const r = s.getBoundingClientRect();
+  return { top: r.top + window.scrollY, height: s.offsetHeight };
+}
+// wheel 이벤트 핸들러 안에서 pos(section) 호출</pre>
+                    </div>
+
+                    <div class="ps" style="margin-top:.8rem;">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> 문제 3 — 위로 스크롤 스냅이 안 됨</div>
+                        <div class="ps-body pb">스냅 시작 시 <code>locked = true</code>로 잠근 뒤, 고정 850ms 후 해제. smooth scroll이 완료되기 전에 해제되어 중간에 끊기거나, 반대로 이미 도착했는데도 잠겨있는 타이밍 충돌이 발생.</div>
+                    </div>
+                    <div class="cblock">
+                        <div class="clabel cl-before"><i class="fa-solid fa-xmark"></i> Before — 고정 타임아웃</div>
+<pre>window.scrollTo({ top: targetY, behavior: 'smooth' });
+setTimeout(() => { locked = false; }, 850); // 타이밍 불일치</pre>
+                        <div class="clabel cl-after"><i class="fa-solid fa-check"></i> After — scroll 이벤트로 실제 도달 감지</div>
+<pre>function snapTo(targetY) {
+  locked = true;
+  window.scrollTo({ top: targetY, behavior: 'smooth' });
+  let fallback = setTimeout(() => { locked = false; cleanup(); }, 1500);
+  function onScroll() {
+    if (Math.abs(window.scrollY - targetY) &lt; 8) {
+      locked = false; cleanup();
+    }
+  }
+  function cleanup() {
+    clearTimeout(fallback);
+    window.removeEventListener('scroll', onScroll);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+}</pre>
+                    </div>
+
+                    <div class="ps" style="margin-top:.8rem;">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> 문제 4 — 키 큰 섹션 내부 스크롤이 막힘</div>
+                        <div class="ps-body pb">wheel 이벤트를 전부 가로채니, About·Projects처럼 콘텐츠가 많은 섹션에서 내용을 보려고 스크롤해도 바로 다음 섹션으로 넘어가 버림.</div>
+                    </div>
+                    <div class="cblock">
+                        <div class="clabel cl-after"><i class="fa-solid fa-check"></i> After — 섹션 높이 기준으로 경계 감지</div>
+<pre>if (curH > vh + 80) {
+  // 섹션이 충분히 길면 내부 경계 감지
+  const atBottom = scrollY + vh >= curTop + curH - 80;
+  const atTop    = scrollY &lt;= curTop - NAVBAR + 80;
+  if (dir > 0 && !atBottom) return; // 아직 아래 내용 있음
+  if (dir &lt; 0 && !atTop)    return; // 아직 위 내용 있음
+}
+// 경계에 도달했을 때만 다음 섹션으로 스냅</pre>
+                    </div>
+
+                    <div class="ps" style="margin-top:.8rem;">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> 문제 5 — Let's Connect가 화면 상단에서 멈춤</div>
+                        <div class="ps-body pb">모든 섹션을 <code>섹션.top - NAVBAR</code> 기준으로 스냅하니, 짧은 Let's Connect 섹션은 제목이 화면 상단에 걸쳐 멈춰서 어색하게 보임.</div>
+                    </div>
+                    <div class="cblock">
+                        <div class="clabel cl-after"><i class="fa-solid fa-check"></i> After — contact만 뷰포트 중앙 계산</div>
+<pre>const isContact = sections[nextIdx].id === 'contact';
+const targetY = isContact
+  ? nextTop + nextH / 2 - vh / 2  // 섹션 중앙이 화면 중앙에
+  : nextTop - NAVBAR;              // 나머지는 상단 기준</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 06 글자 scatter -->
+        <div class="fcard">
+            <div class="fcard-head" onclick="toggleCard(this)">
+                <div class="fnum">06</div>
+                <div class="fcard-title">
+                    <div class="ftags"><span class="ftag tf">Feature</span><span class="ftag ta">AI 실수 ×3</span><span class="ftag tx">Fix ×6</span></div>
+                    <h3>"Soeun Lee" 클릭 — 글자 scatter + 프로필 사진 등장</h3>
+                </div>
+                <i class="fa-solid fa-chevron-down fcard-chev"></i>
+            </div>
+            <div class="fcard-body">
+                <div class="fcard-inner">
+                    <div class="fdesc">h1 "Soeun Lee"와 role 텍스트를 낱글자 span으로 분리 → 클릭 시 랜덤 방향 scatter → 720ms 후 원형 프로필 사진 등장. 재클릭 시 글자 복귀·사진 소멸. 구현 자체보다 디테일을 잡는 데 훨씬 많은 시간이 걸린 기능이다.</div>
+
+                    <div class="ps">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> 문제 1 — span 분리 시 글자가 전부 투명해짐</div>
+                        <div class="ps-body pb">h1에 <code>-webkit-text-fill-color: transparent</code>로 그라디언트를 적용했는데, 낱글자 span으로 분리하면 자식 span도 transparent를 상속받아 아무것도 보이지 않음.</div>
+                    </div>
+                    <div class="cblock">
+                        <div class="clabel cl-before"><i class="fa-solid fa-xmark"></i> Before — h1 전체에 그라디언트 (span 분리 불가)</div>
+<pre>/* CSS */
+h1 {
+  background: linear-gradient(135deg, #e3a6b9, #f2cbd5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* 자식 span도 상속 → 투명 */
+}</pre>
+                        <div class="clabel cl-after"><i class="fa-solid fa-check"></i> After — h1 리셋 후 span마다 그라디언트 직접 적용</div>
+<pre>// h1의 그라디언트 효과 먼저 해제
+h1.style.background = 'none';
+h1.style.webkitTextFillColor = 'unset';
+
+// 낱글자 span으로 분리, 각 span에 그라디언트 직접 적용
+h1.innerHTML = Array.from(h1.textContent).map(ch =>
+  `&lt;span style="display:inline-block;
+    background:linear-gradient(135deg,#e3a6b9,#f2cbd5,#f7d7db);
+    -webkit-background-clip:text; background-clip:text;
+    -webkit-text-fill-color:transparent;
+    transition:transform 0.65s cubic-bezier(0.4,0,0.2,1),
+               opacity 0.45s ease;"
+  &gt;${ch === ' ' ? '&amp;nbsp;' : ch}&lt;/span&gt;`
+).join('');</pre>
+                    </div>
+
+                    <div class="ps" style="margin-top:.8rem;">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> 문제 2 (AI 실수) — nav 로고 "portfolio"가 흩어짐</div>
+                        <div class="ps-body pb">AI가 <code>document.querySelector('h1')</code>으로 타겟을 잡으니, Hero 섹션 h1이 아닌 nav 영역의 "SoeunLee" 로고가 scatter 처리됨. "아니 이거 아니야" 피드백 후 ID로 수정.</div>
+                    </div>
+                    <div class="cblock">
+                        <div class="clabel cl-before"><i class="fa-solid fa-xmark"></i> Before</div>
+<pre>const h1 = document.querySelector('h1'); // nav 로고까지 포함될 수 있음</pre>
+                        <div class="clabel cl-after"><i class="fa-solid fa-check"></i> After</div>
+<pre>&lt;h1 id="hero-name"&gt;Soeun Lee&lt;/h1&gt;
+
+const h1 = document.getElementById('hero-name'); // Hero 섹션 명확히 지정</pre>
+                    </div>
+
+                    <div class="ps" style="margin-top:.8rem;">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> 문제 3 (AI 실수) — 사진 회전 두 번 틀림 (EXIF 문제)</div>
+                        <div class="ps-body pb">원본 사진이 가로로 찍혔는데 세로로 표시됨. EXIF orientation 데이터 때문. AI가 CSS rotate로 보정 시도했으나 방향을 두 번 틀림.</div>
+                    </div>
+                    <div class="cblock">
+                        <div class="clabel cl-before"><i class="fa-solid fa-xmark"></i> Before — 두 번의 잘못된 시도</div>
+<pre>img { transform: rotate(90deg);  } /* 시도 1 — 반대 방향 */
+img { transform: rotate(-90deg); } /* 시도 2 — 여전히 어색 */</pre>
+                        <div class="clabel cl-after"><i class="fa-solid fa-check"></i> After — CSS 회전 제거, 브라우저 EXIF 자동 처리</div>
+<pre>/* 현대 브라우저는 image-orientation: from-image 가 기본값 */
+/* CSS rotate 없이도 EXIF 방향대로 자동 렌더링 */
+img { width:100%; height:100%; object-fit:cover; object-position:center; }</pre>
+                    </div>
+
+                    <div class="ps" style="margin-top:.8rem;">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> 문제 4 — getElementById가 null 반환</div>
+                        <div class="ps-body pb">사진 카드 HTML을 <code>&lt;/script&gt;</code> 뒤에 배치했는데, script 태그 안의 코드가 실행될 시점에는 아직 DOM에 카드가 없어서 <code>getElementById</code>가 null을 반환.</div>
+                    </div>
+                    <div class="cblock">
+                        <div class="clabel cl-before"><i class="fa-solid fa-xmark"></i> Before — script 실행 시점에 DOM 없음</div>
+<pre>// script 파싱 시 실행 → 카드 HTML이 아직 아래에 없음
+const card = document.getElementById('logo-photo-card'); // null!</pre>
+                        <div class="clabel cl-after"><i class="fa-solid fa-check"></i> After — 클릭 시점에 lazy lookup</div>
+<pre>function openPhoto() {
+  const card = document.getElementById('logo-photo-card'); // 클릭 시 DOM에 확실히 존재
+  card.style.display = 'block';
+  ...
+}</pre>
+                    </div>
+
+                    <div class="ps" style="margin-top:.8rem;">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> 문제 5 (AI 실수) — 스크롤하면 사진이 떠다님</div>
+                        <div class="ps-body pb">AI가 사진 카드를 <code>position:fixed</code>로 body 최하단에 배치하고, 클릭 시 JS로 뷰포트 좌표를 세팅. 처음엔 제자리처럼 보이지만 스크롤하면 사진이 화면에 고정된 채 콘텐츠 위를 떠다님. "카드를 다시 안 누르면 이미지가 같이 내려오잖아".</div>
+                    </div>
+                    <div class="cblock">
+                        <div class="clabel cl-before"><i class="fa-solid fa-xmark"></i> Before — body 최하단에 position:fixed</div>
+<pre>&lt;!-- body 맨 끝 --&gt;
+&lt;div id="logo-photo-card" style="position:fixed; ..."&gt;&lt;/div&gt;
+
+// 클릭마다 뷰포트 좌표 세팅
+const rect = anchorEl.getBoundingClientRect();
+card.style.top  = (rect.top  + rect.height/2) + 'px';
+card.style.left = (rect.left + rect.width /2) + 'px';</pre>
+                        <div class="clabel cl-after"><i class="fa-solid fa-check"></i> After — hero 카드 내부에 position:absolute</div>
+<pre>&lt;!-- header.hero 안에 삽입 --&gt;
+&lt;header class="hero"&gt; &lt;!-- position:relative; overflow:hidden 추가 --&gt;
+  &lt;h1 id="hero-name"&gt;Soeun Lee&lt;/h1&gt;
+  &lt;div id="logo-photo-card"
+    style="position:absolute; top:50%; left:50%;
+           transform:translate(-50%,-50%); ..."&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+&lt;!-- JS의 동적 top/left 세팅 코드 삭제 --&gt;</pre>
+                    </div>
+
+                    <div class="ps" style="margin-top:.8rem;">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> 문제 6 — 글자 흩어지기 전에 사진 등장</div>
+                        <div class="ps-body pb">scatter 애니메이션 duration이 0.65s인데 사진 등장 setTimeout을 300ms로 설정. 글자가 아직 화면에 있는 상태에서 사진이 겹쳐 나타남. "글자가 다 흩어지고 나면 사진이 뜨게".</div>
+                    </div>
+                    <div class="cblock">
+                        <div class="clabel cl-before"><i class="fa-solid fa-xmark"></i> Before</div>
+<pre>setTimeout(() => { card.style.display = 'block'; ... }, 300); // 너무 빠름</pre>
+                        <div class="clabel cl-after"><i class="fa-solid fa-check"></i> After — 0.65s 애니메이션 + 70ms 여유</div>
+<pre>setTimeout(() => { card.style.display = 'block'; ... }, 720);</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 07 이스터에그 -->
+        <div class="fcard">
+            <div class="fcard-head" onclick="toggleCard(this)">
+                <div class="fnum">07</div>
+                <div class="fcard-title">
+                    <div class="ftags"><span class="ftag tf">Feature</span><span class="ftag td">Design Decision</span></div>
+                    <h3>이스터에그 2종 — 위치·구현 방식 모두 처음과 달라짐</h3>
+                </div>
+                <i class="fa-solid fa-chevron-down fcard-chev"></i>
+            </div>
+            <div class="fcard-body">
+                <div class="fcard-inner">
+                    <div class="fdesc">파티클 버스트(Let's Connect)와 TMI 퀴즈(About Me). 기획부터 최종 구현까지 방향이 여러 번 바뀌었다.</div>
+
+                    <div class="ps">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> 파티클 위치 — About Me → Let's Connect 이동</div>
+                        <div class="ps-body pb">처음엔 파티클 이스터에그를 About Me 섹션에 넣으려 했음. 하지만 차분한 자기소개 섹션에 갑작스러운 파티클 폭발은 맥락 부조화. Let's Connect로 옮기고, About Me엔 퀴즈를 대신 배치.</div>
+                    </div>
+
+                    <div class="ps" style="margin-top:.75rem;">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> 파티클 소재 — 벚꽃 → 이모지 → Font Awesome 아이콘</div>
+                        <div class="ps-body pb">벚꽃 이모지(🌸) → 별·하트 이모지(★♥) → Font Awesome <code>fa-star</code>/<code>fa-heart</code> 아이콘 순서로 변경. 이모지는 OS·브라우저마다 렌더링이 달라 일관성이 없음. Font Awesome 아이콘은 CSS <code>color</code>로 색상을 완벽히 제어할 수 있어 최종 선택.</div>
+                    </div>
+
+                    <div class="ps" style="margin-top:.75rem;">
+                        <div class="ps-head ph"><i class="fa-solid fa-triangle-exclamation"></i> TMI 퀴즈 — 실시간 피드백 → 제출 후 결과 팝업으로 변경</div>
+                        <div class="ps-body pb">처음엔 라디오 버튼 선택 시 즉시 정답/오답을 표시하는 방식으로 구현. 그런데 답을 바꾸기 어렵고, 퀴즈의 긴장감이 사라짐. "정답입니다/오답입니다가 뜨는 게 아니라 그냥 팝업이 꺼지면서 추가 팝업이 등장하는 거지"라는 피드백으로 변경.</div>
+                    </div>
+                    <div class="cblock">
+                        <div class="clabel cl-after"><i class="fa-solid fa-check"></i> After — 제출 후 일괄 결과 판정</div>
+<pre>function submitQuiz() {
+  // 3문제 모두 선택했는지 먼저 확인
+  const allAnswered = quizData.every((_, i) =>
+    document.querySelector(`input[name="q${i}"]:checked`)
+  );
+  if (!allAnswered) { alert('모든 문제를 풀어주세요!'); return; }
+
+  const score = quizData.filter((q, i) => {
+    const sel = document.querySelector(`input[name="q${i}"]:checked`);
+    return sel && parseInt(sel.value) === q.answer;
+  }).length;
+
+  closeQuiz(); // 기존 모달 닫기
+  if (score === quizData.length) {
+    launchConfetti();  // 전부 정답 → 축포
+  } else {
+    launchCryRain();   // 하나라도 오답 → 우는 이모지 비
+  }
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 08 모바일 -->
+        <div class="fcard">
+            <div class="fcard-head" onclick="toggleCard(this)">
+                <div class="fnum">08</div>
+                <div class="fcard-title">
+                    <div class="ftags"><span class="ftag tm">Mobile</span></div>
+                    <h3>모바일 반응형 — 누적된 문제 한 번에 정비</h3>
+                </div>
+                <i class="fa-solid fa-chevron-down fcard-chev"></i>
+            </div>
+            <div class="fcard-body">
+                <div class="fcard-inner">
+                    <div class="fdesc">데스크탑 중심으로 개발하다 보니 모바일에서 여러 UX 문제가 쌓였다. 2026.06.25 한 세션에 몰아서 수정.</div>
+                    <div class="cblock">
+                        <div class="clabel cl-before"><i class="fa-solid fa-xmark"></i> 모바일 문제 목록</div>
+<pre>padding-bottom: 22rem   섹션마다 엄청난 공백, 스크롤이 끝없이 됨
+navbar flex-direction:column  kebab 메뉴 도입 후 불필요한 2줄 레이아웃
+card-img height: 300px  모바일 화면 절반을 이미지 하나가 차지
+card-grid gap: 3.75rem  카드 간격이 카드 내용보다 넓은 역전 현상
+semester-title 1.8rem   모바일에서 지나치게 큰 폰트
+프로필 사진 300×300      히어로 카드 전체를 사진이 덮어버리는 상황</pre>
+                        <div class="clabel cl-after"><i class="fa-solid fa-check"></i> 수정값</div>
+<pre>padding-bottom: 22rem → 6rem
+navbar: flex-direction:column 제거 (kebab 메뉴 유지)
+card-img: 300px → 180px
+card-grid gap: 3.75rem → 1.5rem
+semester-title: 1.8rem → 1.15rem
+프로필 사진: width/height 300px → 200px (!important)</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /flist -->
+
+    <!-- 설계 결정 -->
+    <div class="sec">
+        <div class="sec-ico"><i class="fa-solid fa-lightbulb"></i></div>
+        <h2>주요 설계 결정 &amp; 이유</h2>
+    </div>
+
+    <div class="dcards">
+
+        <div class="dcard">
+            <div class="dcard-head" onclick="toggleDecision(this)">
+                <h3><i class="fa-solid fa-file-code"></i> 단일 파일 고수 — React 포기 이유</h3>
+                <i class="fa-solid fa-chevron-down dcard-chev"></i>
+            </div>
+            <div class="dcard-body">
+                <div class="dcard-body-inner">
+                    GitHub Pages는 정적 파일 서빙만 가능. JSX 빌드 없이 React를 CDN Babel로 쓰면 프로덕션 성능이 나쁘고, Vite를 도입하면 배포 복잡도가 급증. 포트폴리오 규모에서는 <code>index.html</code> 단일 파일이 빌드 0, 의존성 0, 수정 후 바로 GitHub에 올리면 배포 완료로 가장 실용적이다.
+                </div>
+            </div>
+        </div>
+
+        <div class="dcard">
+            <div class="dcard-head" onclick="toggleDecision(this)">
+                <h3><i class="fa-solid fa-fire"></i> Firebase 접근 방식 — SDK 대신 REST API 직접 호출</h3>
+                <i class="fa-solid fa-chevron-down dcard-chev"></i>
+            </div>
+            <div class="dcard-body">
+                <div class="dcard-body-inner">
+                    Firebase JS SDK 두 파일을 import하면 수십 KB 번들이 추가되고 초기화 코드가 복잡해짐. Firebase REST API는 <code>{DB_URL}/{path}.json</code> 엔드포인트에 GET/POST/PUT/DELETE 요청만 보내면 되므로, <code>fetch()</code> 10줄로 동일 기능 구현 가능. 외부 스크립트 0개, 초기화 코드 0줄.
+                </div>
+            </div>
+        </div>
+
+        <div class="dcard">
+            <div class="dcard-head" onclick="toggleDecision(this)">
+                <h3><i class="fa-solid fa-scroll"></i> CSS scroll-snap 포기 → JS wheel 이벤트 핸들링</h3>
+                <i class="fa-solid fa-chevron-down dcard-chev"></i>
+            </div>
+            <div class="dcard-body">
+                <div class="dcard-body-inner">
+                    CSS <code>scroll-snap-type</code>은 섹션 전환 자체는 쉽지만, About·Projects처럼 키 큰 섹션 안에서 스크롤이 완전히 막히는 치명적 단점이 있다. JS <code>wheel</code> 이벤트를 직접 제어하면 "섹션 높이 > 뷰포트+80일 때는 내부 스크롤 허용, 경계 도달 시에만 다음 섹션으로 스냅"하는 세밀한 로직 구현이 가능. <code>passive:false</code>로 <code>preventDefault()</code>도 허용.
+                </div>
+            </div>
+        </div>
+
+        <div class="dcard">
+            <div class="dcard-head" onclick="toggleDecision(this)">
+                <h3><i class="fa-solid fa-robot"></i> AI 협업 방식 — 검증 루프가 핵심</h3>
+                <i class="fa-solid fa-chevron-down dcard-chev"></i>
+            </div>
+            <div class="dcard-body">
+                <div class="dcard-body-inner">
+                    Claude는 코드를 빠르게 생성하지만 실제 UI 맥락(어떤 요소인지, 실제로 어떻게 보이는지)을 오해하는 경우가 여러 번 있었다. nav 로고 scatter, EXIF 회전, position:fixed 문제 등. 생성된 코드는 반드시 브라우저에서 직접 확인하고 틀리면 구체적으로 피드백하는 반복 루프가 핵심이다. AI가 방향을 잡아주지만 최종 판단은 항상 사람이 한다. 또한 세션이 너무 길어지면 컨텍스트 윈도우가 소진되어 AI가 이전 맥락을 잃어버리므로, 중요한 결정은 세션 초반에 내리는 것이 좋다.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="pfooter">
+        <p>Made with <i class="fa-solid fa-heart" style="color:var(--primary);"></i> by Soeun Lee</p>
+        <p style="margin-top:.4rem;"><a href="index.html">← 포트폴리오 보기</a></p>
+    </div>
+
+</div><!-- /wrap -->
+
+<script>
+function toggleGit(head) {
+    const body = head.nextElementSibling;
+    const chev = head.querySelector('.git-chev');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    chev.classList.toggle('open', !isOpen);
+}
+
+function toggleCard(head) {
+    const body = head.nextElementSibling;
+    const chev = head.querySelector('.fcard-chev');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    chev.classList.toggle('open', !isOpen);
+}
+
+function toggleDecision(head) {
+    const body = head.nextElementSibling;
+    const chev = head.querySelector('.dcard-chev');
+    const isOpen = body.classList.contains('open');
+    body.classList.toggle('open', !isOpen);
+    chev.classList.toggle('open', !isOpen);
+}
+</script>
+
+</body>
+</html>
